@@ -1,0 +1,7 @@
+# Internal working documents — not for publication
+docs/
+site/docs
+site/index.prototype.html
+
+# macOS
+.DS_Store

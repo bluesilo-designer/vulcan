@@ -1,0 +1,1130 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Vulcan — Range Training Systems</title>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<style>
+/* ============================================================
+   TOKENS
+   ============================================================ */
+:root{
+  color-scheme:light dark;
+
+  /* surface + ink — all pairs verified >= 4.5:1 */
+  --paper:#F4F5F2;  --surface:#FFFFFF;  --sunk:#EAECE7;
+  --ink:#14191B;    --ink-2:#3D4A50;    --ink-3:#5A686E;
+  --line:#DCDFD9;   --line-2:#C0C6BE;   --line-3:#8D958C;
+  --brass:#7A5A12;  --brass-bg:#F2E9D2; --brass-line:#C9A94E;
+  --ember:#8C3A1D;  --ember-bg:#F8E7DF;
+  --on-brass:#FFFFFF;
+
+  /* type scale — 1.24 ratio, explicit */
+  --t-2xs:11px; --t-xs:12.5px; --t-sm:14px; --t-base:15.5px;
+  --t-md:18px;  --t-lg:22px;   --t-xl:27px; --t-2xl:34px;
+  --t-3xl:clamp(30px,4.4vw,46px);
+
+  /* space — 4px base */
+  --s1:4px; --s2:8px; --s3:12px; --s4:16px; --s5:24px;
+  --s6:32px; --s7:48px; --s8:64px; --s9:88px;
+
+  --display:"Archivo","Helvetica Neue",Arial,sans-serif;
+  --sans:"IBM Plex Sans",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;
+
+  --shell:1140px;
+  --ring:0 0 0 2px var(--paper), 0 0 0 4px var(--brass);
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --paper:#0E1214;  --surface:#161C1E;  --sunk:#11171A;
+    --ink:#E8EBE7;    --ink-2:#AEB9BC;    --ink-3:#8C9A9F;
+    --line:#242D30;   --line-2:#354145;   --line-3:#5E6E73;
+    --brass:#E0B75C;  --brass-bg:#2B2415; --brass-line:#7A6428;
+    --ember:#E9906A;  --ember-bg:#2E1B13;
+    --on-brass:#0E1214;
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#0E1214;  --surface:#161C1E;  --sunk:#11171A;
+  --ink:#E8EBE7;    --ink-2:#AEB9BC;    --ink-3:#8C9A9F;
+  --line:#242D30;   --line-2:#354145;   --line-3:#5E6E73;
+  --brass:#E0B75C;  --brass-bg:#2B2415; --brass-line:#7A6428;
+  --ember:#E9906A;  --ember-bg:#2E1B13;
+  --on-brass:#0E1214;
+}
+
+/* ============================================================
+   BASE
+   ============================================================ */
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+img{max-width:100%;display:block}
+[hidden]{display:none!important}
+body{
+  background:var(--paper); color:var(--ink);
+  font-family:var(--sans); font-size:var(--t-base); line-height:1.65;
+  -webkit-font-smoothing:antialiased; text-rendering:optimizeLegibility;
+}
+:where(a,button,[tabindex]):focus-visible{outline:none;box-shadow:var(--ring);border-radius:1px}
+.skip{position:absolute;left:-9999px;top:0;z-index:99;background:var(--ink);color:var(--paper);padding:var(--s3) var(--s4);font-family:var(--mono);font-size:var(--t-xs)}
+.skip:focus{left:0}
+
+h1,h2,h3{font-family:var(--display);letter-spacing:-.018em;margin:0;text-wrap:balance}
+h1{font-size:var(--t-3xl);font-weight:700;line-height:1.04;max-width:20ch}
+h2{font-size:var(--t-xl);font-weight:600;line-height:1.15;max-width:26ch}
+h3{font-size:var(--t-md);font-weight:600;line-height:1.3}
+p{margin:0;max-width:64ch;color:var(--ink-2)}
+p strong{color:var(--ink);font-weight:600}
+.shell{max-width:var(--shell);margin:0 auto;padding:0 var(--s5)}
+
+/* ============================================================
+   HEADER
+   ============================================================ */
+.hdr{position:sticky;top:0;z-index:30;background:var(--paper);border-bottom:1px solid var(--line)}
+.hdr .shell{display:flex;align-items:center;gap:var(--s5);min-height:64px}
+.brand{font-family:var(--display);font-weight:700;font-size:var(--t-md);letter-spacing:.1em;color:var(--ink);text-decoration:none;flex:none}
+.brand span{color:var(--brass)}
+.hdr nav{display:flex;gap:var(--s5);margin-left:auto}
+.hdr nav > a{
+  position:relative;font-family:var(--mono);font-size:var(--t-xs);letter-spacing:.05em;
+  color:var(--ink-2);text-decoration:none;display:inline-flex;align-items:center;min-height:44px;
+}
+.hdr nav > a::after{content:"";position:absolute;left:0;right:0;bottom:16px;height:1.5px;background:var(--brass);transform:scaleX(0);transform-origin:left}
+.hdr nav > a:hover{color:var(--ink)}
+.hdr nav > a:hover::after{transform:scaleX(1)}
+.hdr nav > a[aria-current="page"]{color:var(--ink);font-weight:500}
+.hdr nav > a[aria-current="page"]::after{transform:scaleX(1)}
+.hdr .btn{flex:none}
+
+/* ---- products dropdown ---- */
+.dd{position:relative;display:flex}
+.dd__btn{
+  display:inline-flex;align-items:center;gap:var(--s2);min-height:44px;
+  background:none;border:none;padding:0;cursor:pointer;color:var(--ink-2);
+  font-family:var(--mono);font-size:var(--t-xs);letter-spacing:.05em;position:relative;
+}
+.dd__btn::after{content:"";position:absolute;left:0;right:14px;bottom:16px;height:1.5px;background:var(--brass);transform:scaleX(0);transform-origin:left}
+.dd__btn:hover{color:var(--ink)}
+.dd__btn:hover::after,.dd__btn[aria-expanded="true"]::after{transform:scaleX(1)}
+.dd__btn[aria-current="page"]{color:var(--ink);font-weight:500}
+.dd__btn[aria-current="page"]::after{transform:scaleX(1)}
+.dd__caret{width:7px;height:7px;border-right:1.5px solid currentColor;border-bottom:1.5px solid currentColor;transform:translateY(-2px) rotate(45deg);flex:none}
+.dd__btn[aria-expanded="true"] .dd__caret{transform:translateY(1px) rotate(-135deg)}
+
+.dd__panel{
+  position:absolute;top:calc(100% + 1px);right:0;z-index:40;width:min(680px,calc(100vw - 48px));
+  background:var(--surface);border:1px solid var(--line-2);border-top:2px solid var(--brass);
+  padding:var(--s5);display:grid;gap:var(--s5) var(--s5);grid-template-columns:repeat(2,1fr);
+  box-shadow:0 12px 32px rgba(0,0,0,.10);
+}
+@media (min-width:720px){ .dd__panel{grid-template-columns:repeat(4,1fr)} }
+.dd__col h4{
+  font-family:var(--mono);font-size:var(--t-2xs);letter-spacing:.13em;text-transform:uppercase;
+  color:var(--ink-3);margin:0 0 var(--s3);font-weight:500;padding-bottom:var(--s2);border-bottom:1px solid var(--line);
+}
+.dd__item{display:block;text-decoration:none;padding:var(--s2) 0;color:inherit}
+.dd__item:hover .dd__acr,.dd__item:focus-visible .dd__acr{color:var(--brass)}
+.dd__acr{display:block;font-family:var(--display);font-weight:700;font-size:var(--t-sm);letter-spacing:.02em;color:var(--ink);line-height:1.2}
+.dd__nm{display:block;font-size:var(--t-2xs);color:var(--ink-3);line-height:1.4;margin-top:2px}
+.dd__foot{grid-column:1/-1;border-top:1px solid var(--line);padding-top:var(--s4);display:flex;flex-wrap:wrap;gap:var(--s3) var(--s5);align-items:center;justify-content:space-between}
+.dd__all{font-family:var(--mono);font-size:var(--t-xs);letter-spacing:.05em;color:var(--ink);text-decoration:none;display:inline-flex;align-items:center;gap:var(--s2);min-height:38px}
+.dd__all:hover{color:var(--brass)}
+.dd__note{font-family:var(--mono);font-size:var(--t-2xs);color:var(--ink-3)}
+
+@media (max-width:840px){
+  .dd{position:static}
+  .dd__panel{position:absolute;left:var(--s5);right:var(--s5);width:auto;padding:var(--s4);gap:var(--s4)}
+  .dd__btn{min-height:38px}
+  .dd__btn::after{bottom:10px}
+}
+@media (max-width:840px){
+  .hdr .shell{flex-wrap:wrap;gap:0 var(--s4);padding-top:var(--s2);padding-bottom:var(--s2);min-height:0}
+  .hdr nav{order:3;width:100%;margin-left:0;gap:var(--s4);overflow-x:auto;border-top:1px solid var(--line);padding-top:var(--s1)}
+  .hdr nav > a{min-height:38px;white-space:nowrap}
+  .hdr nav > a::after{bottom:10px}
+  .hdr .btn{margin-left:auto}
+}
+
+/* ============================================================
+   BUTTONS
+   ============================================================ */
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:var(--s2);
+  min-height:44px;padding:0 var(--s5);cursor:pointer;
+  font-family:var(--mono);font-size:var(--t-xs);font-weight:500;letter-spacing:.07em;
+  text-transform:uppercase;text-decoration:none;border:1px solid transparent;
+}
+.btn--primary{background:var(--brass);color:var(--on-brass);border-color:var(--brass)}
+.btn--primary:hover{filter:brightness(.9)}
+.btn--ghost{background:transparent;color:var(--ink);border-color:var(--line-2)}
+.btn--ghost:hover{border-color:var(--ink);background:var(--surface)}
+.btn--sm{min-height:38px;padding:0 var(--s4)}
+.btns{display:flex;flex-wrap:wrap;gap:var(--s3)}
+
+/* ============================================================
+   PAGE STRUCTURE
+   ============================================================ */
+main{display:block}
+.masthead{padding:var(--s8) 0 var(--s7)}
+.eyebrow{font-family:var(--mono);font-size:var(--t-2xs);letter-spacing:.16em;text-transform:uppercase;color:var(--ink-3);margin-bottom:var(--s4)}
+.lede{font-size:var(--t-md);line-height:1.6;color:var(--ink-2);max-width:56ch;margin-top:var(--s4)}
+.masthead .btns{margin-top:var(--s6)}
+
+.band{padding:var(--s8) 0;border-top:1px solid var(--line)}
+.band--sunk{background:var(--sunk)}
+.band__head{margin-bottom:var(--s6);max-width:62ch}
+.band__head p{margin-top:var(--s3)}
+.band__num{
+  font-family:var(--mono);font-size:var(--t-2xs);letter-spacing:.16em;text-transform:uppercase;
+  color:var(--ink-3);display:block;margin-bottom:var(--s3);
+}
+.prose{display:flex;flex-direction:column;gap:var(--s4);max-width:64ch}
+
+/* ============================================================
+   GRIDS — explicit breakpoints, never auto-fit
+   ============================================================ */
+.g{display:grid;gap:var(--s4)}
+.g2,.g3,.g4{grid-template-columns:1fr}
+@media (min-width:600px){ .g4{grid-template-columns:repeat(2,1fr)} }
+@media (min-width:720px){ .g2,.g3{grid-template-columns:repeat(2,1fr)} }
+@media (min-width:1000px){ .g3{grid-template-columns:repeat(3,1fr)} .g4{grid-template-columns:repeat(4,1fr)} }
+
+/* ============================================================
+   CARDS — border only where the thing is genuinely separate
+   ============================================================ */
+.card{background:var(--surface);border:1px solid var(--line);padding:var(--s5);display:flex;flex-direction:column;gap:var(--s3);min-width:0}
+a.card{text-decoration:none;color:inherit}
+a.card:hover{border-color:var(--brass-line);background:var(--surface)}
+a.card:hover .card__t{color:var(--brass)}
+.card__k{font-family:var(--mono);font-size:var(--t-2xs);letter-spacing:.13em;text-transform:uppercase;color:var(--ink-3)}
+.card__t{font-family:var(--display);font-weight:600;font-size:var(--t-md);line-height:1.25;letter-spacing:-.01em;color:var(--ink)}
+.card__acr{font-family:var(--display);font-weight:700;font-size:var(--t-lg);letter-spacing:.01em;color:var(--ink);line-height:1}
+.card p{font-size:var(--t-sm);line-height:1.6}
+.card--flat{background:transparent;border:none;padding:0}
+.card--flat .card__t{padding-bottom:var(--s2);border-bottom:2px solid var(--ink)}
+
+/* plain list — no card chrome */
+.stack{display:flex;flex-direction:column;gap:var(--s5)}
+.item{display:grid;grid-template-columns:1fr;gap:var(--s2);padding-bottom:var(--s5);border-bottom:1px solid var(--line)}
+.item:last-child{border-bottom:none;padding-bottom:0}
+@media (min-width:760px){ .item{grid-template-columns:220px 1fr;gap:var(--s5)} }
+.item__k{font-family:var(--display);font-weight:600;font-size:var(--t-sm);color:var(--ink);line-height:1.4}
+.item__k small{display:block;font-family:var(--mono);font-size:var(--t-2xs);font-weight:400;color:var(--ink-3);letter-spacing:.09em;text-transform:uppercase;margin-top:var(--s1)}
+.item p{font-size:var(--t-sm)}
+
+/* ============================================================
+   CHAIN — a sequence, not a table
+   ============================================================ */
+.chain{margin-bottom:var(--s5)}
+.chain__rail{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line);border:1px solid var(--line)}
+@media (min-width:720px){ .chain__rail{grid-template-columns:repeat(5,1fr)} }
+@media (min-width:1000px){ .chain__rail{grid-template-columns:repeat(9,1fr)} }
+.step{
+  position:relative;background:var(--surface);border:none;cursor:pointer;
+  padding:var(--s4) var(--s2) var(--s3);text-align:left;color:inherit;font:inherit;
+  display:flex;flex-direction:column;gap:var(--s1);min-height:76px;
+}
+.step::before{content:"";position:absolute;inset:0 0 auto 0;height:2px;background:transparent}
+.step:hover{background:var(--sunk)}
+.step__n{font-family:var(--mono);font-size:var(--t-2xs);color:var(--ink-3);letter-spacing:.1em;font-variant-numeric:tabular-nums}
+.step__k{font-family:var(--display);font-weight:600;font-size:var(--t-sm);letter-spacing:-.005em;color:var(--ink);line-height:1.2}
+.step__s{font-family:var(--mono);font-size:var(--t-2xs);color:var(--ink-3);line-height:1.4}
+.step[aria-selected="true"]{background:var(--brass-bg)}
+.step[aria-selected="true"]::before{background:var(--brass)}
+.step[aria-selected="true"] .step__k{color:var(--brass)}
+.step[aria-selected="true"] .step__n{color:var(--brass)}
+.step--off .step__k{color:var(--ink-3);font-weight:500}
+.step--on::before{background:var(--brass)}
+.step--on .step__k{color:var(--ink)}
+.step--partner .step__s::after{content:" ◇";color:var(--line-3)}
+
+.detail{background:var(--surface);border:1px solid var(--line);border-top:2px solid var(--brass);padding:var(--s5)}
+.detail__k{font-family:var(--mono);font-size:var(--t-2xs);letter-spacing:.14em;text-transform:uppercase;color:var(--brass);margin-bottom:var(--s2)}
+.detail h3{margin-bottom:var(--s3);max-width:34ch}
+.detail p{font-size:var(--t-sm);max-width:70ch}
+.detail__meta{display:grid;gap:var(--s3);margin-top:var(--s4);padding-top:var(--s4);border-top:1px solid var(--line)}
+@media (min-width:720px){ .detail__meta{grid-template-columns:1fr 1fr;gap:var(--s5)} }
+.detail__meta div{font-family:var(--mono);font-size:var(--t-2xs);color:var(--ink-2);line-height:1.6}
+.detail__meta span{display:block;color:var(--ink-3);letter-spacing:.13em;text-transform:uppercase;margin-bottom:var(--s1)}
+
+/* ============================================================
+   TABLES
+   ============================================================ */
+.tbl{border:1px solid var(--line);background:var(--surface);overflow-x:auto}
+table{border-collapse:collapse;width:100%;min-width:560px}
+caption{caption-side:bottom;text-align:left;font-family:var(--mono);font-size:var(--t-2xs);color:var(--ink-3);padding:var(--s3)}
+th,td{text-align:left;padding:var(--s3) var(--s4);border-bottom:1px solid var(--line);vertical-align:top;font-size:var(--t-sm);color:var(--ink-2)}
+thead th{
+  font-family:var(--mono);font-size:var(--t-2xs);letter-spacing:.13em;text-transform:uppercase;
+  color:var(--ink-3);font-weight:500;white-space:nowrap;background:var(--sunk);border-bottom:1px solid var(--line-2);
+}
+tbody tr:last-child td{border-bottom:none}
+td strong{color:var(--ink);font-weight:600}
+td em{font-style:normal;color:var(--ink-3);font-family:var(--mono);font-size:var(--t-2xs)}
+.arrow{font-family:var(--mono);color:var(--brass);font-size:var(--t-sm)}
+
+/* ============================================================
+   SMALL PARTS
+   ============================================================ */
+.tags{display:flex;flex-wrap:wrap;gap:var(--s2)}
+.tag{font-family:var(--mono);font-size:var(--t-2xs);letter-spacing:.04em;color:var(--ink-2);border:1px solid var(--line-2);padding:var(--s1) var(--s3);background:var(--surface)}
+.tag--partner{border-style:dashed;color:var(--ink-3)}
+.note{font-family:var(--mono);font-size:var(--t-2xs);color:var(--ink-3);line-height:1.6;max-width:70ch}
+.pull{border-left:2px solid var(--brass);padding-left:var(--s5);max-width:56ch}
+.pull p{font-family:var(--display);font-weight:500;font-size:var(--t-lg);line-height:1.35;color:var(--ink);letter-spacing:-.015em;max-width:none}
+
+/* honest placeholder — says what is missing, not just "grey" */
+.tbw{border:1px dashed var(--line-2);background:transparent;padding:var(--s4);display:flex;flex-direction:column;gap:var(--s2)}
+.tbw b{font-family:var(--mono);font-size:var(--t-2xs);letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3);font-weight:500}
+.tbw span{font-size:var(--t-sm);color:var(--ink-3);font-style:italic}
+
+/* ============================================================
+   HERO FIGURE + IMAGE PLACEHOLDERS
+   ============================================================ */
+.masthead--split{display:grid;gap:var(--s7);grid-template-columns:1fr;align-items:center}
+@media (min-width:1000px){ .masthead--split{grid-template-columns:5fr 6fr;gap:var(--s8)} }
+
+.figure{display:flex;flex-direction:column;gap:var(--s3);min-width:0}
+.figure figcaption{font-family:var(--mono);font-size:var(--t-2xs);color:var(--ink-3);line-height:1.6;letter-spacing:.02em}
+.plan{width:100%;height:auto;display:block;background:var(--surface);border:1px solid var(--line)}
+.plan .ln{stroke:var(--line-2);fill:none;stroke-width:1}
+.plan .ln-2{stroke:var(--line-3);fill:none;stroke-width:1}
+.plan .ln-d{stroke:var(--line-3);fill:none;stroke-width:1;stroke-dasharray:5 4}
+.plan .br{stroke:var(--brass);fill:none;stroke-width:1}
+.plan .br-f{fill:var(--brass);stroke:none}
+.plan .sk{fill:var(--sunk);stroke:var(--line-2);stroke-width:1}
+.plan text{font-family:var(--mono);font-size:9px;letter-spacing:.11em;fill:var(--ink-3)}
+.plan text.on{fill:var(--brass)}
+.plan text.num{letter-spacing:.04em;font-size:8px}
+
+/* image slot — says what belongs there, not just grey */
+.ph{
+  position:relative;display:flex;flex-direction:column;justify-content:flex-end;gap:var(--s1);
+  border:1px dashed var(--line-2);background:var(--sunk);padding:var(--s4);overflow:hidden;
+}
+.ph::before,.ph::after{content:"";position:absolute;background:var(--line-2)}
+.ph::before{left:var(--s3);top:var(--s3);width:14px;height:1px}
+.ph::after{left:var(--s3);top:var(--s3);width:1px;height:14px}
+.ph--wide{aspect-ratio:16/9}
+.ph--square{aspect-ratio:1/1}
+.ph b{font-family:var(--mono);font-size:var(--t-2xs);letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3);font-weight:500;position:relative;z-index:1}
+.ph span{font-size:var(--t-xs);color:var(--ink-3);font-style:italic;line-height:1.5;position:relative;z-index:1}
+
+/* ============================================================
+   FOOTER
+   ============================================================ */
+.ftr{border-top:1px solid var(--line);background:var(--sunk);margin-top:var(--s9)}
+.ftr .shell{padding-top:var(--s7);padding-bottom:var(--s6);display:grid;gap:var(--s6);grid-template-columns:1fr}
+@media (min-width:640px){ .ftr .shell{grid-template-columns:repeat(2,1fr)} }
+@media (min-width:1000px){ .ftr .shell{grid-template-columns:1.4fr 1fr 1fr 1fr} }
+.fcol h4{font-family:var(--mono);font-size:var(--t-2xs);letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3);margin:0 0 var(--s4);font-weight:500}
+.fcol a{display:block;font-size:var(--t-sm);color:var(--ink-2);text-decoration:none;margin-bottom:var(--s2)}
+.fcol a:hover{color:var(--brass)}
+.fcol p{font-size:var(--t-sm)}
+.ftr__bot{border-top:1px solid var(--line);font-family:var(--mono);font-size:var(--t-2xs);color:var(--ink-3);padding:var(--s4) 0}
+
+@media (prefers-reduced-motion:no-preference){
+  a,.btn,.card,.step{transition:color .18s ease,background-color .18s ease,border-color .18s ease,filter .18s ease}
+  .hdr nav > a::after{transition:transform .18s ease}
+}
+</style>
+</head>
+<body>
+
+<a class="skip" href="#main">Skip to content</a>
+
+
+<header class="hdr">
+  <div class="shell">
+    <a class="brand" href="#/">VUL<span>C</span>AN</a>
+    <nav id="nav" aria-label="Primary">
+      <a href="#/platform" data-route="/platform">Platform</a>
+      <div class="dd">
+        <button type="button" id="ddBtn" class="dd__btn" data-route="/products"
+                aria-expanded="false" aria-controls="ddPanel" aria-haspopup="true">
+          Products <span class="dd__caret" aria-hidden="true"></span>
+        </button>
+        <div class="dd__panel" id="ddPanel" role="group" aria-labelledby="ddBtn" hidden></div>
+      </div>
+      <a href="#/integration" data-route="/integration">Integration</a>
+      <a href="#/assurance" data-route="/assurance">Assurance</a>
+      <a href="#/company" data-route="/company">Company</a>
+    </nav>
+    <a class="btn btn--ghost btn--sm" href="#/contact">Enquiries</a>
+  </div>
+</header>
+
+<main id="main"></main>
+
+<footer class="ftr">
+  <div class="shell">
+    <div class="fcol">
+      <h4>Vulcan</h4>
+      <p>Software for range training complexes — from the moment a session is booked to the moment the last round is accounted for.</p>
+    </div>
+    <div class="fcol">
+      <h4>Products</h4>
+      <a href="#/products/rcs">Range Control System</a>
+      <a href="#/products/pwats">Personnel, Weapons &amp; Ammunition Tracking</a>
+      <a href="#/products/ewms">Electronic Weapon Management</a>
+      <a href="#/products/eams">Electronic Ammunition Management</a>
+      <a href="#/products/hums">Health &amp; Usage Monitoring</a>
+      <a href="#/products/as">Administrative System</a>
+    </div>
+    <div class="fcol">
+      <h4>Company</h4>
+      <a href="#/platform">The chain</a>
+      <a href="#/integration">Integration</a>
+      <a href="#/assurance">Assurance</a>
+      <a href="#/company">About Vulcan</a>
+      <a href="#/contact">Enquiries</a>
+    </div>
+    <div class="fcol">
+      <h4>Corporate</h4>
+      <a href="#/contact">Registered details</a>
+      <a href="#/contact">Privacy</a>
+      <a href="#/contact">Terms</a>
+      <a href="#/contact">Accessibility</a>
+    </div>
+  </div>
+  <div class="shell"><div class="ftr__bot">Vulcan · Registered in Singapore · Draft — content and imagery not final</div></div>
+</footer>
+
+<script>
+/* ============================================================
+   DATA
+   ============================================================ */
+var CHAIN=[
+ {k:"Book",sys:"AS · RCS",title:"A session is requested, scheduled and resourced",
+  body:"A unit requests a training session. The appointment is taken, the range, control room and briefing room are reserved against it, and the nominal roll arrives from the authority training-management system. Nothing further in the chain can happen without this record existing first.",
+  data:"Booking · schedule · unit and trainee roster · resource reservation",
+  holds:"The session record, from here to the archive"},
+ {k:"Draw",sys:"EWMS · EAMS",title:"Weapons and ammunition are issued against that session",
+  body:"At the counter, identity and authorisation are verified before anything is released. Each weapon leaves against its serial number. Each ammunition issue leaves against its lot, with its expiry checked at the point of issue rather than at the next audit.",
+  data:"Serial number · lot and expiry · issued-to identity · authorisation result",
+  holds:"Who is now responsible for what"},
+ {k:"Tag",sys:"PWATS",title:"Tracking is activated for everything now in play",
+  body:"Tags are activated for the people and items released to the session, and geo-fences are armed for the areas that session is authorised to use. From this point the range can answer where things are without anyone being asked.",
+  data:"Tag ID · item ID · holder · zone rules",
+  holds:"Position and custody, continuously"},
+ {k:"Execute",sys:"RCS",title:"The scenario runs",
+  body:"Targetry, environmental effects, battlefield effects and visualisation are driven from the control room. Safety state and the emergency stop path are live throughout — and the E-Stop path does not depend on the control software being healthy.",
+  data:"Scenario state · target events · effect commands · safety state",
+  holds:"Authority to start, pause and stop"},
+ {k:"Watch",sys:"PWATS · VMS",partner:true,title:"Live fire and range safety are monitored",
+  body:"Position and status are watched against the armed geo-fences while the session is recorded, and events are marked as they happen rather than reconstructed from memory afterwards. The recording medium is supplied by our partner; the marking is ours.",
+  data:"Positions · alerts · event markers · recording state",
+  holds:"What happened, at the moment it happened"},
+ {k:"Debrief",sys:"RCS · VMS",partner:true,title:"After-action review runs against the marked timeline",
+  body:"Playback is driven from the marked session timeline. Instructor findings are captured against specific moments rather than written up later, and the debrief is conducted from the same record that will be filed.",
+  data:"Session timeline · starred clips · instructor findings",
+  holds:"The assessment, tied to evidence"},
+ {k:"Return",sys:"EWMS · EAMS",title:"Everything comes back, and is accounted for",
+  body:"Weapons are returned against their serial numbers and serviceability is recorded. Ammunition is reconciled four ways — issued against fired against returned unexpended against residue turned in — and any difference is raised at the counter rather than absorbed into the next stocktake.",
+  data:"Return state · serviceability · cleaning record · residue count · reconciliation result",
+  holds:"The closing balance"},
+ {k:"Record",sys:"RCS",title:"Records are written, reports produced, trends analysed",
+  body:"The session becomes a training record against each trainee, a report for the chain of command, and one more data point in the trend analysis for the range. This is also where the audit trail settles into its final form.",
+  data:"Training record · session result · reports · audit trail",
+  holds:"The account that survives the year"},
+ {k:"Sustain",sys:"HUMS",title:"Health and usage of everything that ran",
+  body:"Every subsystem and item of equipment that took part reports its health and usage. Faults are detected, reliability is measured against real service hours, and maintenance is planned before failure instead of after it.",
+  data:"Health · usage · fault events · reliability and MTBF",
+  holds:"Whether the range is fit for tomorrow"}
+];
+
+var PRODUCTS=[
+ {id:"rcs",acr:"RCS",name:"Range Control System",group:"Range operations",
+  angle:"The backbone of the range. RCS is the only subsystem that both plans a session and runs it in the moment — which is also why it is the only one that sits on the safety path.",
+  users:["Range control officer","Instructor","Booking officer","Commander"],
+  on:["Book","Execute","Debrief","Record"],
+  decides:"Whether the range goes hot. Whether it must go cold. Whether the area forward of the firing line is provably clear before either. RCS is what a range control officer answers those with, detail by detail, and the record that afterwards shows why each answer was what it was.",
+  groups:[
+   {k:"Preparation & planning",m:"Booking Management · Resource Management · Exercise Preparation, Readiness &amp; Dry Run · Mission Planning &amp; Scenario Execution"},
+   {k:"Execution & infrastructure control",m:"Training Execution &amp; Control · Management and Control of Training Equipment · Monitoring and Control of Infrastructure Systems · Safety and E-Stop"},
+   {k:"Trainee interaction",m:"Registration and Identification · Trainee Registration &amp; Trainee Records"},
+   {k:"Monitoring, tracking & review",m:"Live Monitoring · Trainee Recording &amp; Playback · Training Feedback and Assessment · After-Action Review and Debriefing · Range Trend Analysis"},
+   {k:"Visualisation",m:"Visualisation Management"},
+   {k:"Platform",m:"Data Management · Activity Log · Interfaces"}],
+  ifc:[["Training equipment &amp; effects","↔","Throughout the session"],
+       ["Video management <em>partner</em>","↔","Event marker, playback"],
+       ["Tracking","↔","Position request"],
+       ["Weapon &amp; ammunition management","↔","Session start and end"],
+       ["Authority booking &amp; training records","↔","Scheduled"],
+       ["Integrated operations &amp; data platform","→","Continuous"]],
+  dep:"RCS drives equipment it does not own and reviews recordings it does not hold. Recording, playback and after-action review depend on the partner-supplied video management system: RCS owns the user experience, the partner owns the medium. That division is fixed in the interface control document before delivery, not during it.",
+  rel:["pwats","hums","ewms"]},
+
+ {id:"pwats",acr:"PWATS",name:"Personnel, Weapons & Ammunition Tracking System",group:"Accountability",
+  angle:"The layer that turns accountability from an after-the-fact record into situational awareness while the serial is still running — and the only one that can evidence a clear range rather than assert one.",
+  users:["Range control officer","Safety officer"],
+  on:["Tag","Watch"],
+  decides:"Whether the area forward of the firing line is empty before the range goes hot, whether everyone is inside the boundary they were authorised for, and whether every issued item is still with the person it was issued to — answered continuously, not at the end of the day.",
+  groups:[{k:"Modules",m:"Personnel Tracking · Weapon Tracking · Ammunition Tracking · Shot Detection Module <em>optional</em>"}],
+  ifc:[["Range control","↔","Position request and map view"],
+       ["Weapon management","↔","Weapon ID, issued-to, tracking activation"],
+       ["Ammunition management","↔","Ammunition and magazine ID"],
+       ["Integrated operations &amp; data platform","→","Continuous"]],
+  dep:"Two technologies answer two different questions and both are needed: RFID for presence and passage at racks, counters and doorways; ultra-wideband for continuous position on the range floor. Specifying one undifferentiated &ldquo;tracking&rdquo; requirement produces either a system that cannot locate a person or one far more costly than the doorway problem demanded. Where the field infrastructure is supplied by others, its coverage becomes our constraint — and a gap must read as unknown, never as absence. The shot detection module is optional and priced separately.",
+  rel:["ewms","eams","rcs"]},
+
+ {id:"ewms",acr:"EWMS",name:"Electronic Weapon Management System",group:"Accountability",
+  angle:"A weapon is a serialised asset that comes back whole. Its serviceability, cleaning and maintenance history follows its serial number for the whole of its service life, not just for one session.",
+  users:["Armourer","Storeman"],
+  on:["Draw","Return"],
+  decides:"Whether this weapon may be released to this person right now, whether it is fit to fire, and whether every serial is back before anyone is released at the end of the day — answered at the counter, against the serial number, not against a memory of it.",
+  groups:[{k:"Modules",m:"Weapon Management · Weapon Issuance &amp; Return Management · Weapon Security &amp; Assurance"}],
+  ifc:[["Range control","↔","Session start and end"],
+       ["Tracking","↔","Weapon ID, issued-to, tracking activation"],
+       ["Access control","↔","Identity and authorisation verification"],
+       ["Security management","↔","Access control for the armoury"],
+       ["Smart weapon rack","↔","Lock, unlock, presence detection"],
+       ["Integrated operations &amp; data platform","→","Continuous"]],
+  dep:"Issuance and return are only trustworthy if the physical rack participates. EWMS assumes a smart weapon rack system providing secure storage, weapon presence detection and electronic lock control — without it, the system records intent rather than fact.",
+  rel:["eams","pwats","rcs"]},
+
+ {id:"eams",acr:"EAMS",name:"Electronic Ammunition Management System",group:"Accountability",
+  angle:"Ammunition is a consumable, not an asset. Accounted by nature and lot, with expiry and surveillance status attached to each — and reconciled four ways, because residue is counted and turned in, not swept up. The accountability burden here is heavier than for weapons, and it is the one most often carried on paper.",
+  users:["Ammunition storeman","Inspector"],
+  on:["Draw","Return"],
+  decides:"How much left the magazine, how much was fired, how much came back unexpended, and how much residue was turned in — and when those four do not agree, exactly where in the day the discrepancy entered.",
+  groups:[{k:"Modules",m:"Ammunition Management · Ammunition Issuance &amp; Return Management · Ammunition Security &amp; Assurance"}],
+  ifc:[["Range control","↔","Session start and end"],
+       ["Tracking","↔","Ammunition and magazine ID"],
+       ["Access control","↔","Identity and authorisation verification"],
+       ["Security management","↔","Access control for the magazine"],
+       ["Integrated operations &amp; data platform","→","Continuous"]],
+  dep:"Reconciliation is impossible without the execution record. EAMS depends on the session result from range control — including stoppages, since a round that failed to fire is neither fired nor unexpended in the ordinary sense. It also depends on an inbound lot-status feed, because a lot can be suspended centrally overnight without anything moving at the facility.",
+  rel:["ewms","pwats","rcs"]},
+
+ {id:"hums",acr:"HUMS",name:"Health & Usage Monitoring System",group:"Sustainment",
+  angle:"A discipline borrowed from rotorcraft airworthiness and brought to a range facility. Its defining idea is not sensors — it is recording the operational context alongside every reading, so wear is judged against work actually done rather than against time elapsed.",
+  users:["Engineering manager","Maintenance team"],
+  on:["Sustain"],
+  decides:"What is degrading, how fast, and whether it will survive the next booked detail — measured against exposures and rounds actually fired rather than against elapsed calendar time.",
+  groups:[
+   {k:"Engineering Command Module — ECM",m:"Collect, monitor, display and manage engineering and system health data across every connected subsystem"},
+   {k:"Engineering Analytical Module — EAM",m:"Analyse health and usage data for predictive maintenance, reliability reporting and resource optimisation"}],
+  ifc:[["Range control","↔","Display, request and send health data"],
+       ["Training systems &amp; equipment","←","Continuous collection"],
+       ["Video, visualisation &amp; effects systems","←","Continuous collection"],
+       ["Network, server &amp; IT equipment","←","Continuous collection"],
+       ["Integrated operations &amp; data platform","→","Continuous"]],
+  dep:"HUMS can only report on equipment that will tell it something. Each source subsystem has to expose health and usage data, and that exposure has to be agreed with whoever supplies it — which makes HUMS coverage a procurement question as much as an engineering one. Its scope also reaches storage conditions, because ammunition serviceability depends on the temperature history of the place it was kept.",
+  rel:["rcs","pwats","eams"]},
+
+ {id:"as",acr:"AS",name:"Administrative System",group:"Facility services",
+  angle:"The only subsystem that touches people from outside the facility — which makes it the only one that has to meet accessibility standards and visitor data protection obligations.",
+  users:["Front desk","Visitors","Visiting units"],
+  on:["Book"],
+  decides:"Who is expected today, who has arrived, and who is authorised past the gate — without the front desk telephoning the control room to find out.",
+  groups:[{k:"Modules",m:"Visitor Registration &amp; Access Service · Vehicle Licence Plate Registration · Integrated Appointment &amp; Queue Service · Feedback Management Service and Survey · Integration Operations and Monitoring"}],
+  ifc:[["Range control","↔","Appointment feeds session booking"],
+       ["Access control","↔","Visitor access authorisation"],
+       ["Authority booking systems","↔","Appointment and organisation data"],
+       ["Integrated operations &amp; data platform","→","Continuous"]],
+  dep:"Visitor access is meaningless without the access control system that opens the door, and licence plate registration assumes plate recognition cameras supplied with the facility.",
+  rel:["rcs","pwats","hums"]}
+];
+
+/* ============================================================
+   HELPERS
+   ============================================================ */
+function band(o){
+  return '<section class="band'+(o.sunk?' band--sunk':'')+'"><div class="shell">'+
+    (o.title?'<div class="band__head">'+(o.num?'<span class="band__num">'+o.num+'</span>':'')+
+      '<h2>'+o.title+'</h2>'+(o.intro?'<p>'+o.intro+'</p>':'')+'</div>':'')+
+    o.body+'</div></section>';
+}
+function tbl(head,rows,cap){
+  return '<div class="tbl"><table>'+(cap?'<caption>'+cap+'</caption>':'')+
+    '<thead><tr>'+head.map(function(h){return '<th scope="col">'+h+'</th>';}).join('')+'</tr></thead><tbody>'+
+    rows.map(function(r){return '<tr>'+r.map(function(c,i){
+      return i===0?'<th scope="row" style="font-family:var(--display);font-weight:600;font-size:var(--t-sm);color:var(--ink);text-transform:none;letter-spacing:0;background:transparent;white-space:normal">'+c+'</th>':'<td>'+c+'</td>';
+    }).join('')+'</tr>';}).join('')+'</tbody></table></div>';
+}
+function tbw(label,what){ return '<div class="tbw"><b>'+label+'</b><span>'+what+'</span></div>'; }
+function ph(ratio,label,what){ return '<div class="ph ph--'+ratio+'"><b>'+label+'</b><span>'+what+'</span></div>'; }
+function phFig(ratio,label,what,cap){
+  return '<figure class="figure" style="margin:0">'+ph(ratio,label,what)+
+    (cap?'<figcaption>'+cap+'</figcaption>':'')+'</figure>';
+}
+
+/* Range schematic — drawn, not photographed. Deliberately non-specific:
+   no real facility is identifiable from it. */
+var PLAN =
+'<figure class="figure" style="margin:0">'+
+'<svg class="plan" viewBox="0 0 800 520" role="img" aria-label="Schematic plan of a range complex: five buildings on a service bus feeding a firing line, six lanes, a target line and a stop butt.">'+
+  '<defs><pattern id="hatch" width="7" height="7" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">'+
+    '<path class="ln" d="M0 0 V7"/></pattern></defs>'+
+
+  /* site boundary */
+  '<rect class="ln-d" x="32" y="32" width="736" height="456"/>'+
+
+  /* buildings */
+  '<rect class="sk" x="48" y="52"  width="64" height="40"/><text x="48" y="46">ADMIN</text>'+
+  '<rect class="sk" x="48" y="142" width="64" height="40"/><text x="48" y="136">ARMOURY</text>'+
+  '<rect class="sk" x="48" y="230" width="64" height="52"/><text class="on" x="48" y="224">CONTROL</text>'+
+  '<rect class="sk" x="48" y="332" width="64" height="40"/><text x="48" y="326">MAGAZINE</text>'+
+  '<rect class="sk" x="48" y="422" width="64" height="40"/><text x="48" y="416">PLANT</text>'+
+
+  /* data bus — the only brass in the left half */
+  '<path class="br" d="M112 72 H124 V256 H112"/>'+
+  '<path class="br" d="M112 162 H124 V256 H112"/>'+
+  '<path class="br" d="M112 352 H124 V256 H112"/>'+
+  '<path class="br" d="M112 442 H124 V256 H112"/>'+
+  '<path class="br" d="M112 256 H152"/>'+
+
+  /* nodes */
+  '<rect class="br-f" x="76" y="68"  width="8" height="8"/>'+
+  '<rect class="br-f" x="76" y="158" width="8" height="8"/>'+
+  '<rect class="br-f" x="74" y="250" width="12" height="12"/>'+
+  '<rect class="br-f" x="76" y="348" width="8" height="8"/>'+
+  '<rect class="br-f" x="76" y="438" width="8" height="8"/>'+
+
+  /* berms + stop butt */
+  '<rect fill="url(#hatch)" stroke="none" x="152" y="76"  width="478" height="12"/>'+
+  '<rect fill="url(#hatch)" stroke="none" x="152" y="420" width="478" height="12"/>'+
+  '<rect fill="url(#hatch)" stroke="none" x="638" y="76"  width="30"  height="356"/>'+
+  '<text class="num" transform="rotate(-90 656 254)" x="656" y="254" text-anchor="middle">STOP BUTT</text>'+
+
+  /* firing line + target line */
+  '<path class="ln-2" d="M152 76 V432"/><text x="152" y="68">FIRING LINE</text>'+
+  '<path class="ln-2" d="M630 76 V432"/><text x="630" y="68" text-anchor="end">TARGET LINE</text>'+
+
+  /* lanes */
+  '<path class="ln" d="M152 104 H630 M152 164 H630 M152 224 H630 M152 284 H630 M152 344 H630 M152 404 H630"/>'+
+  '<text class="num" x="160" y="99">01</text><text class="num" x="160" y="159">02</text>'+
+  '<text class="num" x="160" y="219">03</text><text class="num" x="160" y="279">04</text>'+
+  '<text class="num" x="160" y="339">05</text><text class="num" x="160" y="399">06</text>'+
+
+  /* firing point markers + targets */
+  '<rect class="br-f" x="149" y="101" width="6" height="6"/><rect class="br-f" x="149" y="161" width="6" height="6"/>'+
+  '<rect class="br-f" x="149" y="221" width="6" height="6"/><rect class="br-f" x="149" y="281" width="6" height="6"/>'+
+  '<rect class="br-f" x="149" y="341" width="6" height="6"/><rect class="br-f" x="149" y="401" width="6" height="6"/>'+
+  '<path class="ln-2" d="M614 98 h12 M620 98 v12 M614 158 h12 M620 158 v12 M614 218 h12 M620 218 v12'+
+    ' M614 278 h12 M620 278 v12 M614 338 h12 M620 338 v12 M614 398 h12 M620 398 v12"/>'+
+
+  /* scale + north */
+  '<path class="ln-2" d="M560 470 H680 M560 465 V475 M600 467 V473 M640 467 V473 M680 465 V475"/>'+
+  '<text class="num" x="560" y="462">0</text><text class="num" x="680" y="462" text-anchor="end">100 m</text>'+
+  '<path class="ln-2" d="M730 68 V48 M724 56 L730 46 L736 56"/><text class="num" x="730" y="82" text-anchor="middle">N</text>'+
+'</svg>'+
+'<figcaption>Schematic — an illustrative range layout used to show system relationships. Not a real facility, not to scale, and not derived from any programme drawing.</figcaption>'+
+'</figure>';
+function chainRail(sel,live){
+  return '<div class="chain"><div class="chain__rail" role="'+(live?'tablist':'list')+'">'+
+    CHAIN.map(function(s,i){
+      var on = live ? (i===sel) : (sel.indexOf(s.k)>-1);
+      var cls = 'step'+(live?'':(on?' step--on':' step--off'))+(s.partner?' step--partner':'');
+      var attrs = live
+        ? ' role="tab" type="button" data-step="'+i+'" aria-selected="'+(on?'true':'false')+'"'
+        : ' role="listitem" aria-current="'+(on?'step':'false')+'"';
+      return '<'+(live?'button':'div')+' class="'+cls+'"'+attrs+'>'+
+        '<span class="step__n">'+('0'+(i+1)).slice(-2)+'</span>'+
+        '<span class="step__k">'+s.k+'</span>'+
+        (live?'<span class="step__s">'+s.sys+'</span>':'')+
+        '</'+(live?'button':'div')+'>';
+    }).join('')+'</div></div>';
+}
+function chainDetail(i){
+  var s=CHAIN[i];
+  return '<div class="detail" id="detail" role="tabpanel" tabindex="0">'+
+    '<div class="detail__k">Step '+('0'+(i+1)).slice(-2)+' — '+s.k+(s.partner?' · includes a partner subsystem':'')+'</div>'+
+    '<h3>'+s.title+'</h3><p>'+s.body+'</p>'+
+    '<div class="detail__meta">'+
+      '<div><span>Data that moves</span>'+s.data+'</div>'+
+      '<div><span>What this step holds</span>'+s.holds+'</div>'+
+    '</div></div>';
+}
+function enquiry(label,line){
+  return band({title:"Talk to the people who build it",
+    intro: line || "Procurement, technical integration, or anything else — the three routes reach three different inboxes, so the question lands with someone who can answer it.",
+    body:'<div class="btns"><a class="btn btn--primary" href="#/contact">'+(label||'Send an enquiry')+'</a>'+
+         '<a class="btn btn--ghost" href="#/platform">See how the chain works</a></div>'});
+}
+
+/* ============================================================
+   PAGES
+   ============================================================ */
+function pHome(){
+  return '<div class="shell"><div class="masthead masthead--split">'+
+    '<div><div class="eyebrow">Range training systems</div>'+
+    '<h1>The range training chain, closed end to end</h1>'+
+    '<p class="lede">From the moment a session is booked to the moment the last round is accounted for, every step is held by a system rather than a notebook. Vulcan builds the six subsystems that close that chain.</p>'+
+    '<div class="btns"><a class="btn btn--primary" href="#/platform">See how the chain works</a>'+
+    '<a class="btn btn--ghost" href="#/products">The six subsystems</a></div></div>'+
+    PLAN+'</div></div>'+
+
+  band({num:"01 — The chain",title:"Nine steps, one session",
+    intro:"Select a step to see what happens in it, what data moves, and which subsystems are involved.",
+    body: chainRail(0,true)+chainDetail(0)+
+      '<p class="note" style="margin-top:var(--s4)">◇ marks a step that includes a partner-supplied subsystem.</p>'})+
+
+  band({sunk:true,num:"02 — The problem",title:"Chains break at the joins between vendors",
+    intro:"Not because anyone is careless. Because at every boundary between two systems, the link has to be carried by a person.",
+    body:'<div class="g g3">'+
+      '<div class="card"><div class="card__k">Manual handover</div><div class="card__t">A signature is not an interface</div><p>A weapon leaves the armoury in one system and appears in the session in another. What connects the two is a form and someone remembering to complete it.</p></div>'+
+      '<div class="card"><div class="card__k">Reconciliation gap</div><div class="card__t">Three numbers in three places</div><p>Rounds issued sit in the magazine ledger. Rounds fired sit in the range record. The difference is found at the end of a long day, by hand, under time pressure.</p></div>'+
+      '<div class="card"><div class="card__k">Blind interval</div><div class="card__t">Custody becomes memory</div><p>Between the counter and the firing point, no system can say who is holding what, or where they are, at this moment. It is reconstructed afterwards, if it is questioned.</p></div>'+
+      '</div>'})+
+
+  band({num:"03 — What we build",title:"Six subsystems, designed as one chain",
+    intro:"Each one is deliverable on its own. Each one is more useful when the step before it and the step after it are held by the same design.",
+    body:'<div class="g g3">'+PRODUCTS.map(function(p){
+        return '<a class="card" href="#/products/'+p.id+'"><div class="card__k">'+p.group+'</div>'+
+          '<div class="card__acr">'+p.acr+'</div><div class="card__t" style="font-size:var(--t-sm);font-weight:500">'+p.name+'</div>'+
+          '<p>'+p.decides.split('—')[0].trim()+'</p></a>';
+      }).join('')+'</div>'+
+      '<div class="card" style="margin-top:var(--s4);border-style:dashed;background:transparent">'+
+      '<div class="card__k">Partner-supplied — not ours</div><div class="card__acr" style="color:var(--ink-3)">VMS</div>'+
+      '<p>The Video Management System in this chain is supplied by our partner and integrated by us. It is not the same thing as VSS, the facility security surveillance system, which is outside this scope entirely.</p></div>'})+
+
+  band({sunk:true,title:"Where to start",
+    intro:"The same material, ordered three different ways.",
+    body:'<div class="g g3">'+
+      '<a class="card" href="#/assurance"><div class="card__k">Evaluating a system</div><div class="card__t">Start with assurance</div><p>Safety posture, tiered criticality, auditability, and an honest account of which standards we follow versus hold.</p></a>'+
+      '<a class="card" href="#/integration"><div class="card__k">Integrating a subsystem</div><div class="card__t">Start with interfaces</div><p>How we describe an interface, which shared services we treat as mandatory, and how we test across vendors.</p></a>'+
+      '<a class="card" href="#/platform"><div class="card__k">Running a facility</div><div class="card__t">Start with the chain</div><p>The nine steps, the data contract at each boundary, and which entity is the system of record for what.</p></a>'+
+      '</div>'})+
+
+  enquiry();
+}
+
+function pPlatform(){
+  return '<div class="shell"><div class="masthead">'+
+    '<div class="eyebrow">Platform</div>'+
+    '<h1>The range training chain</h1>'+
+    '<p class="lede">Nine steps and eight handovers. Each handover has an explicit data contract, which is what makes the chain auditable rather than merely connected.</p>'+
+    '</div></div>'+
+
+  band({num:"01 — The model",title:"What happens, step by step",
+    body:'<div class="stack">'+CHAIN.map(function(s,i){
+      return '<div class="item"><div class="item__k">'+s.title+
+        '<small>'+('0'+(i+1)).slice(-2)+' · '+s.k+' — '+s.sys+(s.partner?' ◇':'')+'</small></div>'+
+        '<div><p>'+s.body+'</p><p class="note" style="margin-top:var(--s2)">Data: '+s.data+'</p></div></div>';
+    }).join('')+'</div>'})+
+
+  band({sunk:true,num:"02 — Handovers",title:"What crosses each boundary",
+    intro:"Two of these are internal to the Range Control System. That they are internal does not make them informal — they are specified the same way as any interface leaving our scope.",
+    body: tbl(["Boundary","Data contract","Between"],[
+      ["Plan → Execute","Authorised session package","<em>RCS internal</em>"],
+      ["Execute → Record","Session result record","<em>RCS internal</em>"],
+      ["Draw → Tag","Issued-to identity, item ID, tracking activation","EWMS / EAMS → PWATS"],
+      ["Execute → Watch","Event marker, session timeline","RCS ↔ VMS <em>partner</em>"],
+      ["Watch → Debrief","Marked timeline, starred clips","VMS <em>partner</em> → RCS"],
+      ["Return → Record","Reconciliation result, serviceability state","EWMS / EAMS → RCS"]
+    ])})+
+
+  band({num:"03 — Principles",title:"Six decisions that shape everything else",
+    body:'<div class="g g2">'+
+      '<div class="card"><div class="card__t">Execution survives without administration</div><p>A session already authorised runs from a cached session package even when the administrative layer is unavailable. Booking must never become a single point of failure for live-fire training.</p></div>'+
+      '<div class="card"><div class="card__t">Software is never the only safety path</div><p>The emergency stop path is independent of the control software, and every loss of communication, power or network quality has a defined, tested fail-safe state.</p></div>'+
+      '<div class="card"><div class="card__t">One golden source per entity</div><p>Every core entity has exactly one system of record. Everything else holds a copy that is permitted to be stale — and knows that it is.</p></div>'+
+      '<div class="card"><div class="card__t">Synchronised time is a prerequisite</div><p>Correlating video, shot events, tracking and health data collapses without disciplined time synchronisation. We treat it as a hard dependency, not a configuration detail.</p></div>'+
+      '<div class="card"><div class="card__t">Accountability closes before anyone goes home</div><p>The doctrinal standard for weapons is a full serial-number reconciliation before personnel are released \u2014 not before a shift ends, and not by the next morning. Every deadline in the system is set against that one.</p></div>'+
+      '<div class="card"><div class="card__t">A stop can be called by anyone who sees a hazard</div><p>Cease-fire is not an operator privilege. Any surface that can raise it must be able to raise it without a login \u2014 and the software is never the only path that can.</p></div>'+
+      '</div>'})+
+
+  band({sunk:true,num:"04 — Ownership",title:"Who is the system of record",
+    intro:"Agreed once, at the start. Two systems that both believe they own the same entity will disagree eventually, and always at the worst moment.",
+    body: tbl(["Entity","Golden source","Consumers"],[
+      ["Personnel and trainee","Authority training-management system","RCS · AS · PWATS"],
+      ["Weapon, by serial","EWMS","PWATS · RCS"],
+      ["Ammunition, by lot","EAMS","PWATS · RCS"],
+      ["Training session","RCS","All subsystems"],
+      ["Recording","VMS <em>partner</em>","RCS"],
+      ["Health and usage","HUMS","Data platform"]
+    ])})+
+
+  band({title:"The six subsystems",
+    body:'<div class="g g3">'+PRODUCTS.map(function(p){
+      return '<a class="card" href="#/products/'+p.id+'"><div class="card__acr">'+p.acr+'</div>'+
+        '<div class="card__t" style="font-size:var(--t-sm);font-weight:500">'+p.name+'</div></a>';
+    }).join('')+'</div>'})+
+  enquiry();
+}
+
+function pProducts(){
+  var groups=["Range operations","Accountability","Sustainment","Facility services"];
+  return '<div class="shell"><div class="masthead">'+
+    '<div class="eyebrow">Products</div>'+
+    '<h1>Six subsystems</h1>'+
+    '<p class="lede">Take one, or take all of them — but know the dependencies before deciding. Every product page states what has to exist for that subsystem to mean anything.</p>'+
+    '</div></div>'+
+
+  band({num:"01 — By role",title:"Four roles in the chain",
+    body:'<div class="g g4">'+groups.map(function(g){
+      var ps=PRODUCTS.filter(function(p){return p.group===g;});
+      return '<div class="card"><div class="card__k">'+g+'</div>'+
+        ps.map(function(p){return '<a href="#/products/'+p.id+'" style="text-decoration:none;color:inherit;display:block;margin-bottom:var(--s2)"><span class="card__acr" style="font-size:var(--t-md)">'+p.acr+'</span><br><span style="font-size:var(--t-xs);color:var(--ink-3)">'+p.name+'</span></a>';}).join('')+
+        '</div>';
+    }).join('')+'</div>'})+
+
+  band({sunk:true,num:"02 — Compared",title:"What each one actually decides",
+    intro:"Not a feature comparison. The question each subsystem exists to answer, and the person who has to answer it.",
+    body: tbl(["Subsystem","Primary users","The decision it supports"],
+      PRODUCTS.map(function(p){return [p.acr+' <em style="display:block;margin-top:2px">'+p.name+'</em>', p.users.join(', '), p.decides];}))})+
+
+  band({num:"03 — Terminology",title:"Four acronyms that look alike, and two video systems",
+    intro:"Two of these are ours and two are counterparts. Confusing them in a specification is expensive later.",
+    body:'<div class="g g2">'+
+      '<div class="card"><div class="card__k">Ours</div><p><strong>EWMS</strong> — Electronic Weapon Management System. Weapons as serialised assets.<br><strong>EAMS</strong> — Electronic Ammunition Management System. Ammunition as a consumable.</p></div>'+
+      '<div class="card"><div class="card__k">Counterparts</div><p><strong>EKMS</strong> — Electronic Key Management System. Physical keys.<br><strong>EACS</strong> — Electronic Access Control System. Doors and zones.</p></div>'+
+      '<div class="card"><div class="card__k">Partner-supplied</div><p><strong>VMS</strong> — Video Management System. Video for <em style="font-style:italic">training</em>: event markers, playback, after-action review.</p></div>'+
+      '<div class="card"><div class="card__k">A different system entirely</div><p><strong>VSS</strong> — Video Surveillance System. Facility security CCTV. Different purpose, different owner, outside this scope.</p></div>'+
+      '</div>'})+
+
+  band({sunk:true,num:"04 — Dependencies",title:"Stated openly, before anyone asks",
+    intro:"A product page that hides its dependencies is a scope dispute waiting to happen.",
+    body:'<div class="g g3">'+
+      '<div class="card"><div class="card__t">EWMS needs a smart weapon rack</div><p>Issuance and return are only trustworthy if the physical rack participates. Without it the system records intent, not fact.</p></div>'+
+      '<div class="card"><div class="card__t">EAMS needs the execution record</div><p>Rounds issued cannot be reconciled against rounds fired without the session result coming back from range control.</p></div>'+
+      '<div class="card"><div class="card__t">RCS review needs the partner VMS</div><p>We own the review experience. Our partner owns the recording medium. The boundary is specified before delivery.</p></div>'+
+      '</div>'})+
+  enquiry();
+}
+
+function pProduct(id){
+  var p=PRODUCTS.filter(function(x){return x.id===id;})[0];
+  if(!p) return pProducts();
+  return '<div class="shell"><div class="masthead">'+
+    '<div class="eyebrow">Products — '+p.group+'</div>'+
+    '<h1>'+p.name+'</h1>'+
+    '<p class="lede">'+p.angle+'</p></div></div>'+
+
+  band({num:"01 — Position",title:"Where it sits in the chain",
+    body: chainRail(p.on,false)})+
+
+  band({sunk:true,num:"02 — Purpose",title:"The decision it supports",
+    body:'<div class="pull"><p>'+p.decides+'</p></div>'+
+      '<div style="margin-top:var(--s6)"><div class="card__k" style="margin-bottom:var(--s3)">Who uses it</div>'+
+      '<div class="tags">'+p.users.map(function(u){return '<span class="tag">'+u+'</span>';}).join('')+'</div></div>'})+
+
+  band({num:"03 — Scope",title:"What it does",
+    body: phFig("wide","Interface view — "+p.acr,
+      "One screen from "+p.acr+", captured from a working build. Chosen to show the moment the operator makes the decision above, not a populated dashboard.",
+      "Placeholder. No screenshots until there is a running build — a mock of software that does not exist yet is recognised instantly by this audience.")+
+      '<div class="g g2" style="margin-top:var(--s5)">'+p.groups.map(function(g){
+      return '<div class="card"><div class="card__k">'+g.k+'</div><p>'+g.m+'</p></div>';
+    }).join('')+'</div>'})+
+
+  band({sunk:true,num:"04 — Interfaces",title:"What it talks to",
+    intro:"Counterpart classes, not vendor product names. The specific counterparts on any programme belong to that programme.",
+    body: tbl(["Counterpart class","Direction","Trigger"],
+      p.ifc.map(function(r){return [r[0],'<span class="arrow">'+r[1]+'</span>',r[2]];}))})+
+
+  band({num:"05 — Honesty",title:"Dependencies and assumptions",
+    body:'<div class="prose"><p>'+p.dep+'</p></div>'})+
+
+  band({sunk:true,title:"Related subsystems",
+    body:'<div class="g g3">'+p.rel.map(function(r){
+      var q=PRODUCTS.filter(function(x){return x.id===r;})[0];
+      return '<a class="card" href="#/products/'+q.id+'"><div class="card__acr">'+q.acr+'</div>'+
+        '<div class="card__t" style="font-size:var(--t-sm);font-weight:500">'+q.name+'</div></a>';
+    }).join('')+'</div>'})+
+  enquiry();
+}
+
+function pIntegration(){
+  return '<div class="shell"><div class="masthead">'+
+    '<div class="eyebrow">Integration</div>'+
+    '<h1>Interfaces are the product, not the work left at the end</h1>'+
+    '<p class="lede">We arrive with an interface register and a simulator, not with a request for a meeting.</p>'+
+    '<div class="btns"><a class="btn btn--primary" href="#/contact">Request the ICD pack</a></div>'+
+    '</div></div>'+
+
+  band({num:"01 — Counterparts",title:"What we interface with",
+    intro:"Described as classes. The named systems on any given programme are that programme's business, not ours to publish.",
+    body:'<div class="g g4">'+
+      ["Training equipment &amp; effects","Video management <em>partner</em>","Access control &amp; security","Building management",
+       "IT &amp; identity services","Authority booking &amp; training records","Integrated operations &amp; data platform","Visualisation &amp; public address"]
+      .map(function(c){return '<div class="card"><div class="card__t" style="font-size:var(--t-sm)">'+c+'</div></div>';}).join('')+'</div>'})+
+
+  band({sunk:true,num:"02 — Method",title:"One row per interface, with an owner",
+    intro:"Not one row per module, and not one arrow on an architecture diagram. An interface that nobody owns is an interface that arrives late.",
+    body: tbl(["Field","What it records"],[
+      ["Initiator","Which side opens the exchange — and therefore which side fails first"],
+      ["Direction","One-way or bidirectional, stated per payload rather than per system"],
+      ["Mode","Request/response, publish/subscribe, store-and-forward, or file exchange"],
+      ["Trigger","Scheduled, event-driven, or continuous — and what happens when it is missed"],
+      ["Payload","What is carried, at the level of meaning rather than field names"],
+      ["Owner","The named person on each side who signs the change"]
+    ],"Register structure shown. Contents are supplied on request, under the terms that apply.")})+
+
+  band({num:"03 — Evidence",title:"We already work across vendors, inside our own scope",
+    body:'<div class="prose">'+
+      '<p>The video management system in our chain is supplied by a partner, not by us. Recording, playback and after-action review are functions our Range Control System presents and our partner performs. That boundary is specified, tested and version-controlled exactly the way an interface to your systems would be.</p>'+
+      '<p><strong>So the cross-vendor discipline we are describing is not a promise about how we would behave. It is how we are already built.</strong></p></div>'})+
+
+  band({sunk:true,num:"04 — Shared services",title:"Three dependencies we refuse to treat as optional",
+    intro:"All three are routinely left off integration matrices. All three are load-bearing.",
+    body:'<div class="g g3">'+
+      '<div class="card"><div class="card__t">Identity and directory</div><p>Single sign-on and role-based access for every subsystem, against the programme directory. Six subsystems with six user databases is six offboarding failures waiting to happen.</p></div>'+
+      '<div class="card"><div class="card__t">Time synchronisation</div><p>Video, shot events, tracking and health data cannot be correlated without it — and an after-action review that cannot be correlated is not defensible in an investigation.</p></div>'+
+      '<div class="card"><div class="card__t">Audit and log forwarding</div><p>Audit trails for weapon and ammunition handling belong in the programme log platform, not only in our own database where we control them.</p></div>'+
+      '</div>'})+
+
+  band({num:"05 — Patterns",title:"How we choose",
+    body:'<div class="g g2">'+
+      '<div class="card"><div class="card__k">What we support</div><p>Request/response for authoritative reads. Publish/subscribe for state that changes continuously. Store-and-forward for anything that must survive a link outage. File exchange where a counterpart can offer nothing else.</p></div>'+
+      '<div class="card"><div class="card__k">How we decide</div><p>By what the counterpart can actually support, and by what the data costs if it arrives late. Position updates and safety state are not carried the same way as a nightly roster.</p></div>'+
+      '</div>'})+
+
+  band({sunk:true,num:"06 — Testing",title:"How we prove it before site",
+    body:'<div class="g g4">'+
+      [["Simulators and stubs","Every counterpart has a stub before it has a partner engineer."],
+       ["Staged integration","Interfaces are integrated in dependency order, not all at once in the final month."],
+       ["Change control","An interface change is a versioned document, not an email."],
+       ["Frozen regression","Once an interface passes, it is regressed against on every build."]]
+      .map(function(c){return '<div class="card"><div class="card__t" style="font-size:var(--t-sm)">'+c[0]+'</div><p>'+c[1]+'</p></div>';}).join('')+'</div>'})+
+
+  enquiry("Request the ICD pack","Send us the architecture you need us to fit into, and we will come back with the interface register rather than with questions.");
+}
+
+function pAssurance(){
+  return '<div class="shell"><div class="masthead">'+
+    '<div class="eyebrow">Assurance</div>'+
+    '<h1>Our software is never the only thing between a session and an incident</h1>'+
+    '<p class="lede">A range control system drives targetry and pyrotechnic effects in a live-fire facility. That places obligations on it that ordinary enterprise software does not carry.</p>'+
+    '</div></div>'+
+
+  band({num:"01 — Safety",title:"Posture",
+    body:'<div class="g g2">'+
+      '<div class="card"><div class="card__t">An independent emergency stop path</div><p>The E-Stop path does not depend on our control software being healthy, reachable, or even running. If our software is the only thing that can stop the range, the design is wrong.</p></div>'+
+      '<div class="card"><div class="card__t">Defined fail-safe behaviour</div><p>Loss of communication, loss of power and network degradation each have a specified safe state — specified in advance, written down, and tested rather than assumed.</p></div>'+
+      '</div>'})+
+
+  band({sunk:true,num:"02 — Criticality",title:"Not every layer needs the same availability",
+    intro:"Treating a whole system as uniformly critical is how programmes end up paying for redundancy where it does not matter, and lacking it where it does.",
+    body: tbl(["Layer","Criticality","Degraded mode"],[
+      ["Execution","Mission and safety critical","Runs an authorised session from a cached session package"],
+      ["Accountability","Mission critical","Records locally; reconciliation deferred, never skipped"],
+      ["Administrative","Business critical","Does not block a session already under way"]
+    ])})+
+
+  band({num:"03 — Security",title:"Secure by design",
+    body:'<div class="g g4">'+
+      [["Network segmentation","Subsystems are separated by function, not merely by subnet."],
+       ["Least privilege","Roles are derived from the job, and reviewed when the job changes."],
+       ["Data classification","Handling rules follow the classification of the data, per subsystem."],
+       ["Isolated operation","Designed to run without an internet path, including for support."]]
+      .map(function(c){return '<div class="card"><div class="card__t" style="font-size:var(--t-sm)">'+c[0]+'</div><p>'+c[1]+'</p></div>';}).join('')+'</div>'})+
+
+  band({sunk:true,num:"04 — Audit",title:"What is recorded, and for how long",
+    body:'<div class="prose"><p>Weapon and ammunition handling produces an audit trail that has to survive an investigation, not merely produce a report. For each subsystem we state what is captured, how tamper-evident it is, how long it is retained, and how an incident is reconstructed from it afterwards.</p>'+
+      '<p>Retention periods are set by the programme, not by us — but the mechanism has to be built for the longest one from the start, because it cannot be retrofitted onto records that were never kept.</p></div>'})+
+
+  band({num:"05 — Standards",title:"Three columns that must never be merged",
+    intro:"A standard we follow in design is not a certification we hold, and neither of those is an accreditation still to be obtained. Blurring the three is the fastest way for a supplier to lose credibility in due diligence.",
+    body:'<div class="g g3">'+
+      '<div class="card"><div class="card__k">Followed in design</div>'+tbw("Pending confirmation","Which frameworks genuinely shaped our design decisions — to be confirmed before this page is published.")+'</div>'+
+      '<div class="card"><div class="card__k">Held today</div>'+tbw("Pending confirmation","Certifications currently held by the company, with issue and expiry dates.")+'</div>'+
+      '<div class="card"><div class="card__k">To be obtained per programme</div><p>Accreditation is granted against a programme and its environment, not against a supplier in the abstract. We plan for it as programme work with a schedule, not as a badge.</p></div>'+
+      '</div>'})+
+
+  band({sunk:true,num:"06 — Practice",title:"How the software is actually built",
+    body:'<div class="g g4">'+
+      [["Version control and review","No change reaches a build without a second pair of eyes."],
+       ["Test strategy","Interfaces, safety behaviour and reconciliation logic are tested separately and explicitly."],
+       ["Configuration management","What is deployed at a site is a known, reproducible set of versions."],
+       ["Vulnerability handling","Dependencies are tracked, and there is a stated route for patching a fielded system."]]
+      .map(function(c){return '<div class="card"><div class="card__t" style="font-size:var(--t-sm)">'+c[0]+'</div><p>'+c[1]+'</p></div>';}).join('')+'</div>'})+
+
+  enquiry("Request the assurance summary","The full assurance summary is released on request rather than published, because parts of it are close to material that should not sit on a public website.");
+}
+
+function pCompany(){
+  return '<div class="shell"><div class="masthead">'+
+    '<div class="eyebrow">Company</div>'+
+    '<h1>Vulcan</h1>'+
+    '<p class="lede">We build the software that runs range training complexes. That is the whole of what we do.</p>'+
+    '</div></div>'+
+
+  band({num:"01 — Why",title:"What we build, and why we build only this",
+    body:'<div class="prose">'+
+      '<p>Range training complexes are run by many systems from many suppliers, and the gaps between those systems are where accountability goes. Someone signs a form. Someone remembers a number. Someone reconciles at the end of a long day. It works, until the day it is questioned.</p>'+
+      '<p>We build the six subsystems that close those gaps, and we treat the interfaces between them — including the ones to systems we do not own — as the product rather than as integration work to be scheduled later.</p>'+
+      '<p><strong>We do not build anything else.</strong> A supplier that does range training and three other markets is a supplier whose attention is somewhere else when your programme needs it.</p></div>'})+
+
+  band({sunk:true,num:"02 — People",title:"Leadership",
+    intro:"Few, and real. Every name here is verifiable, and evaluators do verify.",
+    body:'<div class="g g3">'+
+      [1,2,3].map(function(){return '<div class="card">'+
+        ph("square","Portrait","Plain headshot, even lighting, neutral ground. The only photographs on this site.")+
+        tbw("Name and role","")+
+        tbw("Biography","Relevant background — defence, control systems, or delivery — in three sentences.")+'</div>';}).join('')+
+      '</div>'})+
+
+  band({num:"03 — Capability",title:"Disciplines, not headcount",
+    body:'<div class="g g4">'+
+      [["Control systems","Real-time equipment control, safety interlocks, and degraded-mode behaviour."],
+       ["Systems integration","Interface design, ICD authorship, simulators, and staged integration testing."],
+       ["Security engineering","Segmentation, classification handling, audit design, isolated operation."],
+       ["Data and analytics","Health and usage modelling, reliability measurement, trend analysis."]]
+      .map(function(c){return '<div class="card"><div class="card__t" style="font-size:var(--t-sm)">'+c[0]+'</div><p>'+c[1]+'</p></div>';}).join('')+'</div>'})+
+
+  band({sunk:true,num:"04 — Continuity",title:"What happens if we are not here",
+    body:'<div class="prose">'+
+      '<p>We are a small company, and any evaluator will establish that within five minutes. So we state it, and then state how the continuity risk is actually handled — which is a stronger position than hoping it is not raised.</p></div>'+
+      '<div class="g g3" style="margin-top:var(--s5)">'+
+      '<div class="card"><div class="card__t">Intellectual property</div><p>Rights are settled in the contract, in writing, before delivery rather than at the end of it.</p></div>'+
+      '<div class="card"><div class="card__t">Source code escrow</div><p>Offered as standard, with defined release conditions and a verified deposit.</p></div>'+
+      '<div class="card"><div class="card__t">Documentation</div><p>Written so that a competent third party can take the system over — which is a testable claim, not a promise.</p></div>'+
+      '</div>'})+
+
+  band({num:"05 — Details",title:"Corporate",
+    body:'<div class="g g4">'+
+      ["Registered entity","UEN","Registered address","Incorporated"]
+      .map(function(c){return '<div class="card"><div class="card__k">'+c+'</div>'+tbw("To confirm","From ACRA record")+'</div>';}).join('')+'</div>'})+
+  enquiry();
+}
+
+function pContact(){
+  return '<div class="shell"><div class="masthead">'+
+    '<div class="eyebrow">Enquiries</div>'+
+    '<h1>Three routes, three inboxes</h1>'+
+    '<p class="lede">A technical integration question that lands in a general inbox gets lost. Choose the route and it reaches the person who can answer it.</p>'+
+    '</div></div>'+
+
+  band({num:"01 — Routes",title:"Which one applies",
+    body:'<div class="g g3">'+
+      '<div class="card"><div class="card__t">Procurement</div><p>Tender, capability and commercial enquiries. Reaches the person who can commit to a response.</p></div>'+
+      '<div class="card"><div class="card__t">Technical integration</div><p>Interfaces, ICDs, simulators and system integration testing. Reaches an engineer, not an account manager.</p></div>'+
+      '<div class="card"><div class="card__t">General</div><p>Everything else, including press and partnership.</p></div>'+
+      '</div>'})+
+
+  band({sunk:true,num:"02 — Form",title:"Five fields, each with a reason",
+    body:'<div class="g g2">'+
+      '<div class="card"><div class="card__k">Organisation</div>'+tbw("Field","Required — determines which terms apply to material we send back")+'</div>'+
+      '<div class="card"><div class="card__k">Name and role</div>'+tbw("Field","Required — determines who from our side should reply")+'</div>'+
+      '<div class="card"><div class="card__k">Type of enquiry</div>'+tbw("Field","Required — routes to one of the three inboxes above")+'</div>'+
+      '<div class="card"><div class="card__k">Message</div>'+tbw("Field","Free text, no length limit")+'</div>'+
+      '</div>'+
+      '<p class="note" style="margin-top:var(--s4)">No third-party CAPTCHA. Some of the people we most want to hear from work on devices that block it.</p>'+
+      '<div class="btns" style="margin-top:var(--s5)"><span class="btn btn--primary" role="button" aria-disabled="true">Send enquiry</span></div>'})+
+
+  band({num:"03 — On request",title:"Material we release rather than publish",
+    intro:"The gate is control over what leaves, not a marketing tactic. None of these are public downloads.",
+    body:'<div class="g g3">'+
+      '<div class="card"><div class="card__t">Capability statement</div><p>What we build, what we have built, and the disciplines behind it.</p></div>'+
+      '<div class="card"><div class="card__t">Assurance summary</div><p>Safety posture, security design, audit approach, and standards followed.</p></div>'+
+      '<div class="card"><div class="card__t">ICD pack</div><p>Interface register structure, protocol patterns, and our integration test approach.</p></div>'+
+      '</div>'})+
+
+  band({sunk:true,num:"04 — Direct",title:"Reaching us",
+    body:'<div class="g g3">'+
+      '<div class="card"><div class="card__k">Email</div>'+tbw("To confirm","Three addresses, one per route")+'</div>'+
+      '<div class="card"><div class="card__k">Registered address</div>'+tbw("To confirm","From ACRA record")+'</div>'+
+      '<div class="card"><div class="card__t" style="font-size:var(--t-sm)">Response time</div><p>We state a window and we meet it. A stated window that is missed is worse than none.</p></div>'+
+      '</div>'});
+}
+
+/* ============================================================
+   ROUTER
+   ============================================================ */
+var ROUTES={'':pHome,'/':pHome,'/platform':pPlatform,'/products':pProducts,
+  '/integration':pIntegration,'/assurance':pAssurance,'/company':pCompany,'/contact':pContact};
+
+/* ============================================================
+   PRODUCTS DROPDOWN
+   ============================================================ */
+var ddBtn, ddPanel;
+
+function buildDropdown(){
+  ddBtn=document.getElementById('ddBtn');
+  ddPanel=document.getElementById('ddPanel');
+  var groups=["Range operations","Accountability","Sustainment","Facility services"];
+
+  ddPanel.innerHTML = groups.map(function(g){
+    return '<div class="dd__col"><h4>'+g+'</h4>'+
+      PRODUCTS.filter(function(p){return p.group===g;}).map(function(p){
+        return '<a class="dd__item" href="#/products/'+p.id+'">'+
+          '<span class="dd__acr">'+p.acr+'</span>'+
+          '<span class="dd__nm">'+p.name+'</span></a>';
+      }).join('')+'</div>';
+  }).join('')+
+  '<div class="dd__foot">'+
+    '<a class="dd__all" href="#/products">All six subsystems &rarr;</a>'+
+    '<span class="dd__note">VMS is supplied by our partner, not by us</span>'+
+  '</div>';
+
+  ddBtn.addEventListener('click',function(e){ e.stopPropagation(); toggleDD(ddPanel.hidden); });
+
+  /* open on hover for pointer devices, without breaking click or keyboard */
+  if(window.matchMedia('(hover:hover) and (pointer:fine)').matches){
+    var dd=ddBtn.parentNode, leaveTimer;
+    dd.addEventListener('mouseenter',function(){ clearTimeout(leaveTimer); toggleDD(true); });
+    dd.addEventListener('mouseleave',function(){ leaveTimer=setTimeout(function(){ toggleDD(false); },160); });
+  }
+
+  ddPanel.addEventListener('click',function(e){ if(e.target.closest('a')) toggleDD(false); });
+
+  document.addEventListener('click',function(e){
+    if(!ddPanel.hidden && !e.target.closest('.dd')) toggleDD(false);
+  });
+
+  document.addEventListener('keydown',function(e){
+    if(e.key==='Escape' && !ddPanel.hidden){ toggleDD(false); ddBtn.focus(); }
+    if(e.key==='ArrowDown' && document.activeElement===ddBtn){
+      e.preventDefault(); toggleDD(true);
+      var first=ddPanel.querySelector('a'); if(first) first.focus();
+    }
+  });
+
+  /* leaving the panel by keyboard closes it */
+  ddPanel.addEventListener('focusout',function(e){
+    if(!ddPanel.contains(e.relatedTarget) && e.relatedTarget!==ddBtn) toggleDD(false);
+  });
+}
+
+function toggleDD(open){
+  if(!ddPanel) return;
+  ddPanel.hidden = !open;
+  ddBtn.setAttribute('aria-expanded', open ? 'true' : 'false');
+}
+
+/* ============================================================
+   RENDER
+   ============================================================ */
+function render(){
+  var h=(location.hash||'#/').replace(/^#/,''), html, navKey=h;
+  var pm=h.match(/^\/products\/([a-z]+)$/);
+  if(pm){ html=pProduct(pm[1]); navKey='/products'; }
+  else if(ROUTES[h]){ html=ROUTES[h](); }
+  else { html=pHome(); navKey='/'; }
+  document.getElementById('main').innerHTML=html;
+
+  var items=document.querySelectorAll('#nav [data-route]');
+  for(var i=0;i<items.length;i++){
+    if(items[i].getAttribute('data-route')===navKey) items[i].setAttribute('aria-current','page');
+    else items[i].removeAttribute('aria-current');
+  }
+  toggleDD(false);
+  bindChain();
+  window.scrollTo(0,0);
+}
+
+function bindChain(){
+  var btns=document.querySelectorAll('.step[data-step]');
+  for(var i=0;i<btns.length;i++){
+    btns[i].addEventListener('click',function(){
+      var idx=parseInt(this.getAttribute('data-step'),10);
+      var all=document.querySelectorAll('.step[data-step]');
+      for(var j=0;j<all.length;j++) all[j].setAttribute('aria-selected', j===idx?'true':'false');
+      var d=document.getElementById('detail');
+      if(d) d.outerHTML=chainDetail(idx);
+    });
+  }
+}
+
+window.addEventListener('hashchange',render);
+buildDropdown();
+render();
+</script>
+
+</body>
+</html>
