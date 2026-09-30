@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Blue Silo. Range Training Systems</title>
+<meta name="description" content="Blue Silo builds the subsystems a live-firing range runs on, and the interfaces that hold them together as one chain.">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500&display=swap">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.1/src/regular/style.css">
+<link rel="stylesheet" href="assets/app.css">
+<link rel="stylesheet" href="assets/alt.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+
+<!-- Utility bar. Carries something true and useful, not invented news. -->
+<div class="bar">
+  <div class="shell">
+    <span>Capability statement, assurance summary and ICD pack are released on request</span>
+    <a href="index.html#/contact">Request</a>
+    <button type="button" aria-label="Dismiss">&times;</button>
+  </div>
+</div>
+
+<header class="nav" id="nav">
+  <div class="shell">
+    <a class="brand" href="index.html">
+      <svg width="24" height="26" viewBox="0 0 26 28" aria-hidden="true">
+        <path d="M4 3h9a6 6 0 0 1 0 12H8" fill="none" stroke="var(--brand)" stroke-width="3"/>
+        <path d="M22 25h-9a6 6 0 0 1 0-12h5" fill="none" stroke="var(--brand)" stroke-width="3"/>
+      </svg>
+      <span><span class="bw">Blue Silo</span><span class="bt">Transforming Digitally</span></span>
+    </a>
+    <nav aria-label="Primary">
+      <a href="index.html#/products">Products</a>
+      <a href="index.html#/integration">Integration</a>
+      <a href="index.html#/assurance">Assurance</a>
+      <a href="index.html#/company">Company</a>
+    </nav>
+    <a class="cta" href="index.html#/contact">Enquiries</a>
+  </div>
+</header>
+
+<main id="main"></main>
+
+<footer>
+  <div class="shell">
+    <div>
+      <h4>Blue Silo</h4>
+      <p>Software for range training complexes, from controlled access at the gate to the closing weapon and ammunition account at the end of the day.</p>
+    </div>
+    <div>
+      <h4>Systems</h4>
+      <a href="index.html#/products/rcs">Range Control System</a>
+      <a href="index.html#/products/vms">Video Management System</a>
+      <a href="index.html#/products/eva">Edge Video Analytics</a>
+      <a href="index.html#/products/pwats">Personnel, Weapons and Ammunition Tracking</a>
+      <a href="index.html#/products/ewms">Electronic Weapon Management</a>
+      <a href="index.html#/products/eams">Electronic Ammunition Management</a>
+      <a href="index.html#/products/hums">Health and Usage Monitoring</a>
+      <a href="index.html#/products/as">Administrative System</a>
+    </div>
+    <div>
+      <h4>Company</h4>
+      <a href="index.html#/products">All products</a>
+      <a href="index.html#/integration">Integration</a>
+      <a href="index.html#/assurance">Assurance</a>
+      <a href="index.html#/company">About Blue Silo</a>
+      <a href="index.html#/contact">Enquiries</a>
+    </div>
+  </div>
+  <div class="shell"><div class="colophon">Blue Silo Pte. Ltd. Registered in Singapore. Draft, content and imagery not final.</div></div>
+</footer>
+
+<script src="assets/data.js"></script>
+<script>
+/* media() lifted from app.js so this page stands alone. Same manifest rules. */
+function media(m,extra){
+  var isVid=(m.kind||'Image')==='Video';
+  var ready=(typeof MEDIA_READY!=='undefined') && MEDIA_READY.indexOf(m.id)>-1;
+  var src='media/'+m.id+(isVid?'.mp4':'.jpg');
+  var asset = !ready ? '' : (isVid
+    ? '<video class="media__asset" src="'+src+'" muted loop playsinline preload="metadata" onloadeddata="mediaReady(this)"></video>'
+    : '<img class="media__asset" src="'+src+'" alt="'+m.label+'" loading="lazy" onload="mediaReady(this)">');
+  return '<figure class="media '+(m.ratio||'')+(ready?' is-live':'')+'" data-media="'+(isVid?'video':'image')+'" '+
+    'data-id="'+m.id+'"'+(extra||'')+'>'+asset+
+    '<span class="media__kind">'+(m.kind||'Image')+'</span>'+
+    '<b>'+m.label+'</b><span class="media__brief">'+m.brief+'</span></figure>';
+}
+function mediaReady(el){
+  var fig=el.closest('.media'); if(!fig) return;
+  fig.classList.add('has-media');
+  if(el.tagName==='VIDEO' && !window.matchMedia('(prefers-reduced-motion: reduce)').matches){
+    el.play().catch(function(){});
+  }
+}
+</script>
+<script src="assets/alt.js"></script>
+</body>
+</html>

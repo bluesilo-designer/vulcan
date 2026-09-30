@@ -1,0 +1,68 @@
+/* ============================================================
+   BLUE SILO — home, version 4. On top of app.css and v3.css.
+   ============================================================ */
+
+/* product wordmark. Wide set, uppercase, technical, one style
+   for every named system so new names slot in without a redesign. */
+.wm{font-family:var(--display);font-weight:600;font-size:var(--t-lg);letter-spacing:.22em;text-transform:uppercase;
+    color:var(--ink);line-height:1}
+.wm--tbc{color:var(--ink-2);font-weight:400;letter-spacing:.08em;text-transform:none}
+
+/* customer and partner evidence */
+.trust{border-top:1px solid var(--line);padding-block:var(--s6)}
+.trust .shell{display:grid;gap:var(--s5)}
+@media (min-width:980px){.trust .shell{grid-template-columns:auto 1fr;gap:var(--s8)}}
+.trust__row{display:grid;gap:var(--s3)}
+.trust__row>.label{white-space:nowrap}
+@media (min-width:620px){.trust__row{grid-template-columns:auto 1fr;align-items:center;gap:var(--s5)}}
+.logos{display:flex;flex-wrap:wrap;gap:var(--s3)}
+.logo{display:flex;flex-direction:column;justify-content:center;gap:3px;min-width:150px;height:60px;padding:0 var(--s4);
+      border:1px dashed var(--line-3);background:var(--deep)}
+.logo__k{font-family:var(--mono);font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-3)}
+.logo b{font-family:var(--display);font-weight:500;font-size:var(--t-sm);color:var(--ink-2);letter-spacing:.02em}
+
+/* portfolio */
+.port{display:grid;grid-template-columns:1fr;gap:1px;background:var(--line);border:1px solid var(--line)}
+@media (min-width:760px){.port{grid-template-columns:repeat(2,1fr)}}
+@media (min-width:1080px){.port{grid-template-columns:repeat(6,1fr)}
+  .port__c{grid-column:span 2}
+  .port__c--flag{grid-column:span 3} .port__c--flag+.port__c{grid-column:span 3}}
+.port__c{background:var(--void);padding:var(--s6) var(--s5);display:flex;flex-direction:column;gap:var(--s4);position:relative}
+.port__c::before{content:"";position:absolute;inset:0 0 auto 0;height:2px;background:var(--line-2)}
+.port__c--flag{background:var(--brand-wash)}
+.port__c--flag::before{background:var(--brand)}
+.port__top{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:var(--s3)}
+.port__cat{font-family:var(--mono);font-size:var(--t-2xs);letter-spacing:.14em;text-transform:uppercase;color:var(--brand)}
+.port__c>p{font-size:var(--t-sm);line-height:1.65}
+.port__ps{list-style:none;margin:auto 0 0;padding:0;border-top:1px solid var(--line)}
+.port__ps a{display:flex;align-items:center;gap:var(--s3);padding-block:var(--s3);border-bottom:1px solid var(--line);
+            text-decoration:none;color:var(--ink-2);font-size:var(--t-sm)}
+.port__ps a span{flex:1;min-width:0}
+.port__ps a b{font-family:var(--mono);font-size:var(--t-2xs);letter-spacing:.1em;color:var(--ink);font-weight:500;margin-right:var(--s2)}
+.port__ps .ph{color:var(--ink-3);transition:color .3s var(--ease),transform .3s var(--ease)}
+.port__ps a:hover{color:var(--ink)}
+.port__ps a:hover .ph{color:var(--brand)}
+.port__ps a:hover .ph-arrow-right{transform:translateX(3px)}
+.port__tbc{font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3)}
+
+/* integration and assurance categories */
+.ifc{display:grid;grid-template-columns:1fr;gap:var(--s6) var(--s5)}
+@media (min-width:620px){.ifc{grid-template-columns:repeat(2,1fr)}}
+@media (min-width:1040px){.ifc{grid-template-columns:repeat(4,1fr)}.ifc--3{grid-template-columns:repeat(3,1fr)}}
+.ifc__c{border-top:1px solid var(--line-2);padding-top:var(--s5);display:flex;flex-direction:column;gap:var(--s3)}
+.ifc__c .ph{font-size:24px;color:var(--brand);line-height:1}
+.ifc__c h3{font-size:var(--t-md);color:var(--ink)}
+.ifc__c p{font-size:var(--t-sm);line-height:1.6;color:var(--ink-3)}
+
+.path--4{}
+@media (min-width:1080px){.path--4{grid-template-columns:repeat(4,1fr)}}
+
+.v4-safety{margin-top:var(--s8);padding:var(--s6);border:1px solid var(--line-2);border-left:2px solid var(--alert);background:var(--panel)}
+@media (min-width:980px){.v4-safety{grid-template-columns:1fr auto;gap:var(--s7)}}
+.v4-safety h3{font-size:var(--t-lg);font-weight:400;color:var(--ink);margin-bottom:var(--s3)}
+.v4-safety p{font-size:var(--t-sm);line-height:1.65}
+
+/* product page brand */
+.v4-pbrand{display:flex;align-items:baseline;gap:var(--s4);margin-bottom:var(--s5)}
+.v4-pbrand span:last-child{font-family:var(--mono);font-size:var(--t-2xs);letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3)}
+.menu a b em{font-style:normal;font-family:var(--mono);font-size:10px;color:var(--ink-3);margin-left:6px;letter-spacing:.08em}

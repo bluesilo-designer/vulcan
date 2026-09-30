@@ -1,0 +1,1359 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Blue Silo — Range Training Systems</title>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<style>
+/* ============================================================
+   TOKENS — v2, Blue Silo brand. All pairs verified >= 4.5:1
+   ============================================================ */
+:root{
+  color-scheme:light dark;
+  --paper:#F4F5F2;  --surface:#FFFFFF;  --sunk:#EAECE7;
+  --ink:#14191B;    --ink-2:#3D4A50;    --ink-3:#5A686E;
+  --line:#DCDFD9;   --line-2:#C0C6BE;   --line-3:#8D958C;
+  --brand:#0B57C7;  --brand-bg:#E4EDFB; --brand-line:#7FAAEB; --brand-deep:#083F91;
+  --ember:#8C3A1D;  --ember-bg:#F8E7DF;
+  --good:#1F6B4A;   --good-bg:#E2EFE8;
+  --on-brand:#FFFFFF;
+
+  --t-2xs:11px; --t-xs:12.5px; --t-sm:14px; --t-base:15.5px;
+  --t-md:18px;  --t-lg:22px;   --t-xl:27px; --t-2xl:34px;
+  --t-3xl:clamp(30px,4.4vw,46px);
+
+  --s1:4px; --s2:8px; --s3:12px; --s4:16px; --s5:24px;
+  --s6:32px; --s7:48px; --s8:64px; --s9:88px;
+
+  --display:"Archivo","Helvetica Neue",Arial,sans-serif;
+  --sans:"IBM Plex Sans",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;
+
+  --shell:1140px;
+  --ring:0 0 0 2px var(--paper), 0 0 0 4px var(--brand);
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --paper:#0E1214;  --surface:#161C1E;  --sunk:#11171A;
+    --ink:#E8EBE7;    --ink-2:#AEB9BC;    --ink-3:#8C9A9F;
+    --line:#242D30;   --line-2:#354145;   --line-3:#5E6E73;
+    --brand:#5EA5FF;  --brand-bg:#12233A; --brand-line:#2F5B94; --brand-deep:#9CC6FF;
+    --ember:#E9906A;  --ember-bg:#2E1B13;
+    --good:#72C398;   --good-bg:#16281F;
+    --on-brand:#0E1214;
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#0E1214;  --surface:#161C1E;  --sunk:#11171A;
+  --ink:#E8EBE7;    --ink-2:#AEB9BC;    --ink-3:#8C9A9F;
+  --line:#242D30;   --line-2:#354145;   --line-3:#5E6E73;
+  --brand:#5EA5FF;  --brand-bg:#12233A; --brand-line:#2F5B94; --brand-deep:#9CC6FF;
+  --ember:#E9906A;  --ember-bg:#2E1B13;
+  --good:#72C398;   --good-bg:#16281F;
+  --on-brand:#0E1214;
+}
+
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+img,svg{max-width:100%}
+[hidden]{display:none!important}
+body{background:var(--paper);color:var(--ink);font-family:var(--sans);font-size:var(--t-base);line-height:1.65;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+:where(a,button,[tabindex]):focus-visible{outline:none;box-shadow:var(--ring);border-radius:1px}
+.skip{position:absolute;left:-9999px;top:0;z-index:99;background:var(--ink);color:var(--paper);padding:var(--s3) var(--s4);font-family:var(--mono);font-size:var(--t-xs)}
+.skip:focus{left:0}
+
+h1,h2,h3{font-family:var(--display);letter-spacing:-.018em;margin:0;text-wrap:balance}
+h1{font-size:var(--t-3xl);font-weight:700;line-height:1.04;max-width:20ch}
+h2{font-size:var(--t-xl);font-weight:600;line-height:1.15;max-width:26ch}
+h3{font-size:var(--t-md);font-weight:600;line-height:1.3}
+p{margin:0;max-width:64ch;color:var(--ink-2)}
+p strong{color:var(--ink);font-weight:600}
+.shell{max-width:var(--shell);margin:0 auto;padding:0 var(--s5)}
+
+/* ---------- fidelity note ---------- */
+.fidelity{background:var(--sunk);border-bottom:1px solid var(--line)}
+.fidelity .shell{display:flex;flex-wrap:wrap;gap:var(--s2) var(--s5);align-items:baseline;padding-top:var(--s2);padding-bottom:var(--s2)}
+.fidelity b{font-family:var(--mono);font-size:var(--t-2xs);letter-spacing:.14em;text-transform:uppercase;color:var(--brand);font-weight:600}
+.fidelity span{font-family:var(--mono);font-size:var(--t-2xs);color:var(--ink-3)}
+
+/* ---------- header ---------- */
+.hdr{position:sticky;top:0;z-index:30;background:var(--paper);border-bottom:1px solid var(--line)}
+.hdr .shell{display:flex;align-items:center;gap:var(--s5);min-height:64px}
+.brand{display:inline-flex;align-items:center;gap:var(--s3);text-decoration:none;flex:none}
+.brand svg{flex:none}
+.brand .bw{font-family:var(--display);font-weight:700;font-size:var(--t-md);letter-spacing:.01em;color:var(--ink);line-height:1}
+.brand .bt{display:block;font-family:var(--mono);font-size:8.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--brand);margin-top:3px;line-height:1}
+.hdr nav{display:flex;gap:var(--s5);margin-left:auto}
+.hdr nav > a{position:relative;font-family:var(--mono);font-size:var(--t-xs);letter-spacing:.05em;color:var(--ink-2);text-decoration:none;display:inline-flex;align-items:center;min-height:44px}
+.hdr nav > a::after{content:"";position:absolute;left:0;right:0;bottom:16px;height:1.5px;background:var(--brand);transform:scaleX(0);transform-origin:left}
+.hdr nav > a:hover{color:var(--ink)}
+.hdr nav > a:hover::after{transform:scaleX(1)}
+.hdr nav > a[aria-current="page"]{color:var(--ink);font-weight:500}
+.hdr nav > a[aria-current="page"]::after{transform:scaleX(1)}
+.hdr .btn{flex:none}
+@media (max-width:900px){
+  .hdr .shell{flex-wrap:wrap;gap:0 var(--s4);padding-top:var(--s2);padding-bottom:var(--s2);min-height:0}
+  .hdr nav{order:3;width:100%;margin-left:0;gap:var(--s4);overflow-x:auto;border-top:1px solid var(--line);padding-top:var(--s1)}
+  .hdr nav > a{min-height:38px;white-space:nowrap}
+  .hdr nav > a::after{bottom:10px}
+  .hdr .btn{margin-left:auto}
+}
+
+/* ---------- products dropdown ---------- */
+.dd{position:relative;display:flex}
+.dd__btn{display:inline-flex;align-items:center;gap:var(--s2);min-height:44px;background:none;border:none;padding:0;cursor:pointer;color:var(--ink-2);font-family:var(--mono);font-size:var(--t-xs);letter-spacing:.05em;position:relative}
+.dd__btn::after{content:"";position:absolute;left:0;right:14px;bottom:16px;height:1.5px;background:var(--brand);transform:scaleX(0);transform-origin:left}
+.dd__btn:hover{color:var(--ink)}
+.dd__btn:hover::after,.dd__btn[aria-expanded="true"]::after{transform:scaleX(1)}
+.dd__btn[aria-current="page"]{color:var(--ink);font-weight:500}
+.dd__btn[aria-current="page"]::after{transform:scaleX(1)}
+.dd__caret{width:7px;height:7px;border-right:1.5px solid currentColor;border-bottom:1.5px solid currentColor;transform:translateY(-2px) rotate(45deg);flex:none}
+.dd__btn[aria-expanded="true"] .dd__caret{transform:translateY(1px) rotate(-135deg)}
+.dd__panel{position:absolute;top:calc(100% + 1px);right:0;z-index:40;width:min(760px,calc(100vw - 48px));background:var(--surface);border:1px solid var(--line-2);border-top:2px solid var(--brand);padding:var(--s5);display:grid;gap:var(--s5);grid-template-columns:repeat(2,1fr);box-shadow:0 12px 32px rgba(0,0,0,.12)}
+@media (min-width:860px){.dd__panel{grid-template-columns:repeat(5,1fr)}}
+.dd__col h4{font-family:var(--mono);font-size:var(--t-2xs);letter-spacing:.13em;text-transform:uppercase;color:var(--ink-3);margin:0 0 var(--s3);font-weight:500;padding-bottom:var(--s2);border-bottom:1px solid var(--line)}
+.dd__item{display:block;text-decoration:none;padding:var(--s2) 0;color:inherit}
+.dd__item:hover .dd__acr,.dd__item:focus-visible .dd__acr{color:var(--brand)}
+.dd__acr{display:block;font-family:var(--display);font-weight:700;font-size:var(--t-sm);letter-spacing:.02em;color:var(--ink);line-height:1.2}
+.dd__nm{display:block;font-size:var(--t-2xs);color:var(--ink-3);line-height:1.4;margin-top:2px}
+.dd__foot{grid-column:1/-1;border-top:1px solid var(--line);padding-top:var(--s4);display:flex;flex-wrap:wrap;gap:var(--s3) var(--s5);align-items:center;justify-content:space-between}
+.dd__all{font-family:var(--mono);font-size:var(--t-xs);letter-spacing:.05em;color:var(--ink);text-decoration:none;display:inline-flex;align-items:center;gap:var(--s2);min-height:38px}
+.dd__all:hover{color:var(--brand)}
+.dd__note{font-family:var(--mono);font-size:var(--t-2xs);color:var(--ink-3)}
+@media (max-width:900px){.dd{position:static}.dd__panel{left:var(--s5);right:var(--s5);width:auto;padding:var(--s4);gap:var(--s4)}.dd__btn{min-height:38px}.dd__btn::after{bottom:10px}}
+
+/* ---------- buttons ---------- */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:var(--s2);min-height:44px;padding:0 var(--s5);cursor:pointer;font-family:var(--mono);font-size:var(--t-xs);font-weight:500;letter-spacing:.07em;text-transform:uppercase;text-decoration:none;border:1px solid transparent}
+.btn--primary{background:var(--brand);color:var(--on-brand);border-color:var(--brand)}
+.btn--primary:hover{background:var(--brand-deep);border-color:var(--brand-deep)}
+.btn--ghost{background:transparent;color:var(--ink);border-color:var(--line-2)}
+.btn--ghost:hover{border-color:var(--ink);background:var(--surface)}
+.btn--sm{min-height:38px;padding:0 var(--s4)}
+.btns{display:flex;flex-wrap:wrap;gap:var(--s3)}
+
+/* ---------- page structure ---------- */
+.masthead{padding:var(--s8) 0 var(--s7)}
+.masthead--split{display:grid;gap:var(--s7);grid-template-columns:1fr;align-items:center}
+@media (min-width:1000px){.masthead--split{grid-template-columns:5fr 6fr;gap:var(--s8)}}
+.eyebrow{font-family:var(--mono);font-size:var(--t-2xs);letter-spacing:.16em;text-transform:uppercase;color:var(--ink-3);margin-bottom:var(--s4)}
+.lede{font-size:var(--t-md);line-height:1.6;color:var(--ink-2);max-width:56ch;margin-top:var(--s4)}
+.masthead .btns{margin-top:var(--s6)}
+.band{padding:var(--s8) 0;border-top:1px solid var(--line)}
+.band--sunk{background:var(--sunk)}
+.band__head{margin-bottom:var(--s6);max-width:62ch}
+.band__head p{margin-top:var(--s3)}
+.band__num{font-family:var(--mono);font-size:var(--t-2xs);letter-spacing:.16em;text-transform:uppercase;color:var(--ink-3);display:block;margin-bottom:var(--s3)}
+.prose{display:flex;flex-direction:column;gap:var(--s4);max-width:64ch}
+
+/* ---------- grids ---------- */
+.g{display:grid;gap:var(--s4)}
+.g2,.g3,.g4{grid-template-columns:1fr}
+@media (min-width:600px){.g4{grid-template-columns:repeat(2,1fr)}}
+@media (min-width:720px){.g2,.g3{grid-template-columns:repeat(2,1fr)}}
+@media (min-width:1000px){.g3{grid-template-columns:repeat(3,1fr)}.g4{grid-template-columns:repeat(4,1fr)}}
+
+/* ---------- cards ---------- */
+.card{background:var(--surface);border:1px solid var(--line);padding:var(--s5);display:flex;flex-direction:column;gap:var(--s3);min-width:0}
+a.card{text-decoration:none;color:inherit}
+a.card:hover{border-color:var(--brand-line)}
+a.card:hover .card__t,a.card:hover .card__acr{color:var(--brand)}
+.card__k{font-family:var(--mono);font-size:var(--t-2xs);letter-spacing:.13em;text-transform:uppercase;color:var(--ink-3)}
+.card__t{font-family:var(--display);font-weight:600;font-size:var(--t-md);line-height:1.25;letter-spacing:-.01em;color:var(--ink)}
+.card__acr{font-family:var(--display);font-weight:700;font-size:var(--t-lg);letter-spacing:.01em;color:var(--ink);line-height:1}
+.card p{font-size:var(--t-sm);line-height:1.6}
+.card--num{border-left:3px solid var(--brand)}
+.card--num .card__k{color:var(--brand)}
+
+.stack{display:flex;flex-direction:column;gap:var(--s5)}
+.item{display:grid;grid-template-columns:1fr;gap:var(--s2);padding-bottom:var(--s5);border-bottom:1px solid var(--line)}
+.item:last-child{border-bottom:none;padding-bottom:0}
+@media (min-width:760px){.item{grid-template-columns:230px 1fr;gap:var(--s5)}}
+.item__k{font-family:var(--display);font-weight:600;font-size:var(--t-sm);color:var(--ink);line-height:1.4}
+.item__k small{display:block;font-family:var(--mono);font-size:var(--t-2xs);font-weight:400;color:var(--ink-3);letter-spacing:.09em;text-transform:uppercase;margin-top:var(--s1)}
+.item p{font-size:var(--t-sm)}
+
+/* ---------- chain ---------- */
+.chain{margin-bottom:var(--s5)}
+.chain__rail{display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:var(--line);border:1px solid var(--line)}
+@media (min-width:640px){.chain__rail{grid-template-columns:repeat(5,1fr)}}
+@media (min-width:1080px){.chain__rail{grid-template-columns:repeat(10,1fr)}}
+.step{position:relative;background:var(--surface);border:none;cursor:pointer;padding:var(--s4) var(--s2) var(--s3);text-align:left;color:inherit;font:inherit;display:flex;flex-direction:column;gap:var(--s1);min-height:78px}
+.step::before{content:"";position:absolute;inset:0 0 auto 0;height:2px;background:transparent}
+.step:hover{background:var(--sunk)}
+.step__n{font-family:var(--mono);font-size:var(--t-2xs);color:var(--ink-3);letter-spacing:.1em;font-variant-numeric:tabular-nums}
+.step__k{font-family:var(--display);font-weight:600;font-size:var(--t-sm);letter-spacing:-.005em;color:var(--ink);line-height:1.2}
+.step__s{font-family:var(--mono);font-size:9.5px;color:var(--ink-3);line-height:1.4}
+.step[aria-selected="true"]{background:var(--brand-bg)}
+.step[aria-selected="true"]::before{background:var(--brand)}
+.step[aria-selected="true"] .step__k,.step[aria-selected="true"] .step__n{color:var(--brand)}
+.step--off .step__k{color:var(--ink-3);font-weight:500}
+.step--on::before{background:var(--brand)}
+.step--on .step__k{color:var(--ink)}
+.detail{background:var(--surface);border:1px solid var(--line);border-top:2px solid var(--brand);padding:var(--s5)}
+.detail__k{font-family:var(--mono);font-size:var(--t-2xs);letter-spacing:.14em;text-transform:uppercase;color:var(--brand);margin-bottom:var(--s2)}
+.detail h3{margin-bottom:var(--s3);max-width:38ch}
+.detail p{font-size:var(--t-sm);max-width:72ch}
+.detail__meta{display:grid;gap:var(--s3);margin-top:var(--s4);padding-top:var(--s4);border-top:1px solid var(--line)}
+@media (min-width:720px){.detail__meta{grid-template-columns:1fr 1fr;gap:var(--s5)}}
+.detail__meta div{font-family:var(--mono);font-size:var(--t-2xs);color:var(--ink-2);line-height:1.6}
+.detail__meta span{display:block;color:var(--ink-3);letter-spacing:.13em;text-transform:uppercase;margin-bottom:var(--s1)}
+
+/* ---------- tables ---------- */
+.tbl{border:1px solid var(--line);background:var(--surface);overflow-x:auto}
+table{border-collapse:collapse;width:100%;min-width:580px}
+caption{caption-side:bottom;text-align:left;font-family:var(--mono);font-size:var(--t-2xs);color:var(--ink-3);padding:var(--s3)}
+th,td{text-align:left;padding:var(--s3) var(--s4);border-bottom:1px solid var(--line);vertical-align:top;font-size:var(--t-sm);color:var(--ink-2)}
+thead th{font-family:var(--mono);font-size:var(--t-2xs);letter-spacing:.13em;text-transform:uppercase;color:var(--ink-3);font-weight:500;white-space:nowrap;background:var(--sunk);border-bottom:1px solid var(--line-2)}
+tbody tr:last-child td{border-bottom:none}
+td strong{color:var(--ink);font-weight:600}
+td em,.tbl em{font-style:normal;color:var(--ink-3);font-family:var(--mono);font-size:var(--t-2xs)}
+.arrow{font-family:var(--mono);color:var(--brand);font-size:var(--t-sm)}
+
+/* ---------- small parts ---------- */
+.tags{display:flex;flex-wrap:wrap;gap:var(--s2)}
+.tag{font-family:var(--mono);font-size:var(--t-2xs);letter-spacing:.04em;color:var(--ink-2);border:1px solid var(--line-2);padding:var(--s1) var(--s3);background:var(--surface)}
+.note{font-family:var(--mono);font-size:var(--t-2xs);color:var(--ink-3);line-height:1.6;max-width:72ch}
+.pull{border-left:2px solid var(--brand);padding-left:var(--s5);max-width:56ch}
+.pull p{font-family:var(--display);font-weight:500;font-size:var(--t-lg);line-height:1.35;color:var(--ink);letter-spacing:-.015em;max-width:none}
+.tbw{border:1px dashed var(--line-2);background:transparent;padding:var(--s4);display:flex;flex-direction:column;gap:var(--s2)}
+.tbw b{font-family:var(--mono);font-size:var(--t-2xs);letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3);font-weight:500}
+.tbw span{font-size:var(--t-sm);color:var(--ink-3);font-style:italic}
+.ph{position:relative;display:flex;flex-direction:column;justify-content:flex-end;gap:var(--s1);border:1px dashed var(--line-2);background:var(--sunk);padding:var(--s4);overflow:hidden}
+.ph::before,.ph::after{content:"";position:absolute;background:var(--line-2)}
+.ph::before{left:var(--s3);top:var(--s3);width:14px;height:1px}
+.ph::after{left:var(--s3);top:var(--s3);width:1px;height:14px}
+.ph--wide{aspect-ratio:16/9}
+.ph--square{aspect-ratio:1/1}
+.ph b{font-family:var(--mono);font-size:var(--t-2xs);letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3);font-weight:500;position:relative;z-index:1}
+.ph span{font-size:var(--t-xs);color:var(--ink-3);font-style:italic;line-height:1.5;position:relative;z-index:1}
+
+/* ---------- assurance: reference implementation (DRAFT placeholder) ---------- */
+.impl{border:1px dashed var(--brand-line);background:var(--brand-bg);padding:var(--s4) var(--s5);grid-column:1/-1}
+.impl__k{display:flex;flex-wrap:wrap;gap:var(--s2) var(--s3);align-items:baseline;margin-bottom:var(--s3)}
+.impl__k b{font-family:var(--mono);font-size:var(--t-2xs);letter-spacing:.14em;text-transform:uppercase;color:var(--brand);font-weight:600}
+.impl__k i{font-style:normal;font-family:var(--mono);font-size:var(--t-2xs);color:var(--ink-3)}
+.impl ul{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:var(--s3)}
+.impl li{position:relative;padding-left:var(--s5);font-size:var(--t-sm);line-height:1.6;color:var(--ink-2)}
+.impl li::before{content:"";position:absolute;left:0;top:8px;width:9px;height:9px;border:1px solid var(--brand);background:var(--surface)}
+.impl li b{display:block;font-family:var(--display);font-weight:600;font-size:var(--t-sm);color:var(--ink);margin-bottom:2px}
+.impl code{font-family:var(--mono);font-size:.86em;background:var(--surface);padding:1px 5px;color:var(--ink-2);border:1px solid var(--brand-line)}
+
+/* ---------- assurance: per-control detail ---------- */
+.gates{display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:var(--line);border:1px solid var(--line);margin-bottom:var(--s5)}
+@media (min-width:860px){.gates{grid-template-columns:repeat(5,1fr)}}
+.gate{background:var(--surface);padding:var(--s4) var(--s3);border-top:2px solid var(--brand)}
+.gate b{display:block;font-family:var(--mono);font-size:var(--t-2xs);letter-spacing:.12em;color:var(--brand)}
+.gate span{display:block;font-family:var(--display);font-weight:600;font-size:var(--t-sm);color:var(--ink);line-height:1.2;margin:var(--s2) 0 var(--s1)}
+.gate i{display:block;font-style:normal;font-size:var(--t-2xs);color:var(--ink-3);line-height:1.45}
+
+.ctrl{border-top:1px solid var(--line-2);padding-top:var(--s5);margin-top:var(--s6);display:grid;grid-template-columns:1fr;gap:var(--s5)}
+.ctrl:first-of-type{margin-top:0;border-top:none;padding-top:0}
+@media (min-width:980px){.ctrl{grid-template-columns:1fr 1.25fr;gap:var(--s8)}}
+.ctrl__n{font-family:var(--mono);font-size:var(--t-2xs);letter-spacing:.16em;color:var(--brand);margin-bottom:var(--s3)}
+.ctrl__h{font-family:var(--display);font-weight:600;font-size:var(--t-lg);letter-spacing:-.015em;line-height:1.2;margin-bottom:var(--s4);color:var(--ink)}
+.ctrl__q{border-left:2px solid var(--brand);padding-left:var(--s4);font-size:var(--t-sm);line-height:1.6;color:var(--ink);font-weight:500;max-width:46ch}
+.ctrl__d{display:flex;flex-direction:column;gap:var(--s5);min-width:0}
+.ctrl__d section{display:grid;grid-template-columns:1fr;gap:var(--s2)}
+@media (min-width:560px){.ctrl__d section{grid-template-columns:132px 1fr;gap:var(--s4)}}
+.ctrl__d h4{font-family:var(--mono);font-size:var(--t-2xs);letter-spacing:.13em;text-transform:uppercase;color:var(--ink-3);font-weight:500;margin:0;padding-top:2px}
+.ctrl__d p{font-size:var(--t-sm);line-height:1.65;max-width:58ch}
+.ctrl__d ul{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:var(--s2)}
+.ctrl__d li{position:relative;padding-left:var(--s4);font-size:var(--t-sm);line-height:1.55;color:var(--ink-2)}
+.ctrl__d li::before{content:"";position:absolute;left:0;top:9px;width:5px;height:1px;background:var(--brand)}
+.ctrl__d li strong{color:var(--ink);font-weight:600}
+
+/* ---------- product page ---------- */
+.pmast{display:grid;grid-template-columns:1fr;gap:var(--s6);padding:var(--s7) 0 var(--s6)}
+@media (min-width:980px){.pmast{grid-template-columns:1.35fr 1fr;gap:var(--s8);align-items:start}}
+.pmast h1{margin-bottom:var(--s3)}
+.prole{font-family:var(--mono);font-size:var(--t-xs);letter-spacing:.1em;text-transform:uppercase;color:var(--brand);margin-bottom:var(--s4)}
+.pmast .lede{margin-top:0}
+
+.pcard{border:1px solid var(--line-2);background:var(--surface);border-top:2px solid var(--brand)}
+.prow{display:grid;grid-template-columns:1fr;gap:var(--s1);padding:var(--s4) var(--s5);border-bottom:1px solid var(--line)}
+@media (min-width:420px){.prow{grid-template-columns:118px 1fr;gap:var(--s4)}}
+.prow:last-child{border-bottom:none}
+.prow dt{font-family:var(--mono);font-size:var(--t-2xs);letter-spacing:.13em;text-transform:uppercase;color:var(--ink-3);padding-top:2px}
+.prow dd{margin:0;font-size:var(--t-sm);color:var(--ink-2);line-height:1.55}
+.prow dd b{color:var(--ink);font-weight:600}
+.prow .mini{display:flex;flex-wrap:wrap;gap:var(--s1) var(--s2);font-family:var(--mono);font-size:var(--t-2xs)}
+.prow .mini i{font-style:normal;color:var(--ink-3)}
+.prow .mini i.on{color:var(--brand);font-weight:600}
+
+.decide{border-left:3px solid var(--brand);padding:var(--s5) 0 var(--s5) var(--s6);max-width:62ch}
+.decide span{display:block;font-family:var(--mono);font-size:var(--t-2xs);letter-spacing:.14em;text-transform:uppercase;color:var(--brand);margin-bottom:var(--s3)}
+.decide p{font-family:var(--display);font-weight:500;font-size:var(--t-lg);line-height:1.38;letter-spacing:-.015em;color:var(--ink);max-width:none}
+
+.caps{display:grid;grid-template-columns:1fr;gap:var(--s6) var(--s7)}
+@media (min-width:900px){.caps{grid-template-columns:repeat(2,1fr)}}
+.cap{border-top:1px solid var(--line-2);padding-top:var(--s4);min-width:0}
+.cap h3{font-size:var(--t-sm);letter-spacing:.005em;margin-bottom:var(--s3);color:var(--ink)}
+.cap ul{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:var(--s2)}
+.cap li{position:relative;padding-left:var(--s4);font-size:var(--t-sm);line-height:1.55;color:var(--ink-2)}
+.cap li::before{content:"";position:absolute;left:0;top:9px;width:5px;height:1px;background:var(--brand)}
+.cap li strong{color:var(--ink);font-weight:600}
+
+.dep{display:grid;grid-template-columns:1fr;gap:var(--s3);border:1px solid var(--line-2);background:var(--sunk);padding:var(--s5)}
+@media (min-width:720px){.dep{grid-template-columns:150px 1fr;gap:var(--s5)}}
+.dep dt{font-family:var(--mono);font-size:var(--t-2xs);letter-spacing:.13em;text-transform:uppercase;color:var(--ink-3)}
+.dep dd{margin:0}
+.dep p{font-size:var(--t-sm);max-width:66ch}
+
+/* ---------- hero shelf: the shop window ---------- */
+.shelf{display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:var(--line);border:1px solid var(--line);margin-top:var(--s5)}
+@media (min-width:520px){.shelf{grid-template-columns:repeat(4,1fr)}}
+.shelf__i{background:var(--surface);padding:var(--s3) var(--s3) var(--s4);text-decoration:none;display:block;min-width:0}
+.shelf__i:hover{background:var(--brand-bg)}
+.shelf__i:hover b{color:var(--brand)}
+.shelf__i b{display:block;font-family:var(--display);font-weight:700;font-size:var(--t-sm);letter-spacing:.02em;color:var(--ink);line-height:1.1}
+.shelf__i span{display:block;font-size:var(--t-2xs);color:var(--ink-3);line-height:1.4;margin-top:var(--s1)}
+
+/* ---------- hero schematic ---------- */
+.figure{display:flex;flex-direction:column;gap:var(--s3);min-width:0}
+.figure figcaption{font-family:var(--mono);font-size:var(--t-2xs);color:var(--ink-3);line-height:1.6}
+.plan{width:100%;height:auto;display:block;background:var(--surface);border:1px solid var(--line)}
+.plan .ln{stroke:var(--line-2);fill:none;stroke-width:1}
+.plan .ln-2{stroke:var(--line-3);fill:none;stroke-width:1}
+.plan .ln-d{stroke:var(--line-3);fill:none;stroke-width:1;stroke-dasharray:5 4}
+.plan .br{stroke:var(--brand);fill:none;stroke-width:1}
+.plan .br-f{fill:var(--brand);stroke:none}
+.plan .sk{fill:var(--sunk);stroke:var(--line-2);stroke-width:1}
+.plan text{font-family:var(--mono);font-size:9px;letter-spacing:.11em;fill:var(--ink-3)}
+.plan text.on{fill:var(--brand)}
+.plan text.num{letter-spacing:.04em;font-size:8px}
+
+/* ---------- internal docs launcher ---------- */
+.docs{position:fixed;right:var(--s5);bottom:var(--s5);z-index:50;display:flex;flex-direction:column;align-items:flex-end;gap:var(--s2)}
+.docs__btn{display:inline-flex;align-items:center;gap:var(--s3);cursor:pointer;min-height:48px;padding:var(--s2) var(--s5) var(--s2) var(--s4);background:var(--surface);border:1px solid var(--brand);border-left-width:3px;box-shadow:0 6px 20px rgba(0,0,0,.14);font:inherit;text-align:left}
+.docs__btn:hover{background:var(--brand-bg)}
+.docs__btn svg{flex:none;stroke:var(--brand);fill:none;stroke-width:1.4}
+.docs__t{display:block;font-family:var(--mono);font-size:var(--t-xs);letter-spacing:.06em;color:var(--ink);line-height:1.3}
+.docs__s{display:block;font-family:var(--mono);font-size:var(--t-2xs);letter-spacing:.1em;text-transform:uppercase;color:var(--brand);line-height:1.3;margin-top:1px}
+.docs__panel{width:min(340px,calc(100vw - 48px));background:var(--surface);border:1px solid var(--line-2);border-top:2px solid var(--brand);box-shadow:0 10px 28px rgba(0,0,0,.16);display:flex;flex-direction:column}
+.docs__item{display:block;padding:var(--s4);text-decoration:none;color:inherit;border-bottom:1px solid var(--line)}
+.docs__item:last-of-type{border-bottom:none}
+.docs__item:hover{background:var(--sunk)}
+.docs__item:hover .docs__nm{color:var(--brand)}
+.docs__nm{display:block;font-family:var(--display);font-weight:600;font-size:var(--t-sm);color:var(--ink);line-height:1.25}
+.docs__d{display:block;font-size:var(--t-xs);color:var(--ink-3);line-height:1.5;margin-top:var(--s1)}
+.docs__foot{padding:var(--s3) var(--s4);background:var(--sunk);border-top:1px solid var(--line);font-family:var(--mono);font-size:var(--t-2xs);color:var(--ink-3);line-height:1.5}
+@media (max-width:640px){.docs{right:var(--s3);left:var(--s3);bottom:calc(var(--s3) + env(safe-area-inset-bottom,0px));align-items:stretch}.docs__btn{justify-content:center;padding:var(--s2) var(--s4)}.docs__panel{width:auto}.docs__s{display:none}}
+
+/* ---------- footer ---------- */
+.ftr{border-top:1px solid var(--line);background:var(--sunk);margin-top:var(--s9)}
+.ftr .shell{padding-top:var(--s7);padding-bottom:var(--s6);display:grid;gap:var(--s6);grid-template-columns:1fr}
+@media (min-width:640px){.ftr .shell{grid-template-columns:repeat(2,1fr)}}
+@media (min-width:1000px){.ftr .shell{grid-template-columns:1.4fr 1fr 1fr 1fr}}
+.fcol h4{font-family:var(--mono);font-size:var(--t-2xs);letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3);margin:0 0 var(--s4);font-weight:500}
+.fcol a{display:block;font-size:var(--t-sm);color:var(--ink-2);text-decoration:none;margin-bottom:var(--s2)}
+.fcol a:hover{color:var(--brand)}
+.fcol p{font-size:var(--t-sm)}
+.ftr__bot{border-top:1px solid var(--line);font-family:var(--mono);font-size:var(--t-2xs);color:var(--ink-3);padding:var(--s4) 0}
+
+@media (prefers-reduced-motion:no-preference){
+  a,.btn,.card,.step,.dd__btn{transition:color .18s ease,background-color .18s ease,border-color .18s ease}
+  .hdr nav > a::after,.dd__btn::after{transition:transform .18s ease}
+}
+</style>
+</head>
+<body>
+
+<a class="skip" href="#main">Skip to content</a>
+
+<div class="fidelity">
+  <div class="shell">
+    <b>Draft v2</b>
+    <span>Structure, hierarchy and copy are real — imagery, diagrams and motion are not yet built</span>
+    <span>RCS · VMS · EVA · PWATS · EWMS · EAMS · HUMS · AS</span>
+  </div>
+</div>
+
+<header class="hdr">
+  <div class="shell">
+    <a class="brand" href="#/">
+      <!-- Placeholder mark. Replace with the supplied Blue Silo logo SVG. -->
+      <svg width="26" height="28" viewBox="0 0 26 28" aria-hidden="true">
+        <path d="M4 3h9a6 6 0 0 1 0 12H8" fill="none" stroke="var(--brand)" stroke-width="3.2"/>
+        <path d="M22 25h-9a6 6 0 0 1 0-12h5" fill="none" stroke="var(--brand)" stroke-width="3.2"/>
+      </svg>
+      <span>
+        <span class="bw">Blue Silo</span>
+        <span class="bt">Transforming Digitally</span>
+      </span>
+    </a>
+    <nav id="nav" aria-label="Primary">
+      <!-- Platform hidden from primary navigation; route still resolves for direct links. -->
+      <div class="dd">
+        <button type="button" id="ddBtn" class="dd__btn" data-route="/products" aria-expanded="false" aria-controls="ddPanel" aria-haspopup="true">
+          Products <span class="dd__caret" aria-hidden="true"></span>
+        </button>
+        <div class="dd__panel" id="ddPanel" role="group" aria-labelledby="ddBtn" hidden></div>
+      </div>
+      <a href="#/integration" data-route="/integration">Integration</a>
+      <a href="#/assurance" data-route="/assurance">Assurance</a>
+      <a href="#/company" data-route="/company">Company</a>
+    </nav>
+    <a class="btn btn--ghost btn--sm" href="#/contact">Enquiries</a>
+  </div>
+</header>
+
+<main id="main"></main>
+
+<!-- Prototype affordance. Internal working documents — remove everything with data-prototype before any public build. -->
+<div class="docs" data-prototype>
+  <div class="docs__panel" id="docsPanel" role="group" aria-labelledby="docsBtn" hidden>
+    <a class="docs__item" href="docs/product-definition.html" target="_blank" rel="noopener">
+      <span class="docs__nm">Product definition</span>
+      <span class="docs__d">Feature breakdown, user flow and user journey per subsystem. Written before the v2 solution deck — parts are now superseded.</span>
+    </a>
+    <a class="docs__item" href="docs/domain-reference.html" target="_blank" rel="noopener">
+      <span class="docs__nm">Range domain reference</span>
+      <span class="docs__d">Doctrine, standards and vocabulary from open-source research, and the findings that corrected the product definition.</span>
+    </a>
+    <div class="docs__foot">Internal working drafts. Not part of the site.</div>
+  </div>
+  <button type="button" class="docs__btn" id="docsBtn" aria-expanded="false" aria-controls="docsPanel">
+    <svg width="17" height="19" viewBox="0 0 17 19" aria-hidden="true">
+      <path d="M2 1.5h8l5 5v11a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1v-15a1 1 0 0 1 1-1Z"/>
+      <path d="M10 1.5v5h5"/><path d="M4.5 10h8M4.5 13h8M4.5 16h5"/>
+    </svg>
+    <span>
+      <span class="docs__t">Internal docs</span>
+      <span class="docs__s">2 working drafts</span>
+    </span>
+  </button>
+</div>
+
+<footer class="ftr">
+  <div class="shell">
+    <div class="fcol">
+      <h4>Blue Silo</h4>
+      <p>Software for range training complexes — from controlled access at the gate to the closing weapon and ammunition account at the end of the day.</p>
+    </div>
+    <div class="fcol">
+      <h4>Products</h4>
+      <a href="#/products/rcs">Range Control System</a>
+      <a href="#/products/vms">Video Management System</a>
+      <a href="#/products/eva">Edge Video Analytics</a>
+      <a href="#/products/pwats">Personnel, Weapons &amp; Ammunition Tracking</a>
+      <a href="#/products/ewms">Electronic Weapon Management</a>
+      <a href="#/products/eams">Electronic Ammunition Management</a>
+      <a href="#/products/hums">Health &amp; Usage Monitoring</a>
+      <a href="#/products/as">Administrative System</a>
+    </div>
+    <div class="fcol">
+      <h4>Company</h4>
+      <a href="#/products">All products</a>
+      <a href="#/integration">Integration</a>
+      <a href="#/assurance">Assurance</a>
+      <a href="#/company">About Blue Silo</a>
+      <a href="#/contact">Enquiries</a>
+    </div>
+    <div class="fcol">
+      <h4>Corporate</h4>
+      <a href="#/contact">Registered details</a>
+      <a href="#/contact">Privacy</a>
+      <a href="#/contact">Terms</a>
+      <a href="#/contact">Accessibility</a>
+    </div>
+  </div>
+  <div class="shell"><div class="ftr__bot">© Blue Silo Pte. Ltd. · Registered in Singapore · Draft — content and imagery not final</div></div>
+</footer>
+
+<script>
+/* ============================================================
+   CHAIN — the facility journey, generalised
+   ============================================================ */
+var CHAIN=[
+ {k:"Access",sys:"AS · EVA",title:"Controlled access into the facility",
+  body:"Identity and booking are verified at the guard house from a scanned credential or booking code, and the vehicle licence plate is captured and matched automatically. The verification result and clearance status are shown to the guard before the gate opens, so the decision is informed rather than assumed.",
+  data:"Identity · booking reference · vehicle clearance · licence plate",
+  holds:"Who is authorised to be inside today"},
+ {k:"Register",sys:"AS · PWATS",title:"Self-registration and tracker issue",
+  body:"The trainee registers at a kiosk, completes facial registration, and is onboarded automatically with an assigned location displayed. An active RFID card or wearable is collected and bound to that person for the duration of the visit.",
+  data:"Registration record · assigned location · tracker binding",
+  holds:"The link between a person and a trackable identity"},
+ {k:"Brief",sys:"RCS",title:"Briefing, against the real roll",
+  body:"Entry to the briefing room is by multi-factor authentication. The conductor reviews the final nominal roll built from actual kiosk registrations, adjusts details where needed, and only then does the session become real.",
+  data:"Final nominal roll · session assignment",
+  holds:"The confirmed composition of the detail"},
+ {k:"Draw",sys:"EWMS · EAMS · PWATS",title:"Weapon and ammunition drawn",
+  body:"At the weapon locker, authentication unlocks the assigned locker and the withdrawal is confirmed by the system rather than by memory. At the collection point, ammunition is issued against the assigned package, verified by type and quantity, and receipt is confirmed.",
+  data:"Weapon serial · locker event · ammunition type and quantity · issued-to identity",
+  holds:"Custody, from this moment until return"},
+ {k:"Prepare",sys:"RCS",title:"Pre-conduct verification",
+  body:"Range, safety systems and equipment readiness are verified and submitted as a digital pre-conduct checklist. The approved exercise is loaded, a dry run is conducted, and only then is the range confirmed ready for training.",
+  data:"Readiness checklist · loaded exercise · dry run result",
+  holds:"Evidence that the range was fit before firing began"},
+ {k:"Conduct",sys:"RCS · VMS",title:"The serial runs",
+  body:"Mission execution is driven from a fixed client in the control room and a portable client inside the range. Targetry and effects are triggered on plan, the session is recorded, scenario time jump allows a move to a specific event without restarting, and E-Stop halts everything immediately whether triggered physically or virtually.",
+  data:"Scenario state · target and effect events · session recording · safety state",
+  holds:"Authority to start, pause and stop"},
+ {k:"Observe",sys:"VMS · EVA · PWATS",title:"Computer vision watches with the operator",
+  body:"Muzzle discipline, unattended weapons, presence in the butt area, and smoke or fire are each detected, raised as an alert, captured as a short evidence clip, and written to the timeline. Where a person is detected downrange, firing is inhibited and targetry paused until the area is confirmed clear.",
+  data:"Detections · alerts · evidence clips · timeline markers · positions",
+  holds:"What happened, at the moment it happened"},
+ {k:"Review",sys:"RCS · VMS",title:"After-action review from the timeline",
+  body:"Results and feedback are reviewed at the AAR kiosk, debriefing runs playback against the marked event timeline, and any reshoots are identified and scheduled. Because markers were made during the serial, the debrief is conducted from the record that will be filed.",
+  data:"Event timeline · results · instructor feedback · reshoot schedule",
+  holds:"The assessment, tied to evidence"},
+ {k:"Return",sys:"EWMS · EAMS",title:"Returned, verified and accounted for",
+  body:"The weapon is verified on return with computer vision support and a declaration, magazines and unexpended rounds are returned, defects and cleaning are recorded against the serial, and daily and weekly weapon and ammunition accounting is closed.",
+  data:"Return state · defects · cleaning record · reconciliation result",
+  holds:"The closing account"},
+ {k:"Sustain",sys:"HUMS",title:"Health and usage of everything that ran",
+  body:"Health, usage and utilisation are collected continuously from every connected system and item of equipment, feeding failure prediction, condition-based preventive maintenance, spare-part forecasting and operational availability reporting.",
+  data:"Health · utilisation · fault events · reliability and MTBF · availability",
+  holds:"Whether the facility is fit for tomorrow"}
+];
+
+/* ============================================================
+   PRODUCTS — eight subsystems
+   ============================================================ */
+var PRODUCTS=[
+ {id:"rcs",acr:"RCS",name:"Range Control System",group:"Range operations",
+  role:"Runs the range",
+  angle:"The system the range runs on. It prepares a session, drives targetry and effects in the moment, and files the record afterwards — and it is the only subsystem that sits on the safety path.",
+  users:["Range Supervising Officer","Range Control Officer","Instructor","Unit Conductor","Booking officer"],
+  on:["Brief","Prepare","Conduct","Review"],
+  where:"Range Control Room · inside the range on a portable tablet client · Briefing and AAR rooms",
+  decides:"Whether the range is ready, whether the serial may start, continue or stop, and whether an event requires an immediate halt — answered from a fixed client in the control room, or a portable one inside the range.",
+  groups:[
+   {k:"Registration &amp; access",m:"User account management, creation and login · Role and permission management, with permission checked in every module"},
+   {k:"Resource management",m:"Add and edit ranges and lanes, including marking a lane closed for maintenance · Allocate a range and its lanes to a programme, exercise or session · Allocate a control room · Allocate a briefing room"},
+   {k:"Booking management",m:"Create, modify and cancel bookings for live-firing and simulation programmes, held separately · Nominal roll for attendance and participation · Automated assignment of lane, base station and range from the roll · Downloadable individual and unit results"},
+   {k:"Exercise preparation",m:"Range readiness check recorded against a checklist covering range, training systems, equipment, safety systems and supporting facilities · Equipment readiness verification · Dry run control with start, pause, resume, restart and end · Load the approved training exercise"},
+   {k:"Mission planning",m:"Define the scenario including targetry, effects and session recording · Targetry and effect activation conditions and groupings · Conditional activation on time, hit detection and sensor input · Manual activation from the interface · Group activation, individually or collectively · Save, edit and re-execute scenarios"},
+   {k:"Execution &amp; control",m:"Mission execution triggering targetry, effects and recording · Scenario time jump to a specific time or event without restarting · Session start, stop and pause · Reshoot and retraining management"},
+   {k:"Equipment &amp; infrastructure",m:"Activate and control targetry and effects · Equipment status including position, activation state and hit or miss · Monitor infrastructure systems for availability, operational state, fault and device state · Control supported infrastructure · <strong>E-Stop, physical or virtual, halting all targetry and environmental effects immediately</strong>"},
+   {k:"Live monitoring",m:"Cameras grouped by base station and range, with live view per camera · Weapon detection and tracking, maintaining identification and status until the weapon leaves the monitored zone · Notification with an attached still and a ten-second clip on any weapon-related event · Personnel, weapon and ammunition status from the tracking system"},
+   {k:"Recording, playback &amp; review",m:"Session recording of trainee data, engagement events and scoring · Event timeline where selecting an event reveals its detail and highlights the equipment on the layout map · Playback by session or by time period · Full playback controls including slow motion at fractional speeds, multi-speed fast-forward and rewind, zoom, and jump to an event or feedback marker"},
+   {k:"Assessment &amp; analysis",m:"Instructor feedback compiled into a list for debriefing · Points of interest and salient pointers captured during the serial · Shooting trend analysis over time · After-action review conducted from playback"},
+   {k:"Visualisation &amp; data",m:"Layout map with equipment and trainee display · Scroll, zoom, draw lines and areas, de-clutter by offsetting or aggregating entities, and change map, colour and size · Data import and export · System activity log of all actions and changes for audit"},
+   {k:"Health &amp; availability",m:"System health of targetry equipment · Equipment usage, failures, serviceability and maintenance activity · Range and lane utilisation with rebalancing of allocations across ranges · Operational availability calculated from operating time, downtime and agreed exclusions"}],
+  ifc:[["Video targetry","↔","Throughout the serial"],
+       ["Environmental &amp; battlefield effects","→","On the scenario timeline"],
+       ["Visualisation &amp; public address","→","Per phase of the session"],
+       ["Video management","↔","Recording, markers, playback"],
+       ["Tracking","↔","Personnel, weapon and ammunition status"],
+       ["Weapon &amp; ammunition management","↔","Session start and end"],
+       ["Authority booking &amp; training records","↔","Scheduled"],
+       ["Building &amp; security management","↔","Lighting, ventilation, alarms"],
+       ["Integrated operations &amp; data platform","→","Continuous"]],
+  dep:"RCS drives equipment supplied by others — targetry, environmental and battlefield effects, visualisation, public address — and reads facility systems it does not own. It also operates over the facility network, wired or wireless, and its authority over any counterpart is only as good as the interface agreed for it. That is why the interface register is settled before delivery rather than during it.",
+  rel:["vms","pwats","hums"]},
+
+ {id:"vms",acr:"VMS",name:"Video Management System",group:"Observation &amp; analytics",
+  role:"Sees and remembers",
+  angle:"Video built for training rather than for security. Recording quality follows what the range is doing, playback is synchronised across cameras without interrupting the live feed, and a clip that matters can be starred so it survives the overwrite cycle.",
+  users:["Range Control Officer","Instructor","Safety officer"],
+  on:["Conduct","Observe","Review"],
+  where:"Integrated Operation Centre · Range Control Room",
+  decides:"What actually happened on a lane — retrieved from a marked timeline rather than reconstructed from memory.",
+  groups:[
+   {k:"Cameras",m:"Low-profile, ceiling-mounted, shock-resistant and weather-sealed · High-definition at high frame rate with low-light performance, efficient encoding, and fisheye or pan-tilt-zoom where needed · Motion detection that alerts the operator and raises recording quality automatically · Infrared emitters selected so they do not interfere with night-vision equipment · Power over Ethernet · Synchronised audio"},
+   {k:"Network &amp; integration",m:"Closed wired network with end-to-end encryption · Integration with range control and with the operations centre · <strong>Standalone mode</strong> that keeps the system working without transmitting any feed off-site"},
+   {k:"Recording",m:"Continuous recording around the clock · Lower-rate standby recording that steps up automatically on motion · Full-rate recording during training sessions · Automatic time and location tagging · Audio included for after-action review · Commercial encoding format rather than a proprietary one"},
+   {k:"Playback &amp; export",m:"Synchronised multi-camera playback that does not interrupt live monitoring or recording · Control over speed, direction, zoom, volume, timestamps and event markers · Starred clips protected from automatic overwriting · Enhancement by crop, brightness, sharpness and contrast · Export in original or enhanced quality"},
+   {k:"Storage",m:"Retention measured in weeks, not days · First-in, first-out overwriting that never touches protected footage"},
+   {k:"Analytics — safety",m:"Person in the target or butt area · Person crossing the firing line · Presence in a zone they are not authorised for · Muzzle pointing outside the safe sector · Unexpected firing on an inactive lane · Firing in the wrong lane · Smoke or fire without a corresponding firing event · Person down"},
+   {k:"Analytics — accountability",m:"Unattended weapon · Weapon left behind after personnel leave · Weapon associated with an unexpected person"},
+   {k:"What happens on a detection",m:"Alert the operator with event type, affected range, location, camera view and time · Retain a ten-second clip covering before and after the event · Write a timestamped marker onto that session's after-action timeline, linked to the evidence · Let the operator review, acknowledge and record the outcome"}],
+  ifc:[["Range control","↔","Event markers, playback, recording triggers"],
+       ["Cameras and recording infrastructure","←","Continuous"],
+       ["Edge video analytics","↔","Detections and evidence"],
+       ["Integrated operations &amp; data platform","→","Continuous, or not at all in standalone mode"]],
+  dep:"Analytics depend on camera placement and coverage designed for the purpose. A camera positioned for general surveillance will not reliably support weapon association or muzzle-direction work, so coverage design is part of the system rather than a site condition it inherits. Detection is also a prompt to a human, never an automatic judgement — the operator acknowledges and records the outcome.",
+  rel:["eva","rcs","pwats"]},
+
+ {id:"eva",acr:"EVA",name:"Edge Video Analytics",group:"Observation &amp; analytics",
+  role:"Watches the perimeter",
+  angle:"Computer vision running at the edge on the facility's own cameras, turning surveillance from a record reviewed after an incident into an alert received during one.",
+  users:["Operations centre operator","Guard house","Security officer"],
+  on:["Access","Observe"],
+  where:"Integrated Operation Centre · Guard House",
+  decides:"Whether something is happening right now that needs a physical response, and where to send it.",
+  groups:[
+   {k:"Perimeter &amp; access",m:"Intrusion detection at the fenceline, alerting in time for a response before the intruder reaches sensitive infrastructure · Off-hours human detection in secured zones · Unattended vehicle in loading, cargo and parking areas"},
+   {k:"Object &amp; movement",m:"Unattended baggage across all camera coverage · Unauthorised weapon movement out of secured zones · Unauthorised ammunition movement, by magazine and container"},
+   {k:"People",m:"Crowd management at muster and assembly areas · Facial recognition for surveillance in off-limit areas · Human re-identification across disjointed feeds, narrowing what an officer has to review · Active visitor tracking within secured zones without issuing a token"},
+   {k:"How it is deployed",m:"Each use case is bound to a zone and a level rather than switched on facility-wide, because a detector tuned for a perimeter fenceline is wrong for a muster area"}],
+  ifc:[["Cameras and edge workstations","←","Continuous"],
+       ["Video management","↔","Evidence clips and retrieval"],
+       ["Security management","→","Alerts and events"],
+       ["Integrated operations &amp; data platform","→","Continuous"]],
+  dep:"Two facial-recognition cases are explicitly outside this scope: on-demand recognition, and recognition used for access control. Recognition here supports surveillance and forensic search, and it produces a lead for a person to act on rather than a decision the system makes.",
+  rel:["vms","pwats","as"]},
+
+ {id:"pwats",acr:"PWATS",name:"Personnel, Weapons &amp; Ammunition Tracking System",group:"Accountability",
+  role:"Knows where everything is",
+  angle:"Personnel, weapons and ammunition on one layout map, positioned to sub-metre accuracy and refreshed at least once a second, with a tracking device assigned at registration so identity and position stay bound together for the whole visit.",
+  users:["Range Control Officer","Safety officer","Armourer"],
+  on:["Register","Draw","Observe","Return"],
+  where:"Integrated Operation Centre · Range Control Room · inside the range · Briefing and AAR rooms",
+  decides:"Where every person and every issued item is at this moment, and whether each is somewhere it is authorised to be.",
+  groups:[
+   {k:"Tracking performance",m:"Sub-metre positioning for trainees, weapons, magazines and equipment · Position and movement updated at least once per second · Ceiling-mounted, shock-resistant, weather-sealed transceivers powered over Ethernet · A compact tracking device with a full day of battery life"},
+   {k:"Personnel tracking",m:"Position and movement of all personnel, equipment and entities on the facility layout map, with configurable display settings · A tracking device assigned to each trainee at registration, so the operations centre can identify who it is following"},
+   {k:"Weapon tracking",m:"Each weapon uniquely identified · Shot detection recording rounds fired, tracking rounds remaining, and reporting ammunition status in real time"},
+   {k:"Ammunition tracking",m:"Magazines, ammunition boxes and other containers adapted so they can be tracked · Each magazine, box or individual round uniquely identified"},
+   {k:"Fitting to the weapon",m:"Any modification made to carry a tag must not impede the shooter or meaningfully change the weapon's weight or balance — a constraint that rules out a good deal of otherwise convenient hardware"}],
+  ifc:[["Range control","↔","Position request and map view"],
+       ["Weapon management","↔","Weapon ID, issued-to, tracking activation"],
+       ["Ammunition management","↔","Magazine and container ID, rounds remaining"],
+       ["Administrative system","↔","Tracker issue at registration"],
+       ["Integrated operations &amp; data platform","→","Continuous"]],
+  dep:"Tracking is only as good as the field infrastructure behind it — transceivers, tags, and the coverage design that places them. Where a gap exists it must be reported as unknown rather than as absence, because an unread tag and an absent person are not the same thing.",
+  rel:["ewms","eams","rcs"]},
+
+ {id:"ewms",acr:"EWMS",name:"Electronic Weapon Management System",group:"Accountability",
+  role:"Holds the weapons",
+  angle:"A weapon is a serialised asset that comes back whole. Its defects, cleaning, repairs and fit-for-firing certification follow the serial number for the whole of its service life, not just for one session.",
+  users:["Armourer","Storeman","Inspector"],
+  on:["Draw","Return"],
+  where:"Armskote · Weapon Locker · Ammunition Collection Point",
+  decides:"Whether this weapon may be released to this person now, whether it is certified fit to fire, and whether the daily and weekly accounts close.",
+  groups:[
+   {k:"Access &amp; security",m:"Identity and authorisation verified before the assigned weapon is released · Tamper-proof controls with a manual bypass for authorised personnel if the system fails · Detection and alerting of unauthorised weapon movement · Handover and takeover tracking, timestamped, so custody is never ambiguous while a weapon is being handled, maintained or cleaned"},
+   {k:"Weapon management",m:"Storage, issuance and accounting of every weapon · Daily and weekly weapon accounting · Rounds fired recorded against each weapon · Sufficient serviceable weapons confirmed available before live firing"},
+   {k:"Status, in the operator's words",m:"Serviceable · drawn out · under maintenance · pending maintenance · undergoing cleaning — each with its projected timeline, so the question is not only what state a weapon is in but when it will leave it"},
+   {k:"Maintenance",m:"Operator-detectable defects recorded and tracked · Maintenance and repair before and after live firing · <strong>Fit-for-firing certification with notification as expiry approaches</strong> · Recovery and transport of equipment to the workshop · Indentation, return and disposal of spare parts"},
+   {k:"Real-time records",m:"Every weapon transaction recorded as it happens rather than reconciled afterwards"}],
+  ifc:[["Range control","↔","Session start and end"],
+       ["Tracking","↔","Weapon ID, issued-to, tracking activation"],
+       ["Access control","↔","Identity and authorisation verification"],
+       ["Smart weapon rack and lockers","↔","Lock, unlock, presence detection"],
+       ["Security management","↔","Armskote access control and alarms"],
+       ["Integrated operations &amp; data platform","→","Continuous"]],
+  dep:"Issuance and return are only trustworthy if the physical locker participates and reports what was actually removed. The manual bypass is equally deliberate: a system that cannot be overridden by an authorised person when it fails is a system that can lock an armskote at the worst possible moment.",
+  rel:["eams","pwats","rcs"]},
+
+ {id:"eams",acr:"EAMS",name:"Electronic Ammunition Management System",group:"Accountability",
+  role:"Holds the ammunition",
+  angle:"Ammunition is a consumable, not an asset. It is issued against a package, verified at the counter, accounted for daily and weekly, and watched closely enough that resupply is arranged before a range runs short rather than after.",
+  users:["Ammunition officer","Storeman","Inspector"],
+  on:["Draw","Return"],
+  where:"Ammunition Collection Point · Central Ammunition store",
+  decides:"How much left the store, how much came back, and whether the daily and weekly ammunition accounts close.",
+  groups:[
+   {k:"Ammunition management",m:"Storage, issuance and accounting of all ammunition · Daily and weekly ammunition accounting · Quantity and location of every holding displayed, not just the total"},
+   {k:"Issuance &amp; return",m:"Issue against the assigned package · Type and quantity verified at the point of issue · Receipt confirmed by the person drawing · Return of magazines and unexpended rounds"},
+   {k:"Usage &amp; resupply",m:"Usage tracked at each range · Resupply facilitated from the central store to the distribution points before a shortfall becomes a stoppage"},
+   {k:"Security",m:"Access control for the ammunition store and distribution points · Handover and takeover tracking, timestamped, covering restocking and distribution handled by facility staff · Real-time transaction records"}],
+  ifc:[["Range control","↔","Session start and end, rounds fired"],
+       ["Tracking","↔","Magazine and container ID, rounds remaining"],
+       ["Access control","↔","Identity and authorisation verification"],
+       ["Security management","↔","Store access control and alarms"],
+       ["Integrated operations &amp; data platform","→","Continuous"]],
+  dep:"Reconciliation depends on the execution record. Without rounds fired coming back from range control and from shot detection, the account cannot be closed against anything, which makes those interfaces functional dependencies rather than enhancements.",
+  rel:["ewms","pwats","rcs"]},
+
+ {id:"hums",acr:"HUMS",name:"Health &amp; Usage Monitoring System",group:"Sustainment",
+  role:"Predicts what will break",
+  angle:"A discipline borrowed from rotorcraft airworthiness. Its defining idea is not sensors — it is recording the operational context alongside every reading, so wear is judged against work actually done rather than against time elapsed.",
+  users:["Engineering manager","Maintenance team","Operations centre"],
+  on:["Sustain"],
+  where:"Integrated Operation Centre · Range Control Room · maintenance consoles and mobile devices",
+  decides:"What is degrading, how fast, and whether it will survive the next booked detail — so maintenance is planned against evidence rather than against a calendar.",
+  groups:[
+   {k:"Data ingestion",m:"Engineering, operational and maintenance data ingested from the targetry system and its subsystems · Monitoring and reporting activated automatically when those systems start up, rather than switched on by hand"},
+   {k:"System monitoring",m:"Utilisation · network bandwidth and abnormal traffic · memory · battery · temperature and humidity · built-in test results · overall system health"},
+   {k:"Usage monitoring",m:"Activations · recoils · trigger pulls · failures · resets · charges · operating hours — the counters that make wear measurable against work rather than against the calendar"},
+   {k:"Event monitoring &amp; records",m:"Event timestamps, start and stop times, utilisation and recovery time · Event and maintenance logs maintained · Engineering and system-status data processed, displayed and exported"},
+   {k:"Health display",m:"Real-time system availability on maintenance consoles and on mobile devices · A health widget on the operator workstations that already have the operator's attention · Overall health with drill-down to individual subsystem status"},
+   {k:"Analysis",m:"Analysis of collected data to identify and pre-empt equipment failures · Failure history used to reduce unscheduled maintenance and direct maintenance effort · Alternative resources recommended so a fault disrupts a training day as little as possible"},
+   {k:"Maintenance management",m:"Condition-based preventive maintenance driven by processed data · Pre-emptive obsolescence management · Quarterly forecasting of spare parts and components for predictive purchasing"}],
+  ifc:[["Range control","↔","Display, request and send health data"],
+       ["Targetry, effects and visualisation equipment","←","Continuous collection"],
+       ["Video and analytics equipment","←","Continuous collection"],
+       ["Tracking, weapon and ammunition equipment","←","Continuous collection"],
+       ["Network, server and IT equipment","←","Continuous collection"],
+       ["Integrated operations &amp; data platform","→","Continuous"]],
+  dep:"HUMS can only report on equipment that will tell it something. Every source system has to expose health and usage data, and that exposure has to be agreed with whoever supplies it — which makes coverage a procurement question as much as an engineering one.",
+  rel:["rcs","vms","pwats"]},
+
+ {id:"as",acr:"AS",name:"Administrative System",group:"Facility services",
+  role:"Gets people in",
+  angle:"The first queue of the day and the last impression of it. The only subsystem used by people from outside the facility, which makes it the only one carrying accessibility and visitor-data obligations.",
+  users:["Administrative officer","Guard house","Reception","Visitors","Visiting units"],
+  on:["Access","Register"],
+  where:"Administrative Office · Guard House · registration kiosk · Reception Desk",
+  decides:"Who is expected today, who has arrived, whose vehicle is cleared, and who may pass the gate.",
+  groups:[
+   {k:"Visitor registration &amp; access",m:"Interface with the authority's visitor clearance service to process and track clearance · Security enrolment, authentication and onboarding at the registration kiosk"},
+   {k:"Vehicle registration",m:"Clearance obtained before a vehicle enters the compound · Registration and tracking by licence plate · Screening of registered vehicles against defined threat criteria"},
+   {k:"Appointment management",m:"One view across visitor appointments, range bookings and service providers · Create, view, modify and cancel visitor appointments · View range bookings with training details, date and time, range, resources and participating personnel · Visitor clearance status shown against its appointment · Vehicle clearance status shown against its appointment"},
+   {k:"Queue management",m:"Queue number issued to a walk-in trainee against an appointment or booking · Call, skip and recall queue entries · Call the next number and notify the person it belongs to"},
+   {k:"Feedback management",m:"Visitors and the authority submit feedback online · Consolidated so an authorised user can review, track and follow up rather than file it"},
+   {k:"Integration operations",m:"Integration logs, audit records and operational events for monitoring and troubleshooting · Integration errors and exceptions handled with automated retries and transaction tracking"}],
+  ifc:[["Range control","↔","Appointment feeds session booking; arrival feeds the roll"],
+       ["Access control and turnstiles","↔","Authorisation and gate release"],
+       ["Licence plate recognition","←","Plate capture and match"],
+       ["Authority clearance and identity services","↔","Visitor and vehicle clearance, identity verification"],
+       ["Integrated operations &amp; data platform","→","Continuous"]],
+  dep:"Clearance is granted by an authority service, not by us — our system requests it, displays the result and acts on it. Visitor access also depends on the access control system that physically opens the door, and licence plate registration assumes recognition cameras supplied with the facility.",
+  rel:["rcs","eva","pwats"]}
+];
+
+/* ============================================================
+   ASSURANCE — product protection
+   ============================================================ */
+var PROTECT=[
+ {n:"01",k:"License Protection",
+  gate:"May this copy run at all?",
+  d:"Ensures only authorised and properly licensed systems can use the product.",
+  practice:"A delivered copy of this software is not something that simply starts. It has to be entitled to run on the systems it was delivered for, and entitlement is bound to those systems rather than granted once and forgotten. An installation that was never authorised does not quietly become a running one.",
+  prevents:[
+    "A copy taken from one site and stood up at another without anyone's knowledge",
+    "A development or test build finding its way into an operational environment",
+    "Scope drift where more instances run than were ever procured, and nobody can say how many"],
+  impl:[["Node-locked entitlement","Entitlement is bound to a machine fingerprint derived from stable hardware identifiers &mdash; board or chassis serial, CPU identifier, primary network interface address &mdash; rather than to a key string that can be copied."],["Tolerant matching","The fingerprint is matched on a threshold of its components rather than all of them, so replacing a failed network card does not brick a cluster node. Falling below the threshold triggers re-issue, not a hard stop mid-session."],["Counted scope","The entitlement states how many nodes and which clusters it covers, so the number of running instances is a number someone can actually check against the contract."]],
+  evidence:"The binding model — what entitlement is tied to, how it is issued, and what happens when hardware legitimately changes — is documented in the assurance summary and is a fair thing to ask us to walk through before award."},
+
+ {n:"02",k:"Secure License Validation",
+  gate:"Is that entitlement still good?",
+  d:"Validates license authenticity, entitlement, status and expiry before allowing licensed functionality.",
+  practice:"Four separate checks, made before functionality is released rather than after it has already run. They are separate because a licence can be genuine and still expired, current and still outside its entitlement, or within entitlement and still suspended. Collapsing them into one yes-or-no is how licensing quietly stops meaning anything.",
+  prevents:[
+    "<strong>Authenticity</strong> — a forged or altered licence presented as genuine",
+    "<strong>Entitlement</strong> — a genuine licence used for more, or for something other, than it covers",
+    "<strong>Status</strong> — a licence that has been suspended or revoked continuing to work",
+    "<strong>Expiry</strong> — a licence that has simply run out being honoured indefinitely"],
+  impl:[["A signed document, not a key","The licence is a signed artefact carrying the full entitlement, not a serial number checked against a list. Signature <code>Ed25519</code>, with <code>RSA-2048</code> as the interoperable alternative; payload optionally encrypted with <code>AES-256-GCM</code>."],["Verification key in the product, signing key never","The public verification key ships inside the product. The private signing key stays with the issuing authority and never reaches a delivered system."],["Four reads, one decision","Signature verifies <b>authenticity</b>; the payload carries the <b>entitlement</b> set; a status field distinguishes active from suspended or revoked; a not-before and not-after pair bounds <b>validity</b>."],["Clock tampering","Validity is checked against a monotonic high-water mark of the last observed time as well as the system clock, so winding a clock backwards does not extend a licence."],["Fails closed, with one exception","Licensed functionality is withheld on a failed validation. Safety functions are not licensed functionality &mdash; the emergency stop path is outside this boundary by design."]],
+  evidence:"What each check reads, in what order, and what the system does when one fails — including whether it degrades or stops — is stated in the assurance summary rather than discovered during acceptance."},
+
+ {n:"03",k:"Offline &amp; Air-Gapped Ready",
+  gate:"Does it work with no way out?",
+  d:"Supports secure license validation in isolated environments without requiring internet connectivity.",
+  practice:"A licensing scheme that phones home is a licensing scheme that fails in an isolated environment — which is precisely where this software is expected to live. Validation is designed for no outbound route as the normal case, not as a degraded mode that has to be requested. That also means no licence check can become an operational dependency on a network that was never going to exist.",
+  prevents:[
+    "A range that cannot start a training day because a licence server was unreachable",
+    "A pressure to open an outbound route through a boundary that exists for good reasons",
+    "Renewal and re-issue turning into a site visit every time"],
+  impl:[["Challenge and response, carried by hand","The node emits an activation request containing the product code and its fingerprint. It is carried out on removable media, or read from the screen as a QR code. The issuing side returns a signed, encrypted licence file, which the node verifies and decrypts locally."],["Nothing outbound at runtime","After activation, validation reads the stored local artefact. There is no call out, so there is no dependency on a route that a closed environment was never going to provide."],["Renewal and revocation travel the same way","Renewals and a signed revocation list are distributed as artefacts on the same path, so withdrawal of entitlement does not require connectivity either."],["Announced grace, not silent expiry","Approaching expiry is surfaced to operators and to the health monitoring system well before the date, and grace behaviour is defined in writing &mdash; because a licence that lapses unannounced on the morning of a range day is an outage we caused."]],
+  evidence:"The offline issue, renewal and revocation path — how a licence gets in and out of a closed environment, and who carries it — is the part worth examining closely, because it is where most offline schemes turn out to be online schemes with extra steps."},
+
+ {n:"04",k:"Tamper Protection",
+  gate:"Are the parts doing the checking intact?",
+  d:"Protects critical product components from unauthorised modification or manipulation.",
+  practice:"Integrity of the delivered components is part of the security posture, not a packaging detail. It also closes the obvious hole in the three controls above: a validation step is only worth having if the thing performing it cannot simply be edited out. The components that matter are identified in advance, so detection means something specific rather than being a general assurance.",
+  prevents:[
+    "Validation logic being bypassed by modifying the component that performs it",
+    "A substituted or altered component running unnoticed alongside genuine ones",
+    "Silent drift between what was delivered, what was accredited, and what is actually executing"],
+  impl:[["Signed build artefacts","Container images are signed at build time and referenced by digest. The cluster refuses to admit an image that is unsigned or whose digest does not match the signed one, so an altered artefact does not reach execution."],["Bill of materials and provenance","A software bill of materials and a build provenance attestation are produced in the pipeline and shipped with the release, so what is running can be compared against what was delivered and accredited."],["Start-up integrity check","Critical components are enumerated in a signed manifest and verified at start-up. Enumeration is the point &mdash; a blanket claim of integrity protection without a list of what is covered is not verifiable."],["The licensing component is inside the protected set","Validation is only worth having if the component performing it cannot be edited out, so it sits within the protected boundary rather than guarding it from outside."],["Detection is loud","A failed integrity check is logged, raised to the operator and forwarded to the programme log platform. Silent failure would leave the control doing nothing at exactly the moment it matters."]],
+  evidence:"Which components are treated as critical, how modification is detected, and what the system does on detection are stated per component. A blanket claim of tamper protection without that list is not a claim anyone can verify."},
+
+ {n:"05",k:"Standards &amp; Compliance",
+  gate:"Is the process around it controlled?",
+  d:"Our products and processes are designed with security, quality and operational controls aligned with applicable international standards, with ISO certification initiatives planned to further strengthen our commitment to security and quality.",
+  practice:"Stated precisely, because the precision is the point. Controls are <strong>aligned with</strong> applicable international standards today. Certification is <strong>planned</strong>. Those are two different claims and we keep them apart, in writing, everywhere.",
+  prevents:[
+    "<strong>Aligned with</strong> — the standard shaped how we designed and how we work",
+    "<strong>Certified</strong> — an independent body has audited and issued a certificate. We do not claim this",
+    "<strong>Accredited</strong> — granted against a specific programme and its environment, obtained as programme work with a schedule"],
+  impl:[["ISO 9001 &mdash; quality management","Organisational. How work is specified, reviewed, controlled and corrected. This is the standard behind our configuration management and release discipline."],["ISO/IEC 27001 &mdash; information security management","Organisational. Access control, cryptography, supplier security and incident response &mdash; commonly expected of a supplier before facility clearance is considered."],["IEC 62443 &mdash; security for control systems","Product and system, not organisation. The relevant family for software that controls physical equipment, which is what a range control system does."],["Common Criteria, ISO/IEC 15408","Product evaluation against a defined target, with mutual recognition between participating countries. Relevant where a component is required to be an evaluated product rather than a well-built one."],["Where we are","Controls are designed in alignment with the above. Certification initiatives are planned. We do not claim a certificate we have not been issued, and we will say which of these is in progress and on what timing when asked."]],
+  evidence:"Which standards shaped which controls, and the current state and intended timing of the certification initiatives, are set out in the assurance summary. Conflating these three is the fastest way for a supplier to lose credibility in due diligence, and it is usually done by accident rather than design."}
+];
+
+/* ============================================================
+   HERO SCHEMATIC
+   ============================================================ */
+var PLAN =
+'<figure class="figure" style="margin:0">'+
+'<svg class="plan" viewBox="0 0 800 520" role="img" aria-label="Schematic plan of a range complex: five buildings on a service bus feeding a firing line, six lanes, a target line and a stop butt.">'+
+  '<defs><pattern id="hatch" width="7" height="7" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><path class="ln" d="M0 0 V7"/></pattern></defs>'+
+  '<rect class="ln-d" x="32" y="32" width="736" height="456"/>'+
+  '<rect class="sk" x="48" y="52"  width="64" height="40"/><text x="48" y="46">ADMIN</text>'+
+  '<rect class="sk" x="48" y="142" width="64" height="40"/><text x="48" y="136">ARMSKOTE</text>'+
+  '<rect class="sk" x="48" y="230" width="64" height="52"/><text class="on" x="48" y="224">CONTROL</text>'+
+  '<rect class="sk" x="48" y="332" width="64" height="40"/><text x="48" y="326">AMMO</text>'+
+  '<rect class="sk" x="48" y="422" width="64" height="40"/><text x="48" y="416">PLANT</text>'+
+  '<path class="br" d="M112 72 H124 V256 H112"/>'+
+  '<path class="br" d="M112 162 H124 V256 H112"/>'+
+  '<path class="br" d="M112 352 H124 V256 H112"/>'+
+  '<path class="br" d="M112 442 H124 V256 H112"/>'+
+  '<path class="br" d="M112 256 H152"/>'+
+  '<rect class="br-f" x="76" y="68"  width="8" height="8"/>'+
+  '<rect class="br-f" x="76" y="158" width="8" height="8"/>'+
+  '<rect class="br-f" x="74" y="250" width="12" height="12"/>'+
+  '<rect class="br-f" x="76" y="348" width="8" height="8"/>'+
+  '<rect class="br-f" x="76" y="438" width="8" height="8"/>'+
+  '<rect fill="url(#hatch)" stroke="none" x="152" y="76"  width="478" height="12"/>'+
+  '<rect fill="url(#hatch)" stroke="none" x="152" y="420" width="478" height="12"/>'+
+  '<rect fill="url(#hatch)" stroke="none" x="638" y="76"  width="30"  height="356"/>'+
+  '<text class="num" transform="rotate(-90 656 254)" x="656" y="254" text-anchor="middle">STOP BUTT</text>'+
+  '<path class="ln-2" d="M152 76 V432"/><text x="152" y="68">FIRING LINE</text>'+
+  '<path class="ln-2" d="M630 76 V432"/><text x="630" y="68" text-anchor="end">TARGET LINE</text>'+
+  '<path class="ln" d="M152 104 H630 M152 164 H630 M152 224 H630 M152 284 H630 M152 344 H630 M152 404 H630"/>'+
+  '<text class="num" x="160" y="99">01</text><text class="num" x="160" y="159">02</text>'+
+  '<text class="num" x="160" y="219">03</text><text class="num" x="160" y="279">04</text>'+
+  '<text class="num" x="160" y="339">05</text><text class="num" x="160" y="399">06</text>'+
+  '<rect class="br-f" x="149" y="101" width="6" height="6"/><rect class="br-f" x="149" y="161" width="6" height="6"/>'+
+  '<rect class="br-f" x="149" y="221" width="6" height="6"/><rect class="br-f" x="149" y="281" width="6" height="6"/>'+
+  '<rect class="br-f" x="149" y="341" width="6" height="6"/><rect class="br-f" x="149" y="401" width="6" height="6"/>'+
+  '<path class="ln-2" d="M614 98 h12 M620 98 v12 M614 158 h12 M620 158 v12 M614 218 h12 M620 218 v12'+
+    ' M614 278 h12 M620 278 v12 M614 338 h12 M620 338 v12 M614 398 h12 M620 398 v12"/>'+
+  '<path class="ln-2" d="M560 470 H680 M560 465 V475 M600 467 V473 M640 467 V473 M680 465 V475"/>'+
+  '<text class="num" x="560" y="462">0</text><text class="num" x="680" y="462" text-anchor="end">100 m</text>'+
+  '<path class="ln-2" d="M730 68 V48 M724 56 L730 46 L736 56"/><text class="num" x="730" y="82" text-anchor="middle">N</text>'+
+'</svg>'+
+'<figcaption>Schematic — an illustrative range layout used to show system relationships. Not a real facility, not to scale, and not derived from any programme drawing.</figcaption>'+
+'</figure>';
+
+/* ============================================================
+   HELPERS
+   ============================================================ */
+function band(o){
+  return '<section class="band'+(o.sunk?' band--sunk':'')+'"><div class="shell">'+
+    (o.title?'<div class="band__head">'+(o.num?'<span class="band__num">'+o.num+'</span>':'')+
+      '<h2>'+o.title+'</h2>'+(o.intro?'<p>'+o.intro+'</p>':'')+'</div>':'')+
+    o.body+'</div></section>';
+}
+function tbl(head,rows,cap){
+  return '<div class="tbl"><table>'+(cap?'<caption>'+cap+'</caption>':'')+
+    '<thead><tr>'+head.map(function(h){return '<th scope="col">'+h+'</th>';}).join('')+'</tr></thead><tbody>'+
+    rows.map(function(r){return '<tr>'+r.map(function(c,i){
+      return i===0?'<th scope="row" style="font-family:var(--display);font-weight:600;font-size:var(--t-sm);color:var(--ink);text-transform:none;letter-spacing:0;background:transparent;white-space:normal">'+c+'</th>':'<td>'+c+'</td>';
+    }).join('')+'</tr>';}).join('')+'</tbody></table></div>';
+}
+function ph(ratio,label,what){ return '<div class="ph ph--'+ratio+'"><b>'+label+'</b><span>'+what+'</span></div>'; }
+function phFig(ratio,label,what,cap){
+  return '<figure class="figure" style="margin:0">'+ph(ratio,label,what)+(cap?'<figcaption>'+cap+'</figcaption>':'')+'</figure>';
+}
+function tbw(label,what){ return '<div class="tbw"><b>'+label+'</b><span>'+what+'</span></div>'; }
+function chainRail(sel,live){
+  return '<div class="chain"><div class="chain__rail" role="'+(live?'tablist':'list')+'">'+
+    CHAIN.map(function(s,i){
+      var on = live ? (i===sel) : (sel.indexOf(s.k)>-1);
+      var cls = 'step'+(live?'':(on?' step--on':' step--off'));
+      var attrs = live ? ' role="tab" type="button" data-step="'+i+'" aria-selected="'+(on?'true':'false')+'"'
+                       : ' role="listitem" aria-current="'+(on?'step':'false')+'"';
+      return '<'+(live?'button':'div')+' class="'+cls+'"'+attrs+'>'+
+        '<span class="step__n">'+('0'+(i+1)).slice(-2)+'</span>'+
+        '<span class="step__k">'+s.k+'</span>'+
+        (live?'<span class="step__s">'+s.sys+'</span>':'')+
+        '</'+(live?'button':'div')+'>';
+    }).join('')+'</div></div>';
+}
+function chainDetail(i){
+  var s=CHAIN[i];
+  return '<div class="detail" id="detail" role="tabpanel" tabindex="0">'+
+    '<div class="detail__k">Step '+('0'+(i+1)).slice(-2)+' — '+s.k+'</div>'+
+    '<h3>'+s.title+'</h3><p>'+s.body+'</p>'+
+    '<div class="detail__meta">'+
+      '<div><span>Data that moves</span>'+s.data+'</div>'+
+      '<div><span>What this step holds</span>'+s.holds+'</div>'+
+    '</div></div>';
+}
+function enquiry(label,line){
+  return band({title:"Talk to the people who build it",
+    intro: line || "Procurement, technical integration, or anything else — three routes reach three different inboxes, so the question lands with someone who can answer it.",
+    body:'<div class="btns"><a class="btn btn--primary" href="#/contact">'+(label||'Send an enquiry')+'</a>'+
+         '<a class="btn btn--ghost" href="#/products">Browse the systems</a></div>'});
+}
+
+/* ============================================================
+   PAGES
+   ============================================================ */
+function pHome(){
+  return '<div class="shell"><div class="masthead masthead--split">'+
+    '<div><div class="eyebrow">Range training systems</div>'+
+    '<h1>Eight systems that run a live-firing range</h1>'+
+    '<p class="lede">A trainee arrives, registers, is briefed, draws a weapon and ammunition, fires, is reviewed, and hands everything back. Each of those moments needs a system. Blue Silo builds all eight of them — and the connections between them, which is where the accountability is usually lost.</p>'+
+    '<div class="shelf">'+PRODUCTS.map(function(p){
+      return '<a class="shelf__i" href="#/products/'+p.id+'"><b>'+p.acr+'</b><span>'+p.role+'</span></a>';
+    }).join('')+'</div>'+
+    '<div class="btns"><a class="btn btn--primary" href="#/products">See what we build</a>'+
+    '<a class="btn btn--ghost" href="#/assurance">How it is protected</a></div></div>'+
+    PLAN+'</div></div>'+
+
+  band({num:"01 — The chain",title:"Ten steps, one training day",
+    intro:"Select a step to see what happens in it, what data moves, and which subsystems are involved.",
+    body: chainRail(0,true)+chainDetail(0)})+
+
+  band({sunk:true,num:"02 — The problem",title:"Chains break at the joins between systems",
+    intro:"Not because anyone is careless. Because at every boundary between two systems, the link has to be carried by a person.",
+    body:'<div class="g g3">'+
+      '<div class="card"><div class="card__k">Manual handover</div><div class="card__t">A signature is not an interface</div><p>A weapon leaves the armskote in one system and appears in the session in another. What connects them is a form and someone remembering to complete it.</p></div>'+
+      '<div class="card"><div class="card__k">Reconciliation gap</div><div class="card__t">Numbers in separate places</div><p>What was issued sits in one ledger, what was fired in another. The difference is found at the end of a long day, by hand, under pressure to release people.</p></div>'+
+      '<div class="card"><div class="card__k">Blind interval</div><div class="card__t">Custody becomes memory</div><p>Between the counter and the firing point, no system can say who is holding what, or where they are, right now. It is reconstructed afterwards, if it is ever questioned.</p></div>'+
+      '</div>'})+
+
+  band({num:"03 — What we build",title:"Eight subsystems, designed as one chain",
+    intro:"Each is deliverable on its own. Each is more useful when the step before it and the step after it are held by the same design.",
+    body:'<div class="g g4">'+PRODUCTS.map(function(p){
+        return '<a class="card" href="#/products/'+p.id+'"><div class="card__k">'+p.group+'</div>'+
+          '<div class="card__acr">'+p.acr+'</div><div class="card__t" style="font-size:var(--t-sm);font-weight:500">'+p.name+'</div></a>';
+      }).join('')+'</div>'})+
+
+  band({sunk:true,num:"04 — Where it runs",title:"Built for isolated environments",
+    intro:"Defence facilities do not have a route to the internet, and a system that assumes one fails on its first day.",
+    body:'<div class="g g3">'+
+      '<div class="card"><div class="card__t">Air-gapped by design</div><p>Licensing, validation and operation are designed for an environment with no outbound route, treated as the normal case rather than a degraded one.</p></div>'+
+      '<div class="card"><div class="card__t">Highly available where it matters</div><p>Services run on clustered platforms with redundancy at the network edge, sized so that a single failure does not stop a training day.</p></div>'+
+      '<div class="card"><div class="card__t">Separated by function</div><p>Each subsystem runs in its own cluster rather than sharing one, so the blast radius of a fault is the function it belongs to.</p></div>'+
+      '</div><a class="btn btn--ghost" style="margin-top:var(--s5)" href="#/assurance">Safety, security &amp; assurance</a>'})+
+
+  enquiry();
+}
+
+function pPlatform(){
+  return '<div class="shell"><div class="masthead">'+
+    '<div class="eyebrow">Platform</div>'+
+    '<h1>The training day, end to end</h1>'+
+    '<p class="lede">Ten steps and nine handovers. Each handover has an explicit data contract, which is what makes the chain auditable rather than merely connected.</p>'+
+    '</div></div>'+
+
+  band({num:"01 — The model",title:"What happens, step by step",
+    body:'<div class="stack">'+CHAIN.map(function(s,i){
+      return '<div class="item"><div class="item__k">'+s.title+
+        '<small>'+('0'+(i+1)).slice(-2)+' · '+s.k+' — '+s.sys+'</small></div>'+
+        '<div><p>'+s.body+'</p><p class="note" style="margin-top:var(--s2)">Data: '+s.data+'</p></div></div>';
+    }).join('')+'</div>'})+
+
+  band({sunk:true,num:"02 — Handovers",title:"What crosses each boundary",
+    body: tbl(["Boundary","Data contract","Between"],[
+      ["Access → Register","Verified identity and booking","AS → AS / PWATS"],
+      ["Register → Brief","Registration record and assigned location","AS → RCS"],
+      ["Brief → Draw","Confirmed roll and assigned package","RCS → EWMS / EAMS"],
+      ["Draw → Track","Item ID, issued-to identity, tracking activation","EWMS / EAMS → PWATS"],
+      ["Prepare → Conduct","Readiness checklist and loaded exercise","RCS internal"],
+      ["Conduct → Observe","Session timeline and recording state","RCS ↔ VMS"],
+      ["Observe → Review","Detections, evidence clips, timeline markers","VMS / EVA → RCS"],
+      ["Return → Account","Return state, defects, reconciliation result","EWMS / EAMS → RCS"],
+      ["All → Sustain","Health, usage and utilisation","All → HUMS"]
+    ])})+
+
+  band({num:"03 — Principles",title:"Six decisions that shape everything else",
+    body:'<div class="g g2">'+
+      '<div class="card"><div class="card__t">Execution survives without administration</div><p>A session already authorised runs from a cached session package even when the administrative layer is unavailable. Booking must never become a single point of failure for live-fire training.</p></div>'+
+      '<div class="card"><div class="card__t">Software is never the only safety path</div><p>The emergency stop path is independent of the control software, and every loss of communication, power or network quality has a defined, tested fail-safe state.</p></div>'+
+      '<div class="card"><div class="card__t">A stop can be called by anyone who sees a hazard</div><p>Cease-fire is not an operator privilege. Any surface that can raise it must be able to raise it without a login — and where computer vision sees a person downrange, firing is inhibited automatically until the area is confirmed clear.</p></div>'+
+      '<div class="card"><div class="card__t">Accountability closes before anyone goes home</div><p>The account for weapons and ammunition is closed against the people who drew them, while they are still present. Every deadline in the system is set against that one.</p></div>'+
+      '<div class="card"><div class="card__t">One golden source per entity</div><p>Every core entity has exactly one system of record. Everything else holds a copy that is permitted to be stale — and knows that it is.</p></div>'+
+      '<div class="card"><div class="card__t">Synchronised time is a prerequisite</div><p>Correlating video, detections, tracking and health data collapses without disciplined time synchronisation. We treat it as a hard dependency, not a configuration detail.</p></div>'+
+      '</div>'})+
+
+  band({sunk:true,num:"04 — Ownership",title:"Who is the system of record",
+    intro:"Agreed once, at the start. Two systems that both believe they own the same entity will disagree eventually, and always at the worst moment.",
+    body: tbl(["Entity","System of record","Consumers"],[
+      ["Personnel and trainee","Authority training-management service","RCS · AS · PWATS"],
+      ["Visitor and vehicle clearance","Authority clearance service","AS"],
+      ["Weapon, by serial","EWMS","PWATS · RCS"],
+      ["Ammunition","EAMS","PWATS · RCS"],
+      ["Training session","RCS","All subsystems"],
+      ["Recording and detections","VMS · EVA","RCS"],
+      ["Health and usage","HUMS","Data platform"]
+    ])})+
+
+  band({title:"The eight subsystems",
+    body:'<div class="g g4">'+PRODUCTS.map(function(p){
+      return '<a class="card" href="#/products/'+p.id+'"><div class="card__acr">'+p.acr+'</div>'+
+        '<div class="card__t" style="font-size:var(--t-sm);font-weight:500">'+p.name+'</div></a>';
+    }).join('')+'</div>'})+
+  enquiry();
+}
+
+function pProducts(){
+  var groups=["Range operations","Observation &amp; analytics","Accountability","Sustainment","Facility services"];
+  return '<div class="shell"><div class="masthead">'+
+    '<div class="eyebrow">Products</div>'+
+    '<h1>Eight subsystems</h1>'+
+    '<p class="lede">Take one, or take all of them — but know the dependencies before deciding. Every product page states what has to exist for that subsystem to mean anything, and where it is deployed.</p>'+
+    '</div></div>'+
+
+  band({num:"01 — By role",title:"Five roles in the chain",
+    body:'<div class="g g3">'+groups.map(function(g){
+      var ps=PRODUCTS.filter(function(p){return p.group===g;});
+      return '<div class="card"><div class="card__k">'+g+'</div>'+
+        ps.map(function(p){return '<a href="#/products/'+p.id+'" style="text-decoration:none;color:inherit;display:block;margin-bottom:var(--s2)"><span class="card__acr" style="font-size:var(--t-md)">'+p.acr+'</span><br><span style="font-size:var(--t-xs);color:var(--ink-3)">'+p.name+'</span></a>';}).join('')+
+        '</div>';
+    }).join('')+'</div>'})+
+
+  band({sunk:true,num:"02 — Compared",title:"What each one actually decides",
+    intro:"Not a feature comparison. The question each subsystem exists to answer, and the person who has to answer it.",
+    body: tbl(["Subsystem","Primary users","The decision it supports"],
+      PRODUCTS.map(function(p){return [p.acr+' <em style="display:block;margin-top:2px">'+p.name+'</em>', p.users.slice(0,3).join(', '), p.decides];}))})+
+
+  band({num:"03 — Where they run",title:"Deployment, by location",
+    intro:"A subsystem is not one screen in one room. Knowing where each client sits is what makes the operating concept real.",
+    body: tbl(["Subsystem","Deployed at"], PRODUCTS.map(function(p){return [p.acr, p.where];}))})+
+
+  band({sunk:true,num:"04 — Terminology",title:"Acronyms that look alike",
+    intro:"Four systems share a naming pattern and two handle video. Confusing them in a specification is expensive later.",
+    body:'<div class="g g2">'+
+      '<div class="card"><div class="card__k">Ours</div><p><strong>EWMS</strong> — Electronic Weapon Management System. Weapons as serialised assets.<br><strong>EAMS</strong> — Electronic Ammunition Management System. Ammunition as a consumable.</p></div>'+
+      '<div class="card"><div class="card__k">Counterparts</div><p><strong>EKMS</strong> — Electronic Key Management System. Physical keys.<br><strong>EACS</strong> — Electronic Access Control System. Doors and zones.</p></div>'+
+      '<div class="card"><div class="card__k">Two video systems, ours</div><p><strong>VMS</strong> — video for <em style="font-style:italic">training</em>, inside the range: markers, playback, after-action review.<br><strong>EVA</strong> — edge analytics outside the range: perimeter, movement and people.</p></div>'+
+      '<div class="card"><div class="card__k">A different system entirely</div><p><strong>VSS</strong> — Video Surveillance System. Facility security CCTV, a different purpose and a different owner.</p></div>'+
+      '</div>'})+
+
+  band({num:"05 — Dependencies",title:"Stated openly, before anyone asks",
+    intro:"A product page that hides its dependencies is a scope dispute waiting to happen.",
+    body:'<div class="g g3">'+
+      '<div class="card"><div class="card__t">EWMS needs participating lockers</div><p>Issuance and return are only trustworthy if the physical locker reports what was actually removed.</p></div>'+
+      '<div class="card"><div class="card__t">EAMS needs the execution record</div><p>Without rounds fired coming back from range control, the account cannot be closed against anything.</p></div>'+
+      '<div class="card"><div class="card__t">Analytics need purpose-built coverage</div><p>A camera placed for general surveillance will not reliably support weapon association or muzzle-direction work.</p></div>'+
+      '</div>'})+
+  enquiry();
+}
+
+function pProduct(id){
+  var p=PRODUCTS.filter(function(x){return x.id===id;})[0];
+  if(!p) return pProducts();
+
+  var caps = p.groups.map(function(g){
+    var items=g.m.split(' · ').map(function(x){return '<li>'+x+'</li>';}).join('');
+    return '<div class="cap"><h3>'+g.k+'</h3><ul>'+items+'</ul></div>';
+  }).join('');
+
+  var chainMini = CHAIN.map(function(c){
+    var on=p.on.indexOf(c.k)>-1;
+    return '<i class="'+(on?'on':'')+'">'+c.k+'</i>';
+  }).join('');
+
+  return '<div class="shell"><div class="pmast">'+
+    '<div>'+
+      '<div class="eyebrow">Products — '+p.group+'</div>'+
+      '<h1>'+p.name+'</h1>'+
+      '<div class="prole">'+p.acr+' — '+p.role+'</div>'+
+      '<p class="lede">'+p.angle+'</p>'+
+    '</div>'+
+    '<dl class="pcard">'+
+      '<div class="prow"><dt>Role</dt><dd><b>'+p.role+'</b></dd></div>'+
+      '<div class="prow"><dt>Used by</dt><dd>'+p.users.join(' · ')+'</dd></div>'+
+      '<div class="prow"><dt>Deployed at</dt><dd>'+p.where+'</dd></div>'+
+      '<div class="prow"><dt>In the chain</dt><dd><span class="mini">'+chainMini+'</span></dd></div>'+
+      '<div class="prow"><dt>Interfaces</dt><dd>'+p.ifc.length+' counterpart classes</dd></div>'+
+      '<div class="prow"><dt>Capabilities</dt><dd>'+p.groups.length+' areas, detailed below</dd></div>'+
+    '</dl>'+
+  '</div></div>'+
+
+  band({sunk:true,body:'<div class="decide"><span>The decision it supports</span><p>'+p.decides+'</p></div>'})+
+
+  band({title:"What it does",
+    intro:"Capability areas, each drawn from the module requirement rather than summarised from it.",
+    body:'<div class="caps">'+caps+'</div>'})+
+
+  band({sunk:true,title:"What it talks to",
+    intro:"Counterpart classes, not vendor product names. The specific counterparts on any programme belong to that programme.",
+    body: tbl(["Counterpart class","Direction","Trigger"],
+      p.ifc.map(function(r){return [r[0],'<span class="arrow">'+r[1]+'</span>',r[2]];}))})+
+
+  band({title:"Dependencies and assumptions",
+    body:'<dl class="dep"><dt>Stated openly</dt><dd><p>'+p.dep+'</p></dd></dl>'+
+      '<div style="margin-top:var(--s6)">'+
+      phFig("wide","Interface view — "+p.acr,
+        "One screen from "+p.acr+", captured from a working build, showing the moment the operator makes the decision above.",
+        "Placeholder. No screenshots until there is a running build — a mock of software that does not exist yet is recognised instantly by this audience.")+
+      '</div>'})+
+
+  band({sunk:true,title:"Related systems",
+    body:'<div class="g g3">'+p.rel.map(function(r){
+      var q=PRODUCTS.filter(function(x){return x.id===r;})[0];
+      return '<a class="card" href="#/products/'+q.id+'"><div class="card__k">'+q.role+'</div><div class="card__acr">'+q.acr+'</div>'+
+        '<div class="card__t" style="font-size:var(--t-sm);font-weight:500">'+q.name+'</div></a>';
+    }).join('')+'</div>'})+
+  enquiry();
+}
+
+function pIntegration(){
+  return '<div class="shell"><div class="masthead">'+
+    '<div class="eyebrow">Integration</div>'+
+    '<h1>Interfaces are the product, not the work left at the end</h1>'+
+    '<p class="lede">We arrive with an interface register and a simulator, not with a request for a meeting.</p>'+
+    '<div class="btns"><a class="btn btn--primary" href="#/contact">Request the ICD pack</a></div>'+
+    '</div></div>'+
+
+  band({num:"01 — Counterparts",title:"What we interface with",
+    intro:"Described as classes. The named systems on any given programme are that programme's business, not ours to publish.",
+    body:'<div class="g g4">'+
+      ["Targetry systems","Environmental &amp; battlefield effects","Visualisation &amp; public address","Access control &amp; security",
+       "Building management","Identity &amp; directory services","Authority booking &amp; training records","Integrated operations &amp; data platform"]
+      .map(function(c){return '<div class="card"><div class="card__t" style="font-size:var(--t-sm)">'+c+'</div></div>';}).join('')+'</div>'})+
+
+  band({sunk:true,num:"02 — Method",title:"One row per interface, with an owner",
+    intro:"Not one row per module, and not one arrow on an architecture diagram. An interface that nobody owns is an interface that arrives late.",
+    body: tbl(["Field","What it records"],[
+      ["Initiator","Which side opens the exchange — and therefore which side fails first"],
+      ["Direction","One-way or bidirectional, stated per payload rather than per system"],
+      ["Mode","Request/response, publish/subscribe, store-and-forward, or file exchange"],
+      ["Trigger","Scheduled, event-driven, or continuous — and what happens when it is missed"],
+      ["Payload","What is carried, at the level of meaning rather than field names"],
+      ["Owner","The named person on each side who signs the change"]
+    ],"Register structure shown. Contents are supplied on request, under the terms that apply.")})+
+
+  band({num:"03 — Platform",title:"What it is built on",
+    intro:"Stated plainly, because a programme that has to operate and patch this for a decade is entitled to know before it commits.",
+    body:'<div class="g g4">'+
+      [["Enterprise Linux","A supported enterprise distribution with a defined lifecycle, not a community build."],
+       ["Container orchestration","Services run as containers on clustered nodes, managed through a supported control plane."],
+       ["Redundancy where it counts","Clustered application nodes, active/standby at the network edge and for directory services."],
+       ["Documented data stores","Databases and storage chosen for supportability and stated in the design, not discovered at handover."]]
+      .map(function(c){return '<div class="card"><div class="card__t" style="font-size:var(--t-sm)">'+c[0]+'</div><p>'+c[1]+'</p></div>';}).join('')+'</div>'})+
+
+  band({sunk:true,num:"04 — Shared services",title:"Three dependencies we refuse to treat as optional",
+    intro:"All three are routinely left off integration matrices. All three are load-bearing.",
+    body:'<div class="g g3">'+
+      '<div class="card"><div class="card__t">Identity &amp; directory</div><p>Single sign-on and role-based access for every subsystem, against the programme directory. Eight subsystems with eight user databases is eight offboarding failures waiting to happen.</p></div>'+
+      '<div class="card"><div class="card__t">Time synchronisation</div><p>Video, detections, tracking and health data cannot be correlated without it — and an after-action review that cannot be correlated is not defensible in an investigation.</p></div>'+
+      '<div class="card"><div class="card__t">Audit &amp; log forwarding</div><p>Audit trails for weapon and ammunition handling belong in the programme log platform, not only in our own database where we control them.</p></div>'+
+      '</div>'})+
+
+  band({num:"05 — Testing",title:"How we prove it before site",
+    body:'<div class="g g4">'+
+      [["Simulators and stubs","Every counterpart has a stub before it has a partner engineer."],
+       ["Staged integration","Interfaces are integrated in dependency order, not all at once in the final month."],
+       ["Change control","An interface change is a versioned document, not an email."],
+       ["Frozen regression","Once an interface passes, it is regressed against on every build."]]
+      .map(function(c){return '<div class="card"><div class="card__t" style="font-size:var(--t-sm)">'+c[0]+'</div><p>'+c[1]+'</p></div>';}).join('')+'</div>'})+
+
+  enquiry("Request the ICD pack","Send us the architecture you need us to fit into, and we will come back with the interface register rather than with questions.");
+}
+
+function pAssurance(){
+  return '<div class="shell"><div class="masthead">'+
+    '<div class="eyebrow">Assurance</div>'+
+    '<h1>Protected product, protected range</h1>'+
+    '<p class="lede">Two obligations sit on this software. It must not be usable by anyone who is not entitled to it, and it must never be the only thing standing between a session and an incident.</p>'+
+    '</div></div>'+
+
+  band({num:"01 — Product protection",title:"Five controls, asked in order",
+    intro:"Licensing in a defence facility is not a commercial convenience. It is the control that decides whether a copy of this software may run at all, in an environment where nobody can phone home to ask. Each control answers one question, and each depends on the one before it.",
+    body:'<div class="gates">'+PROTECT.map(function(x){
+        return '<div class="gate"><b>'+x.n+'</b><span>'+x.k+'</span><i>'+x.gate+'</i></div>';
+      }).join('')+'</div>'+
+      PROTECT.map(function(x){
+        return '<div class="ctrl">'+
+          '<div><div class="ctrl__n">Control '+x.n+'</div>'+
+            '<div class="ctrl__h">'+x.k+'</div>'+
+            '<div class="ctrl__q">'+x.d+'</div></div>'+
+          '<div class="ctrl__d">'+
+            '<section><h4>In practice</h4><p>'+x.practice+'</p></section>'+
+            '<section><h4>'+(x.n==="05"?"Three claims, kept apart":"What it prevents")+'</h4>'+
+              '<ul>'+x.prevents.map(function(y){return '<li>'+y+'</li>';}).join('')+'</ul></section>'+
+            '<section><h4>How to check us</h4><p>'+x.evidence+'</p></section>'+
+          '</div>'+
+          '<div class="impl"><div class="impl__k"><b>Reference implementation</b>'+
+            '<i>Draft — the approach we would propose, pending confirmation by engineering</i></div>'+
+            '<ul>'+x.impl.map(function(y){return '<li><b>'+y[0]+'</b>'+y[1]+'</li>';}).join('')+'</ul>'+
+          '</div></div>';
+      }).join('')})+
+
+  band({sunk:true,num:"02 — Safety",title:"Posture on the range",
+    body:'<div class="g g3">'+
+      '<div class="card"><div class="card__t">An independent emergency stop</div><p>The E-Stop path does not depend on our control software being healthy, reachable, or even running. Activated physically or virtually, it halts targetry and environmental effects immediately.</p></div>'+
+      '<div class="card"><div class="card__t">Interlock on a detected hazard</div><p>Where a person is detected in the area forward of the firing line, firing is inhibited and targetry and effects are paused until the area is confirmed clear — with an alert, an evidence clip and a timeline marker raised at the same moment.</p></div>'+
+      '<div class="card"><div class="card__t">Defined fail-safe behaviour</div><p>Loss of communication, loss of power and network degradation each have a specified safe state — specified in advance, written down, and tested rather than assumed.</p></div>'+
+      '</div>'})+
+
+  band({num:"03 — Criticality",title:"Not every layer needs the same availability",
+    intro:"Treating a whole system as uniformly critical is how programmes end up paying for redundancy where it does not matter, and lacking it where it does.",
+    body: tbl(["Layer","Criticality","Degraded mode"],[
+      ["Execution","Mission and safety critical","Runs an authorised session from a cached session package"],
+      ["Accountability","Mission critical","Records locally; reconciliation deferred, never skipped"],
+      ["Observation","Mission critical","Recording continues; analytics degrade before recording does"],
+      ["Administrative","Business critical","Does not block a session already under way"]
+    ])})+
+
+  band({sunk:true,num:"04 — Security",title:"Secure by design",
+    body:'<div class="g g4">'+
+      [["Network segmentation","Subsystems are separated by function, not merely by subnet."],
+       ["Least privilege","Roles are derived from the job, and reviewed when the job changes."],
+       ["Multi-factor at the threshold","Access to controlled spaces and to issue points is authenticated, not assumed."],
+       ["Isolated operation","Designed to run with no internet path, including for licensing and support."]]
+      .map(function(c){return '<div class="card"><div class="card__t" style="font-size:var(--t-sm)">'+c[0]+'</div><p>'+c[1]+'</p></div>';}).join('')+'</div>'})+
+
+  band({num:"05 — Audit",title:"What is recorded, and for how long",
+    body:'<div class="prose"><p>Weapon and ammunition handling produces an audit trail that has to survive an investigation, not merely produce a report. For each subsystem we state what is captured, how tamper-evident it is, how long it is retained, and how an incident is reconstructed from it afterwards.</p>'+
+      '<p>Where computer vision raises an event, the evidence clip and the timeline marker are part of that record — which is what turns a detection into something an investigator can actually use.</p></div>'})+
+
+  band({sunk:true,num:"06 — Practice",title:"How the software is actually built",
+    body:'<div class="g g4">'+
+      [["Version control and review","No change reaches a build without a second pair of eyes."],
+       ["Test strategy","Interfaces, safety behaviour and reconciliation logic are tested separately and explicitly."],
+       ["Configuration management","What is deployed at a site is a known, reproducible set of versions."],
+       ["Vulnerability handling","Dependencies are tracked, and there is a stated route for patching a fielded system."]]
+      .map(function(c){return '<div class="card"><div class="card__t" style="font-size:var(--t-sm)">'+c[0]+'</div><p>'+c[1]+'</p></div>';}).join('')+'</div>'})+
+
+  enquiry("Request the assurance summary","The full assurance summary is released on request rather than published, because parts of it are close to material that should not sit on a public website.");
+}
+
+function pCompany(){
+  return '<div class="shell"><div class="masthead">'+
+    '<div class="eyebrow">Company</div>'+
+    '<h1>Blue Silo</h1>'+
+    '<p class="lede">We build the software that runs range training complexes. That is the whole of what we do.</p>'+
+    '</div></div>'+
+
+  band({num:"01 — Why",title:"What we build, and why we build only this",
+    body:'<div class="prose">'+
+      '<p>Range training complexes are run by many systems from many suppliers, and the gaps between those systems are where accountability goes. Someone signs a form. Someone remembers a number. Someone reconciles at the end of a long day. It works, until the day it is questioned.</p>'+
+      '<p>We build the eight subsystems that close those gaps, and we treat the interfaces between them — including the ones to systems we do not own — as the product rather than as integration work to be scheduled later.</p>'+
+      '<p><strong>We do not build anything else.</strong> A supplier serving range training and three other markets is a supplier whose attention is somewhere else when your programme needs it.</p></div>'})+
+
+  band({sunk:true,num:"02 — People",title:"Leadership",
+    intro:"Few, and real. Every name here is verifiable, and evaluators do verify.",
+    body:'<div class="g g3">'+
+      [1,2,3].map(function(){return '<div class="card">'+
+        ph("square","Portrait","Plain headshot, even lighting, neutral ground. The only photographs on this site.")+
+        tbw("Name and role","")+
+        tbw("Biography","Relevant background — defence, control systems, or delivery — in three sentences.")+'</div>';}).join('')+
+      '</div>'})+
+
+  band({num:"03 — Capability",title:"Disciplines, not headcount",
+    body:'<div class="g g4">'+
+      [["Control systems","Real-time equipment control, safety interlocks, and degraded-mode behaviour."],
+       ["Systems integration","Interface design, ICD authorship, simulators, and staged integration testing."],
+       ["Computer vision","Detection, re-identification and association, engineered for the edge."],
+       ["Security engineering","Segmentation, classification handling, audit design, isolated operation."]]
+      .map(function(c){return '<div class="card"><div class="card__t" style="font-size:var(--t-sm)">'+c[0]+'</div><p>'+c[1]+'</p></div>';}).join('')+'</div>'})+
+
+  band({sunk:true,num:"04 — Continuity",title:"What happens if we are not here",
+    body:'<div class="prose">'+
+      '<p>We are a small company, and any evaluator will establish that within five minutes. So we state it, and then state how the continuity risk is actually handled — which is a stronger position than hoping it is not raised.</p></div>'+
+      '<div class="g g3" style="margin-top:var(--s5)">'+
+      '<div class="card"><div class="card__t">Intellectual property</div><p>Rights are settled in the contract, in writing, before delivery rather than at the end of it.</p></div>'+
+      '<div class="card"><div class="card__t">Source code escrow</div><p>Offered as standard, with defined release conditions and a verified deposit.</p></div>'+
+      '<div class="card"><div class="card__t">Documentation</div><p>Written so that a competent third party can take the system over — which is a testable claim, not a promise.</p></div>'+
+      '</div>'})+
+
+  band({num:"05 — Details",title:"Corporate",
+    body:'<div class="g g4">'+
+      [["Registered entity","Blue Silo Pte. Ltd."],["UEN",null],["Registered address",null],["Incorporated",null]]
+      .map(function(c){return '<div class="card"><div class="card__k">'+c[0]+'</div>'+
+        (c[1]?'<p><strong>'+c[1]+'</strong></p>':tbw("To confirm","From ACRA record"))+'</div>';}).join('')+'</div>'})+
+  enquiry();
+}
+
+function pContact(){
+  return '<div class="shell"><div class="masthead">'+
+    '<div class="eyebrow">Enquiries</div>'+
+    '<h1>Three routes, three inboxes</h1>'+
+    '<p class="lede">A technical integration question that lands in a general inbox gets lost. Choose the route and it reaches the person who can answer it.</p>'+
+    '</div></div>'+
+
+  band({num:"01 — Routes",title:"Which one applies",
+    body:'<div class="g g3">'+
+      '<div class="card"><div class="card__t">Procurement</div><p>Tender, capability and commercial enquiries. Reaches the person who can commit to a response.</p></div>'+
+      '<div class="card"><div class="card__t">Technical integration</div><p>Interfaces, ICDs, simulators and system integration testing. Reaches an engineer, not an account manager.</p></div>'+
+      '<div class="card"><div class="card__t">General</div><p>Everything else, including press and partnership.</p></div>'+
+      '</div>'})+
+
+  band({sunk:true,num:"02 — Form",title:"Five fields, each with a reason",
+    body:'<div class="g g2">'+
+      '<div class="card"><div class="card__k">Organisation</div>'+tbw("Field","Required — determines which terms apply to material we send back")+'</div>'+
+      '<div class="card"><div class="card__k">Name and role</div>'+tbw("Field","Required — determines who from our side should reply")+'</div>'+
+      '<div class="card"><div class="card__k">Type of enquiry</div>'+tbw("Field","Required — routes to one of the three inboxes above")+'</div>'+
+      '<div class="card"><div class="card__k">Message</div>'+tbw("Field","Free text, no length limit")+'</div>'+
+      '</div>'+
+      '<p class="note" style="margin-top:var(--s4)">No third-party CAPTCHA. Some of the people we most want to hear from work on devices that block it.</p>'+
+      '<div class="btns" style="margin-top:var(--s5)"><span class="btn btn--primary" role="button" aria-disabled="true">Send enquiry</span></div>'})+
+
+  band({num:"03 — On request",title:"Material we release rather than publish",
+    intro:"The gate is control over what leaves, not a marketing tactic. None of these are public downloads.",
+    body:'<div class="g g3">'+
+      '<div class="card"><div class="card__t">Capability statement</div><p>What we build, what we have built, and the disciplines behind it.</p></div>'+
+      '<div class="card"><div class="card__t">Assurance summary</div><p>Product protection, safety posture, security design and standards alignment.</p></div>'+
+      '<div class="card"><div class="card__t">ICD pack</div><p>Interface register structure, protocol patterns, and our integration test approach.</p></div>'+
+      '</div>'})+
+
+  band({sunk:true,num:"04 — Direct",title:"Reaching us",
+    body:'<div class="g g3">'+
+      '<div class="card"><div class="card__k">Email</div>'+tbw("To confirm","Three addresses, one per route")+'</div>'+
+      '<div class="card"><div class="card__k">Registered address</div>'+tbw("To confirm","From ACRA record")+'</div>'+
+      '<div class="card"><div class="card__t" style="font-size:var(--t-sm)">Response time</div><p>We state a window and we meet it. A stated window that is missed is worse than none.</p></div>'+
+      '</div>'});
+}
+
+/* ============================================================
+   DROPDOWN, DOCS, ROUTER
+   ============================================================ */
+var ddBtn, ddPanel;
+function buildDropdown(){
+  ddBtn=document.getElementById('ddBtn'); ddPanel=document.getElementById('ddPanel');
+  var groups=["Range operations","Observation &amp; analytics","Accountability","Sustainment","Facility services"];
+  ddPanel.innerHTML = groups.map(function(g){
+    return '<div class="dd__col"><h4>'+g+'</h4>'+
+      PRODUCTS.filter(function(p){return p.group===g;}).map(function(p){
+        return '<a class="dd__item" href="#/products/'+p.id+'"><span class="dd__acr">'+p.acr+'</span>'+
+          '<span class="dd__nm">'+p.name+'</span></a>';
+      }).join('')+'</div>';
+  }).join('')+
+  '<div class="dd__foot"><a class="dd__all" href="#/products">All eight subsystems &rarr;</a>'+
+  '<span class="dd__note">VMS is video for training; VSS is facility security CCTV, and is not ours</span></div>';
+
+  ddBtn.addEventListener('click',function(e){ e.stopPropagation(); toggleDD(ddPanel.hidden); });
+  if(window.matchMedia('(hover:hover) and (pointer:fine)').matches){
+    var dd=ddBtn.parentNode, t;
+    dd.addEventListener('mouseenter',function(){ clearTimeout(t); toggleDD(true); });
+    dd.addEventListener('mouseleave',function(){ t=setTimeout(function(){ toggleDD(false); },160); });
+  }
+  ddPanel.addEventListener('click',function(e){ if(e.target.closest('a')) toggleDD(false); });
+  document.addEventListener('click',function(e){ if(!ddPanel.hidden && !e.target.closest('.dd')) toggleDD(false); });
+  document.addEventListener('keydown',function(e){
+    if(e.key==='Escape' && !ddPanel.hidden){ toggleDD(false); ddBtn.focus(); }
+    if(e.key==='ArrowDown' && document.activeElement===ddBtn){
+      e.preventDefault(); toggleDD(true);
+      var f=ddPanel.querySelector('a'); if(f) f.focus();
+    }
+  });
+  ddPanel.addEventListener('focusout',function(e){
+    if(!ddPanel.contains(e.relatedTarget) && e.relatedTarget!==ddBtn) toggleDD(false);
+  });
+}
+function toggleDD(open){ if(!ddPanel) return; ddPanel.hidden=!open; ddBtn.setAttribute('aria-expanded',open?'true':'false'); }
+
+function buildDocs(){
+  var btn=document.getElementById('docsBtn'), panel=document.getElementById('docsPanel');
+  if(!btn||!panel) return;
+  function set(open){ panel.hidden=!open; btn.setAttribute('aria-expanded', open?'true':'false'); }
+  btn.addEventListener('click',function(e){ e.stopPropagation(); set(panel.hidden); });
+  panel.addEventListener('click',function(e){ if(e.target.closest('a')) set(false); });
+  document.addEventListener('click',function(e){ if(!panel.hidden && !e.target.closest('.docs')) set(false); });
+  document.addEventListener('keydown',function(e){ if(e.key==='Escape' && !panel.hidden){ set(false); btn.focus(); } });
+}
+
+var ROUTES={'':pHome,'/':pHome,'/platform':pPlatform,'/products':pProducts,
+  '/integration':pIntegration,'/assurance':pAssurance,'/company':pCompany,'/contact':pContact};
+
+function render(){
+  var h=(location.hash||'#/').replace(/^#/,''), html, navKey=h;
+  var pm=h.match(/^\/products\/([a-z]+)$/);
+  if(pm){ html=pProduct(pm[1]); navKey='/products'; }
+  else if(ROUTES[h]){ html=ROUTES[h](); }
+  else { html=pHome(); navKey='/'; }
+  document.getElementById('main').innerHTML=html;
+  var items=document.querySelectorAll('#nav [data-route]');
+  for(var i=0;i<items.length;i++){
+    if(items[i].getAttribute('data-route')===navKey) items[i].setAttribute('aria-current','page');
+    else items[i].removeAttribute('aria-current');
+  }
+  toggleDD(false);
+  bindChain();
+  window.scrollTo(0,0);
+}
+function bindChain(){
+  var btns=document.querySelectorAll('.step[data-step]');
+  for(var i=0;i<btns.length;i++){
+    btns[i].addEventListener('click',function(){
+      var idx=parseInt(this.getAttribute('data-step'),10);
+      var all=document.querySelectorAll('.step[data-step]');
+      for(var j=0;j<all.length;j++) all[j].setAttribute('aria-selected', j===idx?'true':'false');
+      var d=document.getElementById('detail');
+      if(d) d.outerHTML=chainDetail(idx);
+    });
+  }
+}
+
+window.addEventListener('hashchange',render);
+buildDropdown();
+buildDocs();
+render();
+</script>
+
+</body>
+</html>

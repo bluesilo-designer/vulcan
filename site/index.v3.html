@@ -1,0 +1,544 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Blue Silo. Range Training Systems</title>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500&display=swap">
+<style>
+/* ============================================================
+   BLUE SILO — hi-fidelity, dark-committed.
+   Single theme by deliberate choice: the subject is a facility
+   that runs before dawn, the reference is dark, and the
+   schematic language only resolves on a dark ground.
+   ============================================================ */
+:root{
+  color-scheme:dark;
+
+  --void:#08090B;        /* page ground */
+  --deep:#0C0E11;        /* band alt */
+  --panel:#12151A;       /* raised surface */
+  --panel-2:#171B21;
+
+  --ink:#E8EBE6;         /* 16.4:1 on void */
+  --ink-2:#A9B2B6;       /* 8.5:1  */
+  --ink-3:#7C868C;       /* 5.1:1  */
+
+  --line:#1E232A;
+  --line-2:#2B323A;
+  --line-3:#3C444D;
+
+  --brand:#5EA5FF;       /* 7.9:1 on void */
+  --brand-dim:#2E5F9E;
+  --brand-wash:#101A28;
+  --on-brand:#08090B;
+
+  --alert:#E9906A;
+
+  --display:"Archivo","Helvetica Neue",Arial,sans-serif;
+  --sans:"IBM Plex Sans",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;
+
+  /* type scale, 1.32 ratio, generous top end */
+  --t-2xs:11px; --t-xs:12.5px; --t-sm:14px; --t-base:16px;
+  --t-md:19px; --t-lg:25px; --t-xl:33px; --t-2xl:44px;
+  --t-hero:clamp(44px,7.4vw,96px);
+
+  --s1:4px; --s2:8px; --s3:12px; --s4:16px; --s5:24px;
+  --s6:36px; --s7:56px; --s8:88px; --s9:132px; --s10:180px;
+
+  --shell:1240px;
+  --gutter:clamp(20px,5vw,64px);
+  --ease:cubic-bezier(.16,1,.3,1);
+}
+
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  background:var(--void); color:var(--ink);
+  font-family:var(--sans); font-size:var(--t-base); line-height:1.6;
+  -webkit-font-smoothing:antialiased; text-rendering:optimizeLegibility;
+  overflow-x:hidden;
+}
+img,svg{max-width:100%;display:block}
+::selection{background:var(--brand-dim);color:var(--ink)}
+:where(a,button):focus-visible{outline:2px solid var(--brand);outline-offset:3px;border-radius:1px}
+
+.shell{max-width:var(--shell);margin:0 auto;padding-inline:var(--gutter)}
+.skip{position:absolute;left:-9999px;top:0;z-index:99;background:var(--ink);color:var(--void);padding:var(--s3) var(--s4);font-family:var(--mono);font-size:var(--t-xs)}
+.skip:focus{left:0}
+
+h1,h2,h3{margin:0;font-family:var(--display);letter-spacing:-.025em;text-wrap:balance}
+h1{font-size:var(--t-hero);font-weight:300;line-height:.98;max-width:15ch}
+h2{font-size:clamp(28px,3.4vw,var(--t-2xl));font-weight:400;line-height:1.06;max-width:20ch}
+h3{font-size:var(--t-md);font-weight:500;line-height:1.28;letter-spacing:-.012em}
+p{margin:0;color:var(--ink-2);max-width:60ch}
+.lead{font-size:var(--t-md);line-height:1.55;color:var(--ink-2);max-width:46ch}
+
+.label{font-family:var(--mono);font-size:var(--t-2xs);letter-spacing:.2em;text-transform:uppercase;color:var(--ink-3)}
+.rule{height:1px;background:var(--line);border:0;margin:0}
+
+/* ============================================================
+   NAV
+   ============================================================ */
+.nav{position:fixed;inset:0 0 auto 0;z-index:60;height:68px;display:flex;align-items:center;
+     background:rgba(8,9,11,.72);backdrop-filter:blur(14px);border-bottom:1px solid transparent}
+.nav.is-stuck{border-bottom-color:var(--line);background:rgba(8,9,11,.92)}
+.nav .shell{display:flex;align-items:center;gap:var(--s6);width:100%}
+.brand{display:inline-flex;align-items:center;gap:10px;text-decoration:none;flex:none}
+.brand .bw{font-family:var(--display);font-weight:500;font-size:17px;letter-spacing:-.01em;color:var(--ink);line-height:1}
+.brand .bt{display:block;font-family:var(--mono);font-size:8px;letter-spacing:.2em;text-transform:uppercase;color:var(--ink-3);margin-top:4px;line-height:1}
+.nav nav{display:flex;gap:var(--s6);margin-left:auto}
+.nav nav a{font-family:var(--mono);font-size:var(--t-2xs);letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3);text-decoration:none;padding:6px 0;position:relative}
+.nav nav a::after{content:"";position:absolute;left:0;right:0;bottom:0;height:1px;background:var(--brand);transform:scaleX(0);transform-origin:left;transition:transform .4s var(--ease)}
+.nav nav a:hover{color:var(--ink)}
+.nav nav a:hover::after{transform:scaleX(1)}
+.nav .cta{font-family:var(--mono);font-size:var(--t-2xs);letter-spacing:.14em;text-transform:uppercase;color:var(--ink);text-decoration:none;border:1px solid var(--line-3);padding:9px 16px;flex:none}
+.nav .cta:hover{border-color:var(--brand);color:var(--brand)}
+@media (max-width:880px){ .nav nav{display:none} }
+
+/* ============================================================
+   HERO — full bleed, schematic as ground
+   ============================================================ */
+.hero{position:relative;min-height:100dvh;display:flex;align-items:flex-end;padding:0 0 var(--s8);overflow:hidden}
+.hero__art{position:absolute;inset:0;z-index:0;display:flex;align-items:center;justify-content:flex-end;padding-right:max(0px,calc((100vw - var(--shell))/2))}
+.hero__art svg{width:min(78vw,1180px);height:auto;opacity:.5}
+.hero__scrim{position:absolute;inset:0;z-index:1;pointer-events:none;
+  background:
+   radial-gradient(120% 80% at 8% 92%, rgba(8,9,11,.98) 12%, rgba(8,9,11,.72) 42%, rgba(8,9,11,0) 78%),
+   linear-gradient(to top, var(--void) 2%, rgba(8,9,11,.35) 34%, rgba(8,9,11,.65) 100%);}
+.hero .shell{position:relative;z-index:2;width:100%}
+.hero h1{margin-bottom:var(--s5)}
+.hero .lead{margin-bottom:var(--s6)}
+.hero__cta{display:flex;flex-wrap:wrap;gap:var(--s3)}
+
+.btn{display:inline-flex;align-items:center;justify-content:center;min-height:50px;padding:0 26px;
+     font-family:var(--mono);font-size:var(--t-2xs);letter-spacing:.16em;text-transform:uppercase;
+     text-decoration:none;border:1px solid transparent;cursor:pointer;transition:all .3s var(--ease)}
+.btn--p{background:var(--brand);color:var(--on-brand);border-color:var(--brand)}
+.btn--p:hover{background:var(--ink);border-color:var(--ink)}
+.btn--g{color:var(--ink);border-color:var(--line-3);background:rgba(18,21,26,.5)}
+.btn--g:hover{border-color:var(--ink)}
+.btn:active{transform:translateY(1px)}
+
+/* the shelf: eight items, a thin rail, not cards */
+.shelf{position:relative;z-index:2;border-top:1px solid var(--line);margin-top:var(--s8)}
+.shelf__in{display:grid;grid-template-columns:repeat(2,1fr)}
+@media (min-width:640px){.shelf__in{grid-template-columns:repeat(4,1fr)}}
+@media (min-width:1100px){.shelf__in{grid-template-columns:repeat(8,1fr)}}
+.shelf a{display:block;padding:var(--s5) var(--s4) var(--s5) 0;text-decoration:none;border-right:1px solid var(--line);position:relative}
+.shelf a::before{content:"";position:absolute;inset:auto 0 0 0;height:1px;background:var(--brand);transform:scaleX(0);transform-origin:left;transition:transform .45s var(--ease)}
+.shelf a:hover::before{transform:scaleX(1)}
+.shelf a:hover b{color:var(--brand)}
+.shelf b{display:block;font-family:var(--display);font-weight:500;font-size:var(--t-sm);letter-spacing:.01em;color:var(--ink);transition:color .3s var(--ease)}
+.shelf span{display:block;font-family:var(--mono);font-size:10px;line-height:1.5;color:var(--ink-3);margin-top:6px}
+
+/* ============================================================
+   SECTIONS
+   ============================================================ */
+.band{padding:var(--s9) 0;border-top:1px solid var(--line)}
+.band--deep{background:var(--deep)}
+.band--bleed{padding-inline:0}
+.head{max-width:62ch;margin-bottom:var(--s8)}
+.head h2{margin-bottom:var(--s4)}
+
+/* chain: the signature moment */
+.chain{border-block:1px solid var(--line)}
+.chain__rail{display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:var(--line)}
+@media (min-width:620px){.chain__rail{grid-template-columns:repeat(5,1fr)}}
+@media (min-width:1080px){.chain__rail{grid-template-columns:repeat(10,1fr)}}
+.step{position:relative;background:var(--void);border:0;cursor:pointer;color:inherit;font:inherit;
+      text-align:left;padding:var(--s5) var(--s4) var(--s6);min-height:132px;display:flex;flex-direction:column;
+      transition:background .35s var(--ease)}
+.step::before{content:"";position:absolute;inset:0 0 auto 0;height:2px;background:transparent;transition:background .35s var(--ease)}
+.step:hover{background:var(--deep)}
+.step__n{font-family:var(--mono);font-size:10px;letter-spacing:.2em;color:var(--ink-3);font-variant-numeric:tabular-nums}
+.step__k{font-family:var(--display);font-weight:400;font-size:var(--t-md);letter-spacing:-.015em;color:var(--ink-2);margin-top:auto;transition:color .35s var(--ease)}
+.step__s{font-family:var(--mono);font-size:9.5px;color:var(--ink-3);margin-top:6px;line-height:1.5}
+.step[aria-selected="true"]{background:var(--brand-wash)}
+.step[aria-selected="true"]::before{background:var(--brand)}
+.step[aria-selected="true"] .step__k{color:var(--brand)}
+.step[aria-selected="true"] .step__n{color:var(--brand)}
+
+.panel{background:var(--deep);border-top:1px solid var(--line)}
+.panel__in{display:grid;grid-template-columns:1fr;gap:var(--s6);padding-block:var(--s8)}
+@media (min-width:900px){.panel__in{grid-template-columns:1fr 1fr;gap:var(--s9)}}
+.panel h3{font-size:var(--t-lg);font-weight:400;letter-spacing:-.02em;margin-bottom:var(--s4);max-width:17ch}
+.panel p{font-size:var(--t-base);line-height:1.7}
+.panel dl{display:grid;gap:var(--s5);align-content:start;margin:0}
+.panel dt{font-family:var(--mono);font-size:var(--t-2xs);letter-spacing:.16em;text-transform:uppercase;color:var(--ink-3);margin-bottom:var(--s2)}
+.panel dd{margin:0;font-size:var(--t-sm);color:var(--ink-2);line-height:1.6}
+
+/* the break: three statements, no cards */
+.breaks{display:grid;gap:0}
+.brk{display:grid;grid-template-columns:1fr;gap:var(--s4);padding:var(--s7) 0;border-top:1px solid var(--line)}
+@media (min-width:860px){.brk{grid-template-columns:minmax(0,7ch) minmax(0,26ch) 1fr;gap:var(--s7);align-items:start}}
+.brk:last-child{border-bottom:1px solid var(--line)}
+.brk__n{font-family:var(--mono);font-size:var(--t-sm);color:var(--brand);letter-spacing:.14em;padding-top:6px}
+.brk h3{font-size:var(--t-lg);font-weight:400;letter-spacing:-.02em;color:var(--ink)}
+.brk p{font-size:var(--t-sm);line-height:1.7;max-width:52ch}
+
+/* systems: a register, not a card grid */
+.reg{border-top:1px solid var(--line)}
+.reg a{display:grid;grid-template-columns:1fr;gap:var(--s2);padding:var(--s6) 0;border-bottom:1px solid var(--line);
+       text-decoration:none;color:inherit;position:relative;transition:padding-left .4s var(--ease)}
+@media (min-width:820px){.reg a{grid-template-columns:minmax(0,11ch) minmax(0,22ch) 1fr auto;gap:var(--s6);align-items:baseline}}
+.reg a:hover{padding-left:var(--s4)}
+.reg a:hover .reg__a{color:var(--brand)}
+.reg a::before{content:"";position:absolute;left:0;top:0;bottom:0;width:1px;background:var(--brand);transform:scaleY(0);transform-origin:top;transition:transform .4s var(--ease)}
+.reg a:hover::before{transform:scaleY(1)}
+.reg__a{font-family:var(--display);font-weight:500;font-size:var(--t-lg);letter-spacing:.01em;color:var(--ink);transition:color .3s var(--ease)}
+.reg__n{font-family:var(--sans);font-size:var(--t-sm);color:var(--ink-2)}
+.reg__r{font-size:var(--t-sm);color:var(--ink-3);max-width:46ch}
+.reg__g{font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3);white-space:nowrap}
+
+/* split with media slot */
+.split{display:grid;grid-template-columns:1fr;gap:var(--s7)}
+@media (min-width:980px){.split{grid-template-columns:1fr 1.1fr;gap:var(--s9);align-items:center}}
+.slot{position:relative;aspect-ratio:4/3;border:1px solid var(--line-2);background:
+   repeating-linear-gradient(45deg,transparent 0 9px,rgba(94,165,255,.045) 9px 10px), var(--panel);
+   display:flex;flex-direction:column;justify-content:flex-end;padding:var(--s5);gap:var(--s2)}
+.slot::before,.slot::after{content:"";position:absolute;background:var(--line-3)}
+.slot::before{left:var(--s4);top:var(--s4);width:18px;height:1px}
+.slot::after{left:var(--s4);top:var(--s4);width:1px;height:18px}
+.slot b{font-family:var(--mono);font-size:var(--t-2xs);letter-spacing:.16em;text-transform:uppercase;color:var(--brand)}
+.slot span{font-size:var(--t-sm);color:var(--ink-3);line-height:1.55;max-width:44ch}
+.facts{display:grid;gap:var(--s5);margin-top:var(--s6)}
+.fact{border-top:1px solid var(--line);padding-top:var(--s4)}
+.fact b{display:block;font-family:var(--display);font-weight:400;font-size:var(--t-md);color:var(--ink);letter-spacing:-.015em;margin-bottom:var(--s2)}
+.fact span{font-size:var(--t-sm);color:var(--ink-3);line-height:1.6}
+
+/* closing */
+.close{padding:var(--s10) 0;border-top:1px solid var(--line);text-align:left}
+.close h2{margin-bottom:var(--s5)}
+.close p{margin-bottom:var(--s7)}
+
+footer{border-top:1px solid var(--line);background:var(--deep)}
+footer .shell{display:grid;grid-template-columns:1fr;gap:var(--s6);padding-block:var(--s7) var(--s6)}
+@media (min-width:760px){footer .shell{grid-template-columns:1.6fr 1fr 1fr}}
+footer h4{font-family:var(--mono);font-size:var(--t-2xs);letter-spacing:.16em;text-transform:uppercase;color:var(--ink-3);margin:0 0 var(--s4);font-weight:400}
+footer a{display:block;font-size:var(--t-sm);color:var(--ink-2);text-decoration:none;margin-bottom:var(--s2)}
+footer a:hover{color:var(--brand)}
+footer p{font-size:var(--t-sm)}
+.colophon{border-top:1px solid var(--line);font-family:var(--mono);font-size:var(--t-2xs);color:var(--ink-3);padding-block:var(--s4);letter-spacing:.04em}
+
+/* ============================================================
+   MOTION — reveal on enter, IntersectionObserver driven
+   ============================================================ */
+@media (prefers-reduced-motion:no-preference){
+  .rv{opacity:0;transform:translateY(18px);transition:opacity .9s var(--ease),transform .9s var(--ease)}
+  .rv.in{opacity:1;transform:none}
+  .rv[data-d="1"]{transition-delay:.08s} .rv[data-d="2"]{transition-delay:.16s}
+  .rv[data-d="3"]{transition-delay:.24s} .rv[data-d="4"]{transition-delay:.32s}
+  .hero h1,.hero .lead,.hero__cta{opacity:0;transform:translateY(22px);animation:rise 1.1s var(--ease) forwards}
+  .hero .lead{animation-delay:.12s} .hero__cta{animation-delay:.22s}
+  .hero__art svg{opacity:0;animation:fadeArt 1.8s var(--ease) .2s forwards}
+  @keyframes rise{to{opacity:1;transform:none}}
+  @keyframes fadeArt{to{opacity:.5}}
+}
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="nav" id="nav">
+  <div class="shell">
+    <a class="brand" href="#top">
+      <svg width="24" height="26" viewBox="0 0 26 28" aria-hidden="true">
+        <path d="M4 3h9a6 6 0 0 1 0 12H8" fill="none" stroke="var(--brand)" stroke-width="3"/>
+        <path d="M22 25h-9a6 6 0 0 1 0-12h5" fill="none" stroke="var(--brand)" stroke-width="3"/>
+      </svg>
+      <span><span class="bw">Blue Silo</span><span class="bt">Transforming Digitally</span></span>
+    </a>
+    <nav aria-label="Primary">
+      <a href="#chain">The chain</a>
+      <a href="#systems">Systems</a>
+      <a href="#integration">Integration</a>
+      <a href="#assurance">Assurance</a>
+    </nav>
+    <a class="cta" href="#contact">Enquiries</a>
+  </div>
+</header>
+
+<main id="main">
+<div id="top"></div>
+
+<!-- ===================== HERO ===================== -->
+<section class="hero">
+  <div class="hero__art" aria-hidden="true">
+    <svg viewBox="0 0 800 520" fill="none">
+      <defs><pattern id="h" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+        <path d="M0 0V8" stroke="#2B323A" stroke-width="1"/></pattern></defs>
+      <rect x="32" y="32" width="736" height="456" stroke="#2B323A" stroke-dasharray="6 5"/>
+      <g stroke="#2B323A" fill="#12151A">
+        <rect x="48" y="52" width="64" height="40"/><rect x="48" y="142" width="64" height="40"/>
+        <rect x="48" y="230" width="64" height="52"/><rect x="48" y="332" width="64" height="40"/>
+        <rect x="48" y="422" width="64" height="40"/>
+      </g>
+      <g stroke="#5EA5FF" fill="none" stroke-width="1">
+        <path d="M112 72H124V256H112M112 162H124V256H112M112 352H124V256H112M112 442H124V256H112M112 256H152"/>
+      </g>
+      <g fill="#5EA5FF">
+        <rect x="76" y="68" width="8" height="8"/><rect x="76" y="158" width="8" height="8"/>
+        <rect x="73" y="249" width="14" height="14"/><rect x="76" y="348" width="8" height="8"/>
+        <rect x="76" y="438" width="8" height="8"/>
+        <rect x="149" y="101" width="6" height="6"/><rect x="149" y="161" width="6" height="6"/>
+        <rect x="149" y="221" width="6" height="6"/><rect x="149" y="281" width="6" height="6"/>
+        <rect x="149" y="341" width="6" height="6"/><rect x="149" y="401" width="6" height="6"/>
+      </g>
+      <rect x="152" y="76" width="478" height="12" fill="url(#h)"/>
+      <rect x="152" y="420" width="478" height="12" fill="url(#h)"/>
+      <rect x="638" y="76" width="30" height="356" fill="url(#h)"/>
+      <path d="M152 76V432M630 76V432" stroke="#3C444D"/>
+      <path d="M152 104H630M152 164H630M152 224H630M152 284H630M152 344H630M152 404H630" stroke="#1E232A"/>
+      <g stroke="#3C444D">
+        <path d="M614 98h12M620 98v12M614 158h12M620 158v12M614 218h12M620 218v12M614 278h12M620 278v12M614 338h12M620 338v12M614 398h12M620 398v12"/>
+        <path d="M560 470h120M560 465v10M600 467v6M640 467v6M680 465v10"/>
+      </g>
+      <g fill="#7C868C" font-family="IBM Plex Mono, monospace" font-size="8" letter-spacing="1.2">
+        <text x="48" y="46">ADMIN</text><text x="48" y="136">ARMSKOTE</text>
+        <text x="48" y="224" fill="#5EA5FF">CONTROL</text><text x="48" y="326">AMMO</text><text x="48" y="416">PLANT</text>
+        <text x="152" y="68">FIRING LINE</text><text x="630" y="68" text-anchor="end">TARGET LINE</text>
+        <text x="560" y="462">0</text><text x="680" y="462" text-anchor="end">100 m</text>
+      </g>
+    </svg>
+  </div>
+  <div class="hero__scrim"></div>
+  <div class="shell">
+    <h1>Eight systems that run a live&#8209;firing range</h1>
+    <p class="lead">A trainee arrives, registers, draws a weapon and ammunition, fires, is reviewed, and hands everything back.</p>
+    <div class="hero__cta">
+      <a class="btn btn--p" href="#systems">See the systems</a>
+      <a class="btn btn--g" href="#chain">How the chain works</a>
+    </div>
+  </div>
+</section>
+
+<div class="shelf">
+  <div class="shell"><div class="shelf__in" id="shelf"></div></div>
+</div>
+
+<!-- ===================== CHAIN ===================== -->
+<section class="band band--bleed" id="chain">
+  <div class="shell"><div class="head rv">
+    <h2>One training day, ten steps, nothing carried by hand</h2>
+    <p>Select a step. Each one names what happens, what data crosses to the next system, and what that moment is accountable for.</p>
+  </div></div>
+  <div class="chain">
+    <div class="chain__rail" id="rail" role="tablist" aria-label="The training day"></div>
+    <div class="panel"><div class="shell"><div class="panel__in" id="panel"></div></div></div>
+  </div>
+</section>
+
+<!-- ===================== THE BREAK ===================== -->
+<section class="band band--deep">
+  <div class="shell">
+    <div class="head rv">
+      <span class="label">Why the joins matter</span>
+      <h2 style="margin-top:var(--s4)">Accountability is lost between systems, not inside them</h2>
+    </div>
+    <div class="breaks">
+      <div class="brk rv"><div class="brk__n">01</div><h3>A signature is not an interface</h3>
+        <p>A weapon leaves the armskote in one system and appears in the session in another. What connects them is a form, and someone remembering to complete it while sixty people wait.</p></div>
+      <div class="brk rv" data-d="1"><div class="brk__n">02</div><h3>Numbers that live in separate ledgers</h3>
+        <p>What was issued sits in one record, what was fired in another, what came back in a third. The difference is found at the end of a long day, by hand, under pressure to release people.</p></div>
+      <div class="brk rv" data-d="2"><div class="brk__n">03</div><h3>Custody becomes memory</h3>
+        <p>Between the counter and the firing point, no system can say who is holding what, or where they are, at this moment. It gets reconstructed afterwards, if it is ever questioned.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== SYSTEMS ===================== -->
+<section class="band" id="systems">
+  <div class="shell">
+    <div class="head rv">
+      <h2>Eight subsystems, designed as one chain</h2>
+      <p>Each is deliverable on its own. Each is worth more when the step before it and the step after it are held by the same design.</p>
+    </div>
+    <div class="reg rv" id="reg"></div>
+  </div>
+</section>
+
+<!-- ===================== ISOLATION ===================== -->
+<section class="band band--deep" id="integration">
+  <div class="shell">
+    <div class="split">
+      <div class="rv">
+        <h2>Built for a facility with no route out</h2>
+        <p style="margin-top:var(--s5)">Defence sites do not have an internet path, and software that assumes one fails on its first morning. Licensing, validation and operation are designed for an isolated environment as the normal case, not as a degraded one.</p>
+        <div class="facts">
+          <div class="fact"><b>Air gapped by design</b><span>Activation travels on removable media or as a scanned code. Nothing calls out at runtime.</span></div>
+          <div class="fact"><b>Redundant where it counts</b><span>Clustered application nodes, active and standby at the network edge and for directory services.</span></div>
+          <div class="fact"><b>Separated by function</b><span>Each subsystem runs in its own cluster, so the blast radius of a fault is the function it belongs to.</span></div>
+        </div>
+      </div>
+      <div class="rv" data-d="1">
+        <!-- IMAGE SLOT: see note to the user. Higgsfield was unavailable at build time. -->
+        <div class="slot">
+          <b>Image needed</b>
+          <span>Control room interior at low light, wide, no faces. Operator consoles facing a wall of lane displays. 4:3, desaturated, no visible branding.</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== ASSURANCE ===================== -->
+<section class="band" id="assurance">
+  <div class="shell">
+    <div class="split">
+      <div class="rv">
+        <!-- IMAGE SLOT -->
+        <div class="slot" style="aspect-ratio:3/2">
+          <b>Image needed</b>
+          <span>Empty indoor range, lanes receding to the target line, before dawn, lights low. No people, no weapons in frame. 3:2.</span>
+        </div>
+      </div>
+      <div class="rv" data-d="1">
+        <h2>Our software is never the only thing standing between a session and an incident</h2>
+        <p style="margin-top:var(--s5)">The emergency stop path does not depend on our control software being healthy, reachable, or even running. Where computer vision sees a person forward of the firing line, firing is inhibited and targetry paused until the area is confirmed clear.</p>
+        <div class="facts">
+          <div class="fact"><b>Five controls on the product itself</b><span>Licence protection, secure validation, offline readiness, tamper protection, and standards alignment stated without inflation.</span></div>
+          <div class="fact"><b>Criticality in layers</b><span>Execution, accountability, observation and administration each carry their own availability target and defined degraded mode.</span></div>
+        </div>
+        <div style="margin-top:var(--s7)"><a class="btn btn--g" href="#contact">Request the assurance summary</a></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== CLOSE ===================== -->
+<section class="close" id="contact">
+  <div class="shell rv">
+    <h2>Talk to the people who build it</h2>
+    <p class="lead">Procurement, technical integration, or anything else. Three routes reach three different inboxes, so the question lands with someone who can answer it.</p>
+    <a class="btn btn--p" href="#contact">Send an enquiry</a>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="shell">
+    <div>
+      <h4>Blue Silo</h4>
+      <p>Software for range training complexes, from controlled access at the gate to the closing weapon and ammunition account at the end of the day.</p>
+    </div>
+    <div>
+      <h4>Systems</h4>
+      <div id="fnav"></div>
+    </div>
+    <div>
+      <h4>Company</h4>
+      <a href="#chain">The chain</a><a href="#integration">Integration</a>
+      <a href="#assurance">Assurance</a><a href="#contact">Enquiries</a>
+    </div>
+  </div>
+  <div class="shell"><div class="colophon">Blue Silo Pte. Ltd. Registered in Singapore. Draft, content and imagery not final.</div></div>
+</footer>
+
+<script>
+var SYS=[
+ {id:"rcs",a:"RCS",n:"Range Control System",r:"Prepares a session, runs it in the moment, files the record",g:"Range operations"},
+ {id:"vms",a:"VMS",n:"Video Management System",r:"Records the range, and finds the moment again afterwards",g:"Observation"},
+ {id:"eva",a:"EVA",n:"Edge Video Analytics",r:"Watches the perimeter and raises an alert during, not after",g:"Observation"},
+ {id:"pwats",a:"PWATS",n:"Personnel, Weapons and Ammunition Tracking",r:"Positions everything to sub metre, refreshed every second",g:"Accountability"},
+ {id:"ewms",a:"EWMS",n:"Electronic Weapon Management System",r:"Holds the weapons, and the history behind every serial",g:"Accountability"},
+ {id:"eams",a:"EAMS",n:"Electronic Ammunition Management System",r:"Issues, receives and accounts for ammunition daily",g:"Accountability"},
+ {id:"hums",a:"HUMS",n:"Health and Usage Monitoring System",r:"Measures wear against work done, and predicts the failure",g:"Sustainment"},
+ {id:"as",a:"AS",n:"Administrative System",r:"Clears people and vehicles, and gets them to the range on time",g:"Facility"}
+];
+var ROLE={rcs:"Runs the range",vms:"Sees and remembers",eva:"Watches the perimeter",pwats:"Knows where everything is",
+  ewms:"Holds the weapons",eams:"Holds the ammunition",hums:"Predicts what will break",as:"Gets people in"};
+
+var CHAIN=[
+ {k:"Access",s:"AS · EVA",t:"Controlled access into the facility",
+  b:"Identity and booking are verified at the guard house from a scanned credential or booking code, and the vehicle licence plate is captured and matched automatically. The verification result and clearance status are shown to the guard before the gate opens.",
+  d:"Identity, booking reference, vehicle clearance, licence plate",h:"Who is authorised to be inside today"},
+ {k:"Register",s:"AS · PWATS",t:"Self registration and tracker issue",
+  b:"The trainee registers at a kiosk, completes facial registration, and is onboarded automatically with an assigned location displayed. An active tag is collected and bound to that person for the duration of the visit.",
+  d:"Registration record, assigned location, tracker binding",h:"The link between a person and a trackable identity"},
+ {k:"Brief",s:"RCS",t:"Briefing, against the real roll",
+  b:"Entry to the briefing room is by multi factor authentication. The conductor reviews the final nominal roll built from actual kiosk registrations, adjusts where needed, and only then does the session become real.",
+  d:"Final nominal roll, session assignment",h:"The confirmed composition of the detail"},
+ {k:"Draw",s:"EWMS · EAMS",t:"Weapon and ammunition drawn",
+  b:"Authentication unlocks the assigned locker and the withdrawal is confirmed by the system rather than by memory. Ammunition is issued against the assigned package, verified by type and quantity, and receipt is confirmed.",
+  d:"Weapon serial, locker event, ammunition type and quantity",h:"Custody, from this moment until return"},
+ {k:"Prepare",s:"RCS",t:"Pre conduct verification",
+  b:"Range, safety systems and equipment readiness are verified and submitted as a digital checklist. The approved exercise is loaded, a dry run is conducted, and only then is the range confirmed ready.",
+  d:"Readiness checklist, loaded exercise, dry run result",h:"Evidence the range was fit before firing began"},
+ {k:"Conduct",s:"RCS · VMS",t:"The serial runs",
+  b:"Mission execution is driven from a fixed client in the control room and a portable client inside the range. Targetry and effects fire on plan, the session records, and E-Stop halts everything immediately whether triggered physically or virtually.",
+  d:"Scenario state, target and effect events, safety state",h:"Authority to start, pause and stop"},
+ {k:"Observe",s:"VMS · EVA",t:"Computer vision watches with the operator",
+  b:"Muzzle discipline, unattended weapons, presence in the butt area, and smoke or fire are each detected, raised as an alert, captured as a short evidence clip and written to the timeline. Where a person is seen downrange, firing is inhibited until the area is confirmed clear.",
+  d:"Detections, alerts, evidence clips, timeline markers",h:"What happened, at the moment it happened"},
+ {k:"Review",s:"RCS · VMS",t:"After action review from the timeline",
+  b:"Results and feedback are reviewed at the kiosk, debriefing runs playback against the marked event timeline, and reshoots are identified and scheduled. Because the markers were made during the serial, the debrief runs from the record that will be filed.",
+  d:"Event timeline, results, instructor feedback",h:"The assessment, tied to evidence"},
+ {k:"Return",s:"EWMS · EAMS",t:"Returned, verified and accounted for",
+  b:"The weapon is verified on return with computer vision support and a declaration, magazines and unexpended rounds are returned, defects and cleaning are recorded against the serial, and daily accounting closes.",
+  d:"Return state, defects, cleaning record, reconciliation",h:"The closing account"},
+ {k:"Sustain",s:"HUMS",t:"Health and usage of everything that ran",
+  b:"Health, usage and utilisation are collected continuously from every connected system, feeding failure prediction, condition based maintenance, spare part forecasting and operational availability reporting.",
+  d:"Health, utilisation, fault events, reliability, availability",h:"Whether the facility is fit for tomorrow"}
+];
+
+/* shelf */
+document.getElementById('shelf').innerHTML = SYS.map(function(s){
+  return '<a href="#systems"><b>'+s.a+'</b><span>'+ROLE[s.id]+'</span></a>';
+}).join('');
+
+/* register */
+document.getElementById('reg').innerHTML = SYS.map(function(s){
+  return '<a href="#systems"><span class="reg__a">'+s.a+'</span><span class="reg__n">'+s.n+'</span>'+
+    '<span class="reg__r">'+s.r+'</span><span class="reg__g">'+s.g+'</span></a>';
+}).join('');
+
+/* footer nav */
+document.getElementById('fnav').innerHTML = SYS.map(function(s){
+  return '<a href="#systems">'+s.n+'</a>';
+}).join('');
+
+/* chain */
+var rail=document.getElementById('rail'), panel=document.getElementById('panel');
+rail.innerHTML = CHAIN.map(function(c,i){
+  return '<button class="step" type="button" role="tab" data-i="'+i+'" aria-selected="'+(i===0)+'">'+
+    '<span class="step__n">'+('0'+(i+1)).slice(-2)+'</span>'+
+    '<span class="step__k">'+c.k+'</span>'+
+    '<span class="step__s">'+c.s+'</span></button>';
+}).join('');
+function paint(i){
+  var c=CHAIN[i];
+  panel.innerHTML='<div><h3>'+c.t+'</h3><p>'+c.b+'</p></div>'+
+    '<dl><div><dt>Data that moves</dt><dd>'+c.d+'</dd></div>'+
+    '<div><dt>What this step holds</dt><dd>'+c.h+'</dd></div>'+
+    '<div><dt>Subsystems</dt><dd>'+c.s+'</dd></div></dl>';
+}
+rail.addEventListener('click',function(e){
+  var b=e.target.closest('.step'); if(!b) return;
+  var i=+b.dataset.i;
+  rail.querySelectorAll('.step').forEach(function(s){ s.setAttribute('aria-selected', s===b); });
+  paint(i);
+});
+paint(0);
+
+/* nav shadow */
+var nav=document.getElementById('nav');
+var sentinel=document.getElementById('top');
+new IntersectionObserver(function(es){ nav.classList.toggle('is-stuck', !es[0].isIntersecting); },
+  {rootMargin:'-40px 0px 0px 0px'}).observe(sentinel);
+
+/* reveal */
+if(!window.matchMedia('(prefers-reduced-motion: reduce)').matches){
+  var io=new IntersectionObserver(function(es){
+    es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
+  },{threshold:.15});
+  document.querySelectorAll('.rv').forEach(function(el){ io.observe(el); });
+}else{
+  document.querySelectorAll('.rv').forEach(function(el){ el.classList.add('in'); });
+}
+</script>
+</body>
+</html>
