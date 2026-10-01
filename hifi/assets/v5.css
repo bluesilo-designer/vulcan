@@ -1,0 +1,240 @@
+/* ============================================================
+   VERSION 5. Footage led.
+   Loads last, after app.css, v3.css, v4.css and alt.css.
+   Only adds and overrides; it defines no tokens of its own.
+
+   The change from v4: v4 argued the positioning in text on a
+   schematic ground. v5 keeps every word of that argument and
+   lets real footage carry the first screen, so the claim is
+   seen before it is read.
+   ============================================================ */
+
+/* ---------- hero, full bleed video ---------- */
+.v5hero{position:relative;min-height:100dvh;display:flex;align-items:flex-end;overflow:hidden;
+        padding-block:var(--s9) var(--s7)}
+.v5hero__bed{position:absolute;inset:0;z-index:0;background:var(--void)}
+.v5hero__bed .media{position:absolute;inset:0;aspect-ratio:auto;border:0;margin:0}
+.v5hero__bed .media::before,.v5hero__bed .media::after{display:none}
+
+/* Two veils. A vertical one so the type sits on near-black, and a
+   corner one so the lower left stays readable whatever the frame does. */
+.v5hero__veil{position:absolute;inset:0;z-index:1;pointer-events:none;background:
+  linear-gradient(to top, var(--void) 2%, rgba(8,9,11,.72) 30%, rgba(8,9,11,.3) 64%, rgba(8,9,11,.55) 100%),
+  radial-gradient(80% 64% at 2% 98%, rgba(8,9,11,.94) 0%, rgba(8,9,11,0) 60%)}
+.v5hero .shell{position:relative;z-index:2;width:100%}
+.v5hero h1{font-size:var(--t-hero);font-weight:300;line-height:.95;max-width:17ch;margin-bottom:var(--s5)}
+.v5hero .lead{max-width:56ch;margin-bottom:var(--s6)}
+
+/* Scroll cue. A measured line, not a bouncing chevron. */
+.v5cue{position:absolute;right:var(--gutter);bottom:var(--s7);z-index:2;display:flex;align-items:center;
+       gap:var(--s3);font-family:var(--mono);font-size:var(--t-2xs);letter-spacing:.18em;
+       text-transform:uppercase;color:var(--ink-3)}
+.v5cue i{display:block;width:1px;height:52px;background:linear-gradient(to bottom,var(--line-3),transparent)}
+@media (max-width:860px){.v5cue{display:none}}
+
+/* ---------- trust row ---------- */
+.v5trust{border-top:1px solid var(--line);border-bottom:1px solid var(--line);background:var(--deep)}
+.v5trust .shell{display:grid;gap:var(--s5);padding-block:var(--s6)}
+@media (min-width:900px){.v5trust .shell{grid-template-columns:minmax(0,22ch) 1fr;gap:var(--s7);align-items:center}}
+.v5trust p{font-size:var(--t-sm);color:var(--ink-3);line-height:1.65;max-width:70ch;margin:0}
+.v5trust b{color:var(--ink-2);font-weight:500}
+
+/* ---------- portfolio register, media on the right ---------- */
+.v5reg{border-top:1px solid var(--line)}
+.v5reg__r{display:grid;grid-template-columns:1fr;gap:var(--s4);padding-block:var(--s7);
+          border-bottom:1px solid var(--line);position:relative}
+@media (min-width:980px){
+  .v5reg__r{grid-template-columns:minmax(0,4ch) minmax(0,30ch) 1fr minmax(0,20ch);
+            gap:var(--s6);align-items:start}
+}
+.v5reg__n{font-family:var(--mono);font-size:var(--t-2xs);letter-spacing:.14em;color:var(--ink-3);padding-top:6px}
+.v5reg__h{display:flex;flex-direction:column;gap:var(--s2)}
+.v5reg__b{font-family:var(--display);font-weight:300;font-size:clamp(26px,3.4vw,42px);
+          letter-spacing:-.03em;line-height:1;color:var(--ink)}
+.v5reg__c{font-family:var(--mono);font-size:var(--t-2xs);letter-spacing:.14em;
+          text-transform:uppercase;color:var(--ink-3)}
+.v5reg__d{font-size:var(--t-sm);color:var(--ink-2);line-height:1.7;margin:0;max-width:62ch}
+.v5reg__l{display:flex;flex-direction:column;gap:1px;background:var(--line)}
+.v5reg__l a{display:flex;align-items:center;gap:var(--s3);background:var(--void);padding:11px 13px;
+            text-decoration:none;color:var(--ink-2);font-size:var(--t-sm);transition:all .3s var(--ease)}
+.v5reg__l a:hover{background:var(--brand-wash);color:var(--brand)}
+.v5reg__l .ph{font-size:17px;color:var(--line-3);flex:none;transition:color .3s var(--ease)}
+.v5reg__l a:hover .ph{color:var(--brand)}
+.v5reg__l b{font-family:var(--mono);font-size:var(--t-2xs);letter-spacing:.1em;color:var(--ink-3);flex:none}
+.v5reg__t{display:inline-block;margin-top:var(--s3);font-family:var(--mono);font-size:var(--t-2xs);
+          letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3)}
+
+/* ---------- statement over media ---------- */
+.v5say{position:relative;min-height:74dvh;display:flex;align-items:center;overflow:hidden;
+       border-top:1px solid var(--line)}
+.v5say__bed{position:absolute;inset:0;z-index:0}
+.v5say__bed .media{position:absolute;inset:0;aspect-ratio:auto;border:0;margin:0}
+.v5say__bed .media::before,.v5say__bed .media::after{display:none}
+.v5say__veil{position:absolute;inset:0;z-index:1;pointer-events:none;
+  background:linear-gradient(100deg, rgba(8,9,11,.95) 4%, rgba(8,9,11,.74) 42%, rgba(8,9,11,.22) 92%)}
+.v5say--r .v5say__veil{background:linear-gradient(260deg, rgba(8,9,11,.95) 4%, rgba(8,9,11,.74) 42%, rgba(8,9,11,.22) 92%)}
+.v5say .shell{position:relative;z-index:2;width:100%;padding-block:var(--s8)}
+.v5say--r .shell{display:flex;justify-content:flex-end}
+.v5say__in{max-width:54ch}
+.v5say h2{font-size:clamp(28px,4.2vw,54px);font-weight:300;line-height:1.05;max-width:20ch;
+          margin-bottom:var(--s5)}
+.v5say p{max-width:52ch;margin:0}
+
+/* ---------- assurance split, estop ---------- */
+.v5stop{display:grid;grid-template-columns:1fr;gap:var(--s6);margin-top:var(--s8);
+        border-top:1px solid var(--line);padding-top:var(--s7)}
+@media (min-width:900px){.v5stop{grid-template-columns:1fr 1fr;gap:var(--s8);align-items:center}}
+.v5stop h3{font-family:var(--display);font-weight:300;font-size:var(--t-xl);letter-spacing:-.025em;
+           line-height:1.12;margin-bottom:var(--s4)}
+.v5stop p{font-size:var(--t-base);line-height:1.7;margin:0 0 var(--s5)}
+
+/* ---------- reduced motion ---------- */
+@media (prefers-reduced-motion:reduce){
+  .v5hero__bed .media__asset,.v5say__bed .media__asset{transition:none}
+}
+
+/* ============================================================
+   PRODUCT PAGES. Scroll driven stage.
+
+   Everything here runs on CSS scroll driven animation
+   (view-timeline / scroll-timeline). No scroll listener, no
+   requestAnimationFrame loop, nothing on the main thread. The
+   whole block is wrapped in @supports and in a reduced motion
+   guard, so a browser without it gets a clean static layout
+   rather than a broken one.
+   ============================================================ */
+
+/* ---- the pinned cinematic stage ---- */
+.pv{position:relative;height:190vh;margin-bottom:var(--s8)}
+.pv__stick{position:sticky;top:0;height:100dvh;overflow:hidden;background:var(--void)}
+.pv__stick .media{position:absolute;inset:0;aspect-ratio:auto;border:0;margin:0;
+                  width:100%;height:100%}
+.pv__stick .media::before,.pv__stick .media::after{display:none}
+.pv__stick .media__asset{transform-origin:50% 50%}
+
+.pv__veil{position:absolute;inset:0;z-index:1;pointer-events:none;background:
+  linear-gradient(to top, var(--void) 1%, rgba(8,9,11,.55) 26%, rgba(8,9,11,.12) 56%, rgba(8,9,11,.5) 100%),
+  radial-gradient(74% 58% at 3% 97%, rgba(8,9,11,.9) 0%, rgba(8,9,11,0) 62%)}
+
+.pv__cap{position:absolute;left:var(--gutter);right:var(--gutter);bottom:var(--s7);z-index:2;
+         display:flex;flex-direction:column;gap:var(--s3);max-width:46ch}
+.pv__cap .label{color:var(--brand)}
+.pv__cap b{font-family:var(--display);font-weight:300;font-size:clamp(22px,2.7vw,36px);
+           letter-spacing:-.025em;line-height:1.1;color:var(--ink)}
+.pv__cap span{font-size:var(--t-sm);color:var(--ink-2);line-height:1.6}
+
+/* frame ticks, so the stage reads as a measured frame not a banner */
+.pv__ticks{position:absolute;inset:var(--s5);z-index:2;pointer-events:none}
+.pv__ticks i{position:absolute;width:13px;height:13px}
+.pv__ticks i::before,.pv__ticks i::after{content:"";position:absolute;background:var(--line-3)}
+.pv__ticks i::before{width:13px;height:1px}
+.pv__ticks i::after{width:1px;height:13px}
+.pv__ticks i:nth-child(1){top:0;left:0}
+.pv__ticks i:nth-child(2){top:0;right:0}
+.pv__ticks i:nth-child(2)::before,.pv__ticks i:nth-child(2)::after{right:0}
+.pv__ticks i:nth-child(3){bottom:0;left:0}
+.pv__ticks i:nth-child(3)::before,.pv__ticks i:nth-child(3)::after{bottom:0}
+.pv__ticks i:nth-child(4){bottom:0;right:0}
+.pv__ticks i:nth-child(4)::before,.pv__ticks i:nth-child(4)::after{bottom:0;right:0}
+@media (max-width:760px){.pv{height:150vh}.pv__ticks{display:none}}
+
+/* the dependencies band loses its duplicate figure, so it goes single column */
+.split--solo{grid-template-columns:1fr !important}
+.split--solo>*{max-width:76ch}
+
+/* ---- read progress, product pages only ---- */
+.pv-prog{position:fixed;left:0;top:0;height:2px;width:100%;z-index:90;
+         background:var(--brand);transform:scaleX(0);transform-origin:0 50%;
+         opacity:0;pointer-events:none}
+body.is-product .pv-prog{opacity:1}
+
+/* ---- the scroll driven part ---- */
+@supports (animation-timeline:view()){
+  @media (prefers-reduced-motion:no-preference){
+
+    /* the runway drives the stage */
+    .pv{view-timeline-name:--pvrun;view-timeline-axis:block}
+
+    /* slow drift and settle across the pin, the signature move */
+    .pv__stick .media__asset{
+      animation:pvDrift linear both;
+      animation-timeline:--pvrun;
+      animation-range:entry 0% exit 100%;
+    }
+    @keyframes pvDrift{
+      from{transform:scale(1.16) translate3d(0,-1.6%,0)}
+      to  {transform:scale(1.01) translate3d(0,1.6%,0)}
+    }
+
+    /* caption arrives once the stage is actually pinned */
+    .pv__cap{
+      animation:pvCap linear both;
+      animation-timeline:--pvrun;
+      animation-range:entry 42% entry 86%;
+    }
+    @keyframes pvCap{
+      from{opacity:0;transform:translate3d(0,20px,0)}
+      to  {opacity:1;transform:none}
+    }
+
+    /* ends darken, so the stage joins the sections around it */
+    .pv__veil{
+      animation:pvVeil linear both;
+      animation-timeline:--pvrun;
+      animation-range:entry 0% exit 100%;
+    }
+    @keyframes pvVeil{
+      0%  {opacity:1}
+      22% {opacity:.72}
+      78% {opacity:.72}
+      100%{opacity:1}
+    }
+
+    /* capability blocks rise in sequence as the list is read */
+    .caps .cap{
+      animation:pvRise linear both;
+      animation-timeline:view();
+      animation-range:entry 4% entry 54%;
+    }
+    @keyframes pvRise{
+      from{opacity:0;transform:translate3d(0,24px,0)}
+      to  {opacity:1;transform:none}
+    }
+
+    /* interface rows settle one after another */
+    .tbl tbody tr{
+      animation:pvRow linear both;
+      animation-timeline:view();
+      animation-range:entry 0% entry 42%;
+    }
+    @keyframes pvRow{
+      from{opacity:0;transform:translate3d(-10px,0,0)}
+      to  {opacity:1;transform:none}
+    }
+
+    /* read progress for the whole document */
+    body.is-product .pv-prog{
+      animation:pvProg linear both;
+      animation-timeline:scroll(root block);
+    }
+    @keyframes pvProg{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+  }
+}
+
+/* ------------------------------------------------------------
+   app.css sets body{overflow-x:hidden}. That makes the body a
+   scroll container, the overflow propagates to the viewport, and
+   Chrome then reports the root scroller as inactive to every
+   view timeline, so no scroll driven animation on this page ran
+   at all. clip prevents the same horizontal scroll without
+   creating a scroll container. Scoped to v5 so the other
+   variants are untouched.
+   ------------------------------------------------------------ */
+body{overflow-x:clip}
+
+/* Staggered reveal for the capability blocks, driven by the project's
+   existing IntersectionObserver rather than by scroll position, so it
+   works whether or not scroll timelines are available. */
+@media (prefers-reduced-motion:no-preference){
+  .caps .cap.rv{transition-delay:calc(var(--i,0) * .055s)}
+}

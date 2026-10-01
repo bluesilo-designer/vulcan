@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Blue Silo. Defence and Security Technology</title>
+<meta name="description" content="Blue Silo is a defence and security technology company building range control, vision AI, security and accountability systems.">
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500&display=swap">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.1/src/regular/style.css">
+<link rel="stylesheet" href="assets/app.css">
+<link rel="stylesheet" href="assets/v3.css">
+<link rel="stylesheet" href="assets/v4.css">
+<link rel="stylesheet" href="assets/alt.css">
+<link rel="stylesheet" href="assets/v5.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="nav" id="nav">
+  <div class="shell">
+    <a class="brand" href="#/">
+      <svg width="24" height="26" viewBox="0 0 26 28" aria-hidden="true">
+        <path d="M4 3h9a6 6 0 0 1 0 12H8" fill="none" stroke="var(--brand)" stroke-width="3"/>
+        <path d="M22 25h-9a6 6 0 0 1 0-12h5" fill="none" stroke="var(--brand)" stroke-width="3"/>
+      </svg>
+      <span><span class="bw">Blue Silo</span><span class="bt">Transforming Digitally</span></span>
+    </a>
+    <nav aria-label="Primary">
+      <div class="dd">
+        <button type="button" id="mBtn" data-route="/products" aria-expanded="false" aria-controls="mPanel">
+          Systems <span class="caret" aria-hidden="true"></span>
+        </button>
+      </div>
+      <a href="#/integration" data-route="/integration">Integration</a>
+      <a href="#/assurance" data-route="/assurance">Assurance</a>
+      <a href="#/company" data-route="/company">Company</a>
+    </nav>
+    <a class="cta" href="#/contact">Enquiries</a>
+  </div>
+</header>
+<div class="menu" id="mPanel" hidden></div>
+
+<main id="main"></main>
+
+<footer>
+  <div class="shell">
+    <div>
+      <h4>Blue Silo</h4>
+      <p>Defence and security technology. Range control, vision AI, security and accountability systems, each available on its own.</p>
+    </div>
+    <div>
+      <h4>Systems</h4>
+      <a href="#/products/rcs">Vulcan, range control</a>
+      <a href="#/products/vms">Excel, video management</a>
+      <a href="#/products/eva">Excel, vision AI</a>
+      <a href="#/products/pwats">Personnel, Weapons and Ammunition Tracking</a>
+      <a href="#/products/ewms">Electronic Weapon Management</a>
+      <a href="#/products/eams">Electronic Ammunition Management</a>
+      <a href="#/products/hums">Health and Usage Monitoring</a>
+      <a href="#/products/as">Centrix, security and access</a>
+    </div>
+    <div>
+      <h4>Company</h4>
+      <a href="#/products">All systems</a>
+      <a href="#/integration">Integration</a>
+      <a href="#/assurance">Assurance</a>
+      <a href="#/company">About Blue Silo</a>
+      <a href="#/contact">Enquiries</a>
+    </div>
+  </div>
+  <div class="shell"><div class="colophon">Blue Silo Pte. Ltd. Registered in Singapore. Draft, content and imagery not final. Imagery is generated for layout and does not depict any real facility.</div></div>
+</footer>
+
+<script>
+/* Hero schematic, kept for the inner pages that still use it.
+   The v5 home page leads with footage instead. */
+var ART='<div class="hero__art" aria-hidden="true"><svg viewBox="0 0 800 520" fill="none">'+
+ '<defs><pattern id="hx" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">'+
+ '<path d="M0 0V8" stroke="#2B323A"/></pattern></defs>'+
+ '<rect x="32" y="32" width="736" height="456" stroke="#2B323A" stroke-dasharray="6 5"/>'+
+ '<g stroke="#2B323A" fill="#12151A"><rect x="48" y="52" width="64" height="40"/><rect x="48" y="142" width="64" height="40"/>'+
+ '<rect x="48" y="230" width="64" height="52"/><rect x="48" y="332" width="64" height="40"/><rect x="48" y="422" width="64" height="40"/></g>'+
+ '<g stroke="#5EA5FF" fill="none"><path d="M112 72H124V256H112M112 162H124V256H112M112 352H124V256H112M112 442H124V256H112M112 256H152"/></g>'+
+ '<g fill="#5EA5FF"><rect x="76" y="68" width="8" height="8"/><rect x="76" y="158" width="8" height="8"/>'+
+ '<rect x="73" y="249" width="14" height="14"/><rect x="76" y="348" width="8" height="8"/><rect x="76" y="438" width="8" height="8"/>'+
+ '<rect x="149" y="101" width="6" height="6"/><rect x="149" y="161" width="6" height="6"/><rect x="149" y="221" width="6" height="6"/>'+
+ '<rect x="149" y="281" width="6" height="6"/><rect x="149" y="341" width="6" height="6"/><rect x="149" y="401" width="6" height="6"/></g>'+
+ '<rect x="152" y="76" width="478" height="12" fill="url(#hx)"/><rect x="152" y="420" width="478" height="12" fill="url(#hx)"/>'+
+ '<rect x="638" y="76" width="30" height="356" fill="url(#hx)"/>'+
+ '<path d="M152 76V432M630 76V432" stroke="#3C444D"/>'+
+ '<path d="M152 104H630M152 164H630M152 224H630M152 284H630M152 344H630M152 404H630" stroke="#1E232A"/>'+
+ '<g stroke="#3C444D"><path d="M614 98h12M620 98v12M614 158h12M620 158v12M614 218h12M620 218v12M614 278h12M620 278v12M614 338h12M620 338v12M614 398h12M620 398v12"/>'+
+ '<path d="M560 470h120M560 465v10M600 467v6M640 467v6M680 465v10"/></g>'+
+ '<g fill="#7C868C" font-family="IBM Plex Mono, monospace" font-size="8" letter-spacing="1.2">'+
+ '<text x="48" y="46">ADMIN</text><text x="48" y="136">ARMSKOTE</text><text x="48" y="224" fill="#5EA5FF">CONTROL</text>'+
+ '<text x="48" y="326">AMMO</text><text x="48" y="416">PLANT</text><text x="152" y="68">FIRING LINE</text>'+
+ '<text x="630" y="68" text-anchor="end">TARGET LINE</text><text x="560" y="462">0</text>'+
+ '<text x="680" y="462" text-anchor="end">100 m</text></g></svg></div>';
+</script>
+<script src="assets/data.js"></script>
+<script src="assets/app.js"></script>
+<script src="assets/v4.js"></script>
+<script src="assets/v5.js"></script>
+</body>
+</html>

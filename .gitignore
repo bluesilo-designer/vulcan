@@ -5,3 +5,6 @@ site/index.prototype.html
 
 # macOS
 .DS_Store
+
+# Internal brief — names the programme and our tender position. Never publish.
+CLAUDE.md

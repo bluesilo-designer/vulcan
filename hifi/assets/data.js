@@ -12,10 +12,12 @@
    so the page never requests a file that is not there.
    ------------------------------------------------------------ */
 var MEDIA_READY = [
-  // "home-control-room",
-  // "home-range-dawn",
-  // "rcs", "vms", "eva", "pwats", "ewms", "eams", "hums", "as",
-  // "integration-bench", "assurance-estop", "company-floor"
+  "home-control-room",
+  "home-range-dawn",
+  "rcs", "vms", "eva", "pwats", "ewms", "eams", "hums", "as",
+  "integration-bench", "assurance-estop"
+  /* company-floor stays off. Not generated: the brief forbids people in
+     frame, and an empty office earns nothing. Photograph the real one. */
 ];
 
 var CHAIN=[
@@ -86,8 +88,8 @@ var PRODUCTS=[
  users:["Range Control Officer","Instructor","Safety officer"],on:["Conduct","Observe","Review"],
  where:"Integrated Operation Centre and Range Control Room",
  decides:"What actually happened on a lane, retrieved from a marked timeline rather than reconstructed from memory.",
- media:{id:"vms",kind:"Image",ratio:"r-32",label:"Synchronised playback wall",
-  brief:"Four camera views of the same empty range, played back in sync, seen over an operator shoulder. Screen content abstracted, no readable text. Low light. 3:2."},
+ media:{id:"vms",kind:"Video",ratio:"r-169",label:"Synchronised playback, four views in lockstep",
+  brief:"Four camera views of the same empty range played back in exact sync, a playhead travelling together along every timeline. 16:9 video."},
  groups:[
   {k:"Cameras",m:"Low profile, ceiling mounted, shock resistant and weather sealed · High definition at high frame rate with low light performance, efficient encoding, and fisheye or pan tilt zoom where needed · Motion detection that alerts the operator and raises recording quality automatically · Infrared emitters selected so they do not interfere with night vision equipment · Power over Ethernet · Synchronised audio"},
   {k:"Network and integration",m:"Closed wired network with end to end encryption · Integration with range control and with the operations centre · <strong>Standalone mode</strong> that keeps the system working without transmitting any feed off site"},
@@ -107,8 +109,8 @@ var PRODUCTS=[
  users:["Operations centre operator","Guard house","Security officer"],on:["Access","Observe"],
  where:"Integrated Operation Centre and Guard House",
  decides:"Whether something is happening right now that needs a physical response, and where to send it.",
- media:{id:"eva",kind:"Image",ratio:"r-32",label:"Perimeter at night, detection overlay",
-  brief:"Facility perimeter fenceline after dark from a fixed camera position. Thin brand blue bounding box over a distant figure. No faces, no signage. 3:2."},
+ media:{id:"eva",kind:"Video",ratio:"r-169",label:"Perimeter at night, detection locking on",
+  brief:"Fixed camera on the night fenceline. The detection box snaps in around a distant figure and tracks it. 16:9 video."},
  groups:[
   {k:"Perimeter and access",m:"Intrusion detection at the fenceline, alerting in time for a response before the intruder reaches sensitive infrastructure · Off hours human detection in secured zones · Unattended vehicle in loading, cargo and parking areas"},
   {k:"Object and movement",m:"Unattended baggage across all camera coverage · Unauthorised weapon movement out of secured zones · Unauthorised ammunition movement, by magazine and container"},
@@ -124,8 +126,8 @@ var PRODUCTS=[
  users:["Range Control Officer","Safety officer","Armourer"],on:["Register","Draw","Observe","Return"],
  where:"Integrated Operation Centre, Range Control Room, inside the range, and the briefing and after action rooms",
  decides:"Where every person and every issued item is at this moment, and whether each is somewhere it is authorised to be.",
- media:{id:"pwats",kind:"Image",ratio:"r-43",label:"Layout map with live tracks",
-  brief:"Screen capture style view of a facility layout map with position markers and movement paths in brand blue over a dark plan. Abstracted, no readable labels. 4:3."},
+ media:{id:"pwats",kind:"Video",ratio:"r-169",label:"Layout map, tracks refreshing once a second",
+  brief:"Facility layout map. Position markers advance along their trails in visible one second ticks. 16:9 video."},
  groups:[
   {k:"Tracking performance",m:"Sub metre positioning for trainees, weapons, magazines and equipment · Position and movement updated at least once per second · Ceiling mounted, shock resistant, weather sealed transceivers powered over Ethernet · A compact tracking device with a full day of battery life"},
   {k:"Personnel tracking",m:"Position and movement of all personnel, equipment and entities on the facility layout map, with configurable display settings · A tracking device assigned to each trainee at registration, so the operations centre can identify who it is following"},

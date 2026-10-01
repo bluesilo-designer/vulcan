@@ -1,0 +1,234 @@
+/* ============================================================
+   VERSION 5, ALTERNATIVE HOME. Scrollcraft.
+
+   Design rule for this page, and the reason it looks different
+   from every other page here: NOTHING WAITS.
+
+   There is no reveal that fires and then animates in. Every
+   motion is bound to scroll position, so it tracks the finger
+   exactly and arrives at the same instant the reader does. On a
+   browser without scroll timelines the content is simply there,
+   at full opacity, with no transition at all. Both paths are
+   immediate. Neither one makes anyone wait.
+
+   That is also why this page carries no .rv class anywhere.
+   ============================================================ */
+
+/* body must not become a scroll container or the root scroller
+   stops driving timelines. clip stops horizontal scroll the same
+   way hidden does, without creating one. */
+body{overflow-x:clip}
+
+.sc{--pad:clamp(20px,5vw,96px)}
+
+/* ---------- shared stage ---------- */
+.sc-stage{position:relative}
+.sc-pin{position:sticky;top:0;height:100dvh;overflow:clip;background:var(--void)}
+.sc-bed{position:absolute;inset:0;z-index:0}
+.sc-bed img,.sc-bed video{position:absolute;inset:0;width:100%;height:100%;
+  object-fit:cover;will-change:transform;transform-origin:50% 55%}
+.sc-veil{position:absolute;inset:0;z-index:1;pointer-events:none;background:
+  linear-gradient(to top,var(--void) 0%,rgba(8,9,11,.62) 26%,rgba(8,9,11,.16) 58%,rgba(8,9,11,.5) 100%),
+  radial-gradient(76% 60% at 4% 96%,rgba(8,9,11,.92) 0%,rgba(8,9,11,0) 60%)}
+.sc-fore{position:absolute;inset:0;z-index:2;display:flex;flex-direction:column;
+  justify-content:flex-end;padding:var(--pad);padding-bottom:clamp(40px,8vh,96px)}
+
+/* ---------- opening ---------- */
+.sc-open{height:300vh}
+.sc-open h1{font-size:clamp(40px,7.4vw,104px);font-weight:300;line-height:.94;
+  letter-spacing:-.035em;max-width:15ch;margin:0 0 var(--s5)}
+.sc-open .lead{max-width:52ch;margin:0 0 var(--s6);color:var(--ink-2)}
+.sc-kicker{font-family:var(--mono);font-size:var(--t-2xs);letter-spacing:.22em;
+  text-transform:uppercase;color:var(--brand);margin-bottom:var(--s5);display:block}
+.sc-btns{display:flex;flex-wrap:wrap;gap:var(--s3)}
+
+/* a hairline that draws itself as you move, instead of a bouncing arrow */
+.sc-rule{position:absolute;left:var(--pad);right:var(--pad);bottom:clamp(22px,4vh,40px);
+  height:1px;background:var(--line-2);z-index:2;overflow:hidden}
+.sc-rule i{position:absolute;inset:0;background:var(--brand);transform:scaleX(0);transform-origin:0 50%}
+
+/* ---------- act headings over media ---------- */
+.sc-act{height:260vh}
+.sc-act .sc-fore{justify-content:center}
+.sc-act__in{max-width:50ch}
+.sc-act__n{font-family:var(--mono);font-size:var(--t-2xs);letter-spacing:.2em;
+  color:var(--brand);display:block;margin-bottom:var(--s4)}
+.sc-act h2{font-size:clamp(28px,4.6vw,62px);font-weight:300;line-height:1.02;
+  letter-spacing:-.03em;max-width:17ch;margin:0 0 var(--s5)}
+.sc-act p{max-width:48ch;margin:0;color:var(--ink-2)}
+.sc-act--r .sc-fore{align-items:flex-end;text-align:right}
+.sc-act--r .sc-act__in{display:flex;flex-direction:column;align-items:flex-end}
+.sc-act--r .sc-veil{background:
+  linear-gradient(to top,var(--void) 0%,rgba(8,9,11,.62) 26%,rgba(8,9,11,.16) 58%,rgba(8,9,11,.5) 100%),
+  radial-gradient(76% 60% at 96% 96%,rgba(8,9,11,.92) 0%,rgba(8,9,11,0) 60%)}
+
+/* ---------- horizontal rail, panned by vertical scroll ---------- */
+.sc-rail{height:420vh}
+.sc-rail .sc-pin{display:flex;align-items:center}
+.sc-rail__track{display:flex;gap:clamp(14px,2vw,30px);padding-inline:var(--pad);
+  will-change:transform}
+.sc-card{position:relative;flex:none;width:clamp(230px,27vw,380px);
+  aspect-ratio:3/4;overflow:hidden;background:var(--panel);border:1px solid var(--line)}
+.sc-card img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.sc-card__v{position:absolute;inset:0;background:
+  linear-gradient(to top,rgba(8,9,11,.94) 4%,rgba(8,9,11,.35) 46%,rgba(8,9,11,.08) 100%)}
+.sc-card__t{position:absolute;left:0;right:0;bottom:0;padding:var(--s5);
+  display:flex;flex-direction:column;gap:var(--s2)}
+.sc-card__n{font-family:var(--mono);font-size:var(--t-2xs);letter-spacing:.16em;color:var(--brand)}
+.sc-card__h{font-family:var(--display);font-weight:300;font-size:clamp(19px,1.8vw,26px);
+  letter-spacing:-.02em;line-height:1.14;color:var(--ink)}
+.sc-card__d{font-size:var(--t-xs);color:var(--ink-3);line-height:1.5}
+.sc-rail__head{position:absolute;top:0;left:0;right:0;padding:var(--pad);z-index:3;
+  pointer-events:none}
+.sc-rail__head h2{font-size:clamp(24px,3.2vw,44px);font-weight:300;line-height:1.05;
+  letter-spacing:-.03em;max-width:18ch;margin:0}
+
+/* ---------- static blocks between the stages ---------- */
+.sc-block{padding-block:clamp(72px,12vh,160px);padding-inline:var(--pad);
+  border-top:1px solid var(--line)}
+.sc-block h2{font-size:clamp(26px,3.6vw,50px);font-weight:300;line-height:1.06;
+  letter-spacing:-.03em;max-width:20ch;margin:0 0 var(--s6)}
+.sc-grid{display:grid;grid-template-columns:1fr;gap:1px;background:var(--line);
+  border:1px solid var(--line)}
+@media (min-width:720px){.sc-grid{grid-template-columns:repeat(2,1fr)}}
+@media (min-width:1080px){.sc-grid{grid-template-columns:repeat(4,1fr)}}
+.sc-grid>div{background:var(--void);padding:var(--s6) var(--s5)}
+.sc-grid b{display:block;font-family:var(--display);font-weight:300;
+  font-size:clamp(24px,2.6vw,36px);letter-spacing:-.03em;line-height:1;color:var(--ink)}
+.sc-grid span{display:block;font-family:var(--mono);font-size:var(--t-2xs);
+  letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3);margin-top:var(--s3)}
+.sc-grid i{display:block;font-style:normal;font-size:var(--t-sm);color:var(--ink-3);
+  line-height:1.55;margin-top:var(--s3)}
+
+/* ---------- closing ---------- */
+.sc-end{padding-block:clamp(80px,14vh,180px);padding-inline:var(--pad);
+  border-top:1px solid var(--line);text-align:center}
+.sc-end h2{font-size:clamp(28px,4.4vw,60px);font-weight:300;line-height:1.04;
+  letter-spacing:-.03em;margin:0 auto var(--s5);max-width:18ch}
+.sc-end p{max-width:56ch;margin:0 auto var(--s7);color:var(--ink-2)}
+.sc-end .sc-btns{justify-content:center}
+
+/* ---------- read progress ---------- */
+.sc-prog{position:fixed;left:0;top:0;height:2px;width:100%;z-index:95;
+  background:var(--brand);transform:scaleX(0);transform-origin:0 50%;pointer-events:none}
+
+/* ============================================================
+   The scroll bound layer. Everything above renders correctly
+   without it.
+   ============================================================ */
+@supports (animation-timeline:view()){
+  @media (prefers-reduced-motion:no-preference){
+
+    .sc-open{view-timeline-name:--open;view-timeline-axis:block}
+    .sc-act{view-timeline-name:--act;view-timeline-axis:block}
+    .sc-rail{view-timeline-name:--rail;view-timeline-axis:block}
+
+    /* opening: the frame settles out of a push as you travel */
+    .sc-open .sc-bed>*{
+      animation:scSettle linear both;
+      animation-timeline:--open;animation-range:entry 0% exit 100%}
+    @keyframes scSettle{
+      from{transform:scale(1.22)}
+      to{transform:scale(1.02)}}
+
+    /* opening copy rises and leaves, tied to position not to a timer */
+    .sc-open .sc-fore{
+      animation:scLift linear both;
+      animation-timeline:--open;animation-range:cover 0% cover 100%}
+    @keyframes scLift{
+      0%  {opacity:0;transform:translate3d(0,46px,0)}
+      18% {opacity:1;transform:none}
+      72% {opacity:1;transform:none}
+      100%{opacity:0;transform:translate3d(0,-40px,0)}}
+
+    .sc-rule i{
+      animation:scDraw linear both;
+      animation-timeline:--open;animation-range:cover 6% cover 94%}
+    @keyframes scDraw{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+
+    /* acts: slow counter drift, so the media never sits still */
+    .sc-act .sc-bed>*{
+      animation:scDrift linear both;
+      animation-timeline:--act;animation-range:entry 0% exit 100%}
+    @keyframes scDrift{
+      from{transform:scale(1.16) translate3d(0,-2.2%,0)}
+      to  {transform:scale(1.02) translate3d(0,2.2%,0)}}
+
+    .sc-act .sc-fore{
+      animation:scLift linear both;
+      animation-timeline:--act;animation-range:cover 0% cover 100%}
+
+    /* the rail: vertical scroll becomes horizontal travel */
+    .sc-rail__track{
+      animation:scPan linear both;
+      animation-timeline:--rail;animation-range:contain 0% contain 100%}
+    @keyframes scPan{
+      from{transform:translate3d(0,0,0)}
+      to  {transform:translate3d(calc(-100% + 100vw - var(--pad) * 2),0,0)}}
+
+    /* read progress for the whole page */
+    .sc-prog{
+      animation:scProg linear both;
+      animation-timeline:scroll(root block)}
+    @keyframes scProg{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+  }
+}
+
+/* Without scroll timelines the foreground must be fully visible,
+   never left at the opacity the keyframes would have set. */
+@supports not (animation-timeline:view()){
+  .sc-open .sc-fore,.sc-act .sc-fore{opacity:1;transform:none}
+  /* The rail cannot pan, so it must be swipeable instead. The scroll
+     has to go on the container; putting it on the track does nothing,
+     because the track is the wide element, not its scrollport. Without
+     this, cards three to eight are unreachable on Safari below 26. */
+  .sc-rail{height:auto}
+  .sc-rail .sc-pin{position:static;height:auto;padding-block:var(--pad);
+    overflow-x:auto;overflow-y:hidden;-webkit-overflow-scrolling:touch;
+    scroll-snap-type:x proximity}
+  .sc-rail__track{transform:none}
+  .sc-rail .sc-card{scroll-snap-align:center}
+  .sc-rail__head{position:static;padding:0 0 var(--s6)}
+}
+
+@media (prefers-reduced-motion:reduce){
+  .sc-open,.sc-act{height:auto}
+  .sc-pin{position:static;height:auto;min-height:72dvh}
+  .sc-open .sc-fore,.sc-act .sc-fore{opacity:1;transform:none}
+  .sc-rail{height:auto}
+  .sc-rail .sc-pin{overflow-x:auto;overflow-y:hidden;padding-block:var(--pad);
+    scroll-snap-type:x proximity}
+  .sc-rail__track{transform:none;padding-bottom:var(--s4)}
+  .sc-rail .sc-card{scroll-snap-align:center}
+  .sc-rail__head{position:static;padding:0 0 var(--s6)}
+  .sc-bed img,.sc-bed video{transform:none}
+}
+
+@media (max-width:760px){
+  .sc-open{height:230vh}
+  .sc-act{height:200vh}
+  .sc-rail{height:360vh}
+  .sc-open h1{max-width:13ch}
+}
+
+/* ------------------------------------------------------------
+   app.css hides the primary nav below its breakpoint and expects
+   app.js to provide a menu in its place. This page deliberately
+   does not load app.js, so without this the header navigation
+   simply disappears on a phone and only the brand and the call
+   to action remain. Show it as a wrapped, scrollable strip.
+   ------------------------------------------------------------ */
+@media (max-width:860px){
+  /* .nav is a fixed 68px in app.css, so a wrapped row would spill
+     out of it. Let it size to its content instead. */
+  .sc .nav{height:auto}
+  .sc .nav .shell{flex-wrap:wrap;row-gap:var(--s3);
+                  padding-top:var(--s3);padding-bottom:var(--s3)}
+  .sc .nav nav{display:flex;order:3;width:100%;gap:var(--s5);
+               overflow-x:auto;scrollbar-width:none}
+  .sc .nav nav::-webkit-scrollbar{display:none}
+  .sc .nav nav a{display:inline-flex;font-size:var(--t-2xs);white-space:nowrap}
+  .sc .nav .bt{display:none}
+  /* the rail heading must clear the now taller header */
+  .sc-rail__head{padding-top:calc(var(--pad) + 44px)}
+}
