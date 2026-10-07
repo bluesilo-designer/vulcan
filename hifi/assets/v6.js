@@ -75,10 +75,14 @@ var V6MODERN={
   line:"Defence operations are becoming increasingly connected.",
   close:"Blue Silo connects these layers into a unified operational environment.",
   cols:[
-    ["Training",  ["Personnel","Resources"]],
-    ["Operations",["Ranges","Facilities"]],
-    ["Assets",    ["Weapons","Ammunition"]],
-    ["Data",      ["Events","Analytics"]]
+    ["Training",  "ph-graduation-cap",
+      [["Personnel","ph-users-three"],["Resources","ph-stack"]]],
+    ["Operations","ph-crosshair",
+      [["Ranges","ph-target"],["Facilities","ph-buildings"]]],
+    ["Assets",    "ph-package",
+      [["Weapons","ph-vault"],["Ammunition","ph-circles-three"]]],
+    ["Data",      "ph-chart-line",
+      [["Events","ph-pulse"],["Analytics","ph-chart-bar"]]]
   ]
 };
 
@@ -270,15 +274,42 @@ function pHomeV6(){
   '</div></section>'+
 
   /* ---- 3. modernising defence operations, deck page 3 ---- */
+  /* The deck drew four separate boxes, but the copy argues that the
+     layers are connected and that we connect them. Four boxes say
+     the opposite, so the layers sit on a shared rail and their stems
+     converge into the closing claim, which is the actual argument
+     and was previously a footnote under the grid. */
   band({deep:true,body:
     '<div class="v6mod rv">'+
       '<div class="v6mod__h"><h2>'+V6MODERN.title+'</h2>'+
         '<p class="lead">'+V6MODERN.line+'</p></div>'+
-      '<div class="v6mod__g">'+V6MODERN.cols.map(function(c){
-        return '<div class="v6mod__c"><span class="v6mod__k">'+c[0]+'</span>'+
-          '<ul>'+c[1].map(function(x){return '<li>'+x+'</li>';}).join('')+'</ul></div>';
-      }).join('')+'</div>'+
-      '<p class="v6mod__close">'+V6MODERN.close+'</p>'+
+
+      '<div class="v6mod__flow">'+
+        '<div class="v6mod__rail" aria-hidden="true">'+
+          V6MODERN.cols.map(function(){return '<i></i>';}).join('')+'</div>'+
+
+        '<div class="v6mod__g">'+V6MODERN.cols.map(function(c){
+          return '<div class="v6mod__c">'+
+            '<span class="v6mod__ic"><i class="ph '+c[1]+'" aria-hidden="true"></i></span>'+
+            '<span class="v6mod__k">'+c[0]+'</span>'+
+            '<ul>'+c[2].map(function(x){
+              return '<li><i class="ph '+x[1]+'" aria-hidden="true"></i>'+x[0]+'</li>';
+            }).join('')+'</ul>'+
+          '</div>';
+        }).join('')+'</div>'+
+
+        '<div class="v6mod__join" aria-hidden="true">'+
+          V6MODERN.cols.map(function(){return '<i></i>';}).join('')+
+          '<b></b><u></u></div>'+
+      '</div>'+
+
+      '<p class="v6mod__close">'+
+        '<svg class="v6mod__mark" width="22" height="24" viewBox="0 0 26 28" aria-hidden="true">'+
+          '<path d="M4 3h9a6 6 0 0 1 0 12H8" fill="none" stroke="var(--brand)" stroke-width="3"/>'+
+          '<path d="M22 25h-9a6 6 0 0 1 0-12h5" fill="none" stroke="var(--brand)" stroke-width="3"/>'+
+        '</svg>'+
+        '<span>'+V6MODERN.close+'</span>'+
+      '</p>'+
     '</div>'})+
 
   /* ---- 4. the system overview: diagram, then the tile board ---- */
