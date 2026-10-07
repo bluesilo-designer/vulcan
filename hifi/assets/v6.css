@@ -1,0 +1,248 @@
+/* ============================================================
+   VERSION 6. Loads after app.css, v3.css, v4.css.
+   Adds only; it redefines no tokens.
+   ============================================================ */
+
+body{overflow-x:clip}
+
+/* ---------- hero ---------- */
+.v6hero{position:relative;min-height:100dvh;display:flex;align-items:flex-end;
+        overflow:clip;padding-block:var(--s9) var(--s7)}
+.v6hero__bed{position:absolute;inset:0;z-index:0;background:var(--void)}
+.v6hero__bed .media{position:absolute;inset:0;aspect-ratio:auto;border:0;margin:0}
+.v6hero__bed .media::before,.v6hero__bed .media::after{display:none}
+.v6hero__veil{position:absolute;inset:0;z-index:1;pointer-events:none;background:
+  linear-gradient(to top,var(--void) 2%,rgba(8,9,11,.74) 30%,rgba(8,9,11,.3) 64%,rgba(8,9,11,.55) 100%),
+  radial-gradient(78% 62% at 2% 98%,rgba(8,9,11,.94) 0%,rgba(8,9,11,0) 60%)}
+.v6hero .shell{position:relative;z-index:2;width:100%}
+.v6hero h1{font-size:var(--t-hero);font-weight:300;line-height:.96;letter-spacing:-.035em;
+           max-width:15ch;margin-bottom:var(--s5)}
+.v6hero .lead{max-width:58ch;margin-bottom:var(--s5)}
+.v6eyebrow{display:block;margin-bottom:var(--s5);color:var(--brand)}
+
+.v6geo{display:flex;flex-wrap:wrap;align-items:center;gap:var(--s4);margin-bottom:var(--s6)}
+.v6geo span{font-family:var(--mono);font-size:var(--t-2xs);letter-spacing:.2em;
+            text-transform:uppercase;color:var(--ink-3);position:relative}
+.v6geo span+span{padding-left:var(--s4)}
+.v6geo span+span::before{content:"";position:absolute;left:0;top:50%;width:4px;height:4px;
+  margin-top:-2px;background:var(--line-3);border-radius:50%}
+
+/* ---------- trust strip ---------- */
+.v6trust{border-block:1px solid var(--line);background:var(--deep)}
+.v6trust .shell{display:grid;gap:var(--s6);padding-block:var(--s7)}
+@media (min-width:1000px){.v6trust .shell{grid-template-columns:minmax(0,34ch) 1fr;
+  gap:var(--s8);align-items:center}}
+.v6trust__t .label{display:block;margin-bottom:var(--s3);color:var(--ink)}
+.v6trust__t p{font-size:var(--t-sm);color:var(--ink-3);line-height:1.65;margin:0;max-width:46ch}
+.v6logos{display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:var(--line);
+         border:1px solid var(--line)}
+@media (min-width:640px){.v6logos{grid-template-columns:repeat(3,1fr)}}
+@media (min-width:1000px){.v6logos{grid-template-columns:repeat(6,1fr)}}
+.v6logo{display:flex;align-items:center;justify-content:center;background:var(--void);
+  padding:var(--s5) var(--s3);font-family:var(--mono);font-size:var(--t-2xs);
+  letter-spacing:.12em;text-transform:uppercase;color:var(--ink-2);text-align:center;
+  line-height:1.3;min-height:64px;transition:color .3s var(--ease)}
+.v6logo:hover{color:var(--ink)}
+
+/* ---------- the system stack ---------- */
+.v6stack{border-top:1px solid var(--line)}
+.v6row{display:grid;grid-template-columns:1fr;gap:var(--s4);padding-block:var(--s7);
+       border-bottom:1px solid var(--line)}
+@media (min-width:1000px){
+  .v6row{grid-template-columns:minmax(0,4ch) minmax(0,34ch) 1fr;gap:var(--s7);align-items:start}
+}
+.v6row__n{font-family:var(--mono);font-size:var(--t-2xs);letter-spacing:.14em;
+          color:var(--ink-3);padding-top:8px}
+.v6row__k{display:block;font-family:var(--display);font-weight:300;
+  font-size:clamp(26px,3.2vw,40px);letter-spacing:-.03em;line-height:1;color:var(--ink);
+  margin-bottom:var(--s3)}
+.v6row__h p{font-size:var(--t-sm);color:var(--ink-3);line-height:1.6;margin:0;max-width:40ch}
+.v6row__c{display:flex;flex-wrap:wrap;gap:1px;background:var(--line);
+          border:1px solid var(--line);align-self:start}
+
+.v6chip{display:flex;flex-direction:column;gap:4px;background:var(--void);
+  padding:var(--s4) var(--s5);text-decoration:none;min-width:150px;flex:1 1 150px;
+  transition:background .3s var(--ease)}
+.v6chip:hover{background:var(--brand-wash)}
+.v6chip .ph{font-size:20px;color:var(--line-3);transition:color .3s var(--ease)}
+.v6chip:hover .ph{color:var(--brand)}
+.v6chip__b{font-family:var(--display);font-weight:400;font-size:var(--t-base);
+  letter-spacing:.02em;color:var(--ink);transition:color .3s var(--ease)}
+.v6chip:hover .v6chip__b{color:var(--brand)}
+.v6chip__s{font-family:var(--mono);font-size:var(--t-2xs);letter-spacing:.14em;color:var(--ink-3)}
+.v6chip__p{font-family:var(--mono);font-size:var(--t-2xs);letter-spacing:.08em;
+  color:var(--brand-dim);margin-top:2px}
+
+/* ---------- statement over media ---------- */
+.v6say{position:relative;min-height:80dvh;display:flex;align-items:center;overflow:clip;
+       border-top:1px solid var(--line)}
+.v6say__bed{position:absolute;inset:0;z-index:0}
+.v6say__bed .media{position:absolute;inset:0;aspect-ratio:auto;border:0;margin:0}
+.v6say__bed .media::before,.v6say__bed .media::after{display:none}
+.v6say__veil{position:absolute;inset:0;z-index:1;pointer-events:none;
+  background:linear-gradient(100deg,rgba(8,9,11,.96) 4%,rgba(8,9,11,.8) 44%,rgba(8,9,11,.3) 94%)}
+.v6say--r .v6say__veil{background:linear-gradient(260deg,rgba(8,9,11,.96) 4%,rgba(8,9,11,.8) 44%,rgba(8,9,11,.3) 94%)}
+.v6say .shell{position:relative;z-index:2;width:100%;padding-block:var(--s8)}
+.v6say--r .shell{display:flex;justify-content:flex-end}
+.v6say__in{max-width:62ch}
+.v6say__in .label{display:block;margin-bottom:var(--s4);color:var(--brand)}
+.v6say h2{font-size:clamp(28px,4.4vw,56px);font-weight:300;line-height:1.04;
+  letter-spacing:-.03em;max-width:19ch;margin:0 0 var(--s6)}
+.v6say p{max-width:54ch;margin:0 0 var(--s6)}
+
+/* where we operate grid */
+.v6ops{display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:var(--line);
+       border:1px solid var(--line)}
+@media (min-width:860px){.v6ops{grid-template-columns:repeat(3,1fr)}}
+.v6op{background:rgba(8,9,11,.82);padding:var(--s5);display:flex;flex-direction:column;gap:var(--s2)}
+.v6op .ph{font-size:22px;color:var(--brand);margin-bottom:var(--s2)}
+.v6op b{font-family:var(--mono);font-size:var(--t-2xs);letter-spacing:.16em;
+        text-transform:uppercase;color:var(--ink)}
+.v6op span{font-size:var(--t-sm);color:var(--ink-3);line-height:1.5}
+
+/* simulate, integrate, deploy */
+.v6sim{display:grid;grid-template-columns:1fr;gap:1px;background:var(--line);
+       border:1px solid var(--line)}
+@media (min-width:760px){.v6sim{grid-template-columns:repeat(3,1fr)}}
+.v6simc{background:rgba(8,9,11,.82);padding:var(--s5);display:flex;flex-direction:column;gap:var(--s2)}
+.v6simc .ph{font-size:22px;color:var(--brand);margin-bottom:var(--s2)}
+.v6simc b{font-size:var(--t-base);font-weight:500;color:var(--ink)}
+.v6simc span{font-size:var(--t-sm);color:var(--ink-3);line-height:1.55}
+
+/* ---------- company facts ---------- */
+.v6facts{display:grid;grid-template-columns:1fr;gap:1px;background:var(--line);
+         border:1px solid var(--line)}
+@media (min-width:860px){.v6facts{grid-template-columns:repeat(3,1fr)}}
+.v6fact{background:var(--void);padding:var(--s6) var(--s5);display:flex;
+        flex-direction:column;gap:var(--s2);position:relative}
+.v6fact__n{font-family:var(--mono);font-size:var(--t-2xs);letter-spacing:.14em;
+           color:var(--ink-3);margin-bottom:var(--s3)}
+.v6fact .ph{font-size:22px;color:var(--brand);margin-bottom:var(--s3)}
+.v6fact b{font-size:var(--t-base);font-weight:500;color:var(--ink);line-height:1.35}
+.v6fact span{font-size:var(--t-sm);color:var(--ink-3);line-height:1.6}
+.v6note{font-family:var(--mono);font-size:var(--t-2xs);letter-spacing:.1em;
+        color:var(--ink-3);align-self:center}
+
+/* ---------- close ---------- */
+.v6close{border-top:1px solid var(--line);background:var(--deep);
+         padding-block:clamp(72px,12vh,150px)}
+.v6close__top{display:flex;flex-wrap:wrap;gap:var(--s4);justify-content:space-between;
+  align-items:baseline;padding-bottom:var(--s7);margin-bottom:var(--s7);
+  border-bottom:1px solid var(--line)}
+.v6close__tag{font-family:var(--mono);font-size:var(--t-2xs);letter-spacing:.16em;
+  text-transform:uppercase;color:var(--ink-3);text-align:right}
+.v6close h2{font-size:clamp(30px,4.6vw,58px);font-weight:300;line-height:1.04;
+  letter-spacing:-.03em;max-width:17ch;margin:0 0 var(--s5)}
+.v6close .lead{max-width:60ch;margin-bottom:var(--s7)}
+.v6rel{display:grid;grid-template-columns:1fr;gap:1px;background:var(--line);
+       border:1px solid var(--line)}
+@media (min-width:860px){.v6rel{grid-template-columns:repeat(3,1fr)}}
+.v6rel a{background:var(--void);padding:var(--s6) var(--s5);text-decoration:none;
+  display:flex;flex-direction:column;gap:var(--s3);transition:background .3s var(--ease)}
+.v6rel a:hover{background:var(--brand-wash)}
+.v6rel__n{font-family:var(--mono);font-size:var(--t-2xs);letter-spacing:.14em;color:var(--brand)}
+.v6rel h3{font-family:var(--display);font-weight:300;font-size:var(--t-lg);
+  letter-spacing:-.02em;line-height:1.2;color:var(--ink);margin:0}
+.v6rel p{font-size:var(--t-sm);color:var(--ink-3);line-height:1.6;margin:0;flex:1}
+.v6rel__cta{font-family:var(--mono);font-size:var(--t-2xs);letter-spacing:.14em;
+  text-transform:uppercase;color:var(--ink-2);display:inline-flex;align-items:center;gap:8px}
+.v6rel a:hover .v6rel__cta{color:var(--brand)}
+
+/* ---------- product page brand block ---------- */
+.v6pbrand{display:flex;flex-wrap:wrap;align-items:baseline;gap:var(--s3);margin-bottom:var(--s4)}
+.v6pbrand__b{font-family:var(--display);font-weight:400;font-size:clamp(22px,2.4vw,32px);
+  letter-spacing:.04em;color:var(--brand)}
+.v6pbrand__s{font-family:var(--mono);font-size:var(--t-2xs);letter-spacing:.18em;color:var(--ink-3)}
+.v6pbrand__p{font-family:var(--mono);font-size:var(--t-2xs);letter-spacing:.1em;
+  color:var(--ink-3);border:1px solid var(--line-2);padding:4px 10px}
+
+/* ---------- footer, seven systems ---------- */
+.v6foot__sys{display:grid;gap:0}
+.v6connect{display:flex;align-items:center;gap:var(--s3);margin-top:var(--s3)}
+.v6connect .ph{font-size:18px}
+.v6legal{display:flex;flex-wrap:wrap;gap:var(--s4);justify-content:space-between;
+         align-items:center;width:100%}
+.v6legal nav{display:flex;flex-wrap:wrap;gap:var(--s4)}
+.v6legal a{color:var(--ink-3);text-decoration:none;font-size:var(--t-xs)}
+.v6legal a:hover{color:var(--brand)}
+
+@media (max-width:860px){
+  .v6close__tag{text-align:left}
+}
+
+/* ============================================================
+   ADDED AFTER THE SECOND PASS OVER THE REVIEW DECK.
+   Deck page 3 (a whole section that was missed first time) and
+   deck page 5 (system diagram, then a tile board).
+   ============================================================ */
+
+/* ---------- modernising defence operations ---------- */
+.v6mod__h{max-width:60ch;margin-bottom:var(--s7)}
+.v6mod__h h2{font-size:clamp(26px,3.6vw,50px);font-weight:300;line-height:1.06;
+  letter-spacing:-.03em;margin:0 0 var(--s4)}
+.v6mod__g{display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:var(--line);
+          border:1px solid var(--line)}
+@media (min-width:900px){.v6mod__g{grid-template-columns:repeat(4,1fr)}}
+.v6mod__c{background:var(--void);padding:var(--s6) var(--s5)}
+.v6mod__k{display:block;font-family:var(--mono);font-size:var(--t-2xs);letter-spacing:.18em;
+  text-transform:uppercase;color:var(--brand);padding-bottom:var(--s4);
+  margin-bottom:var(--s4);border-bottom:1px solid var(--line)}
+.v6mod__c ul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:var(--s3)}
+.v6mod__c li{font-size:var(--t-base);color:var(--ink-2);line-height:1.4}
+.v6mod__close{margin:var(--s7) 0 0;font-size:var(--t-lg);font-weight:300;
+  font-family:var(--display);letter-spacing:-.02em;line-height:1.3;color:var(--ink);max-width:46ch}
+
+/* ---------- system diagram ---------- */
+.v6dg{margin:0 0 var(--s8);border:1px solid var(--line);background:var(--deep);
+      padding:var(--s7) var(--s5);display:flex;flex-direction:column;align-items:center}
+.v6dg__t{font-family:var(--mono);font-size:var(--t-2xs);letter-spacing:.2em;
+  text-transform:uppercase;color:var(--ink-3);margin-bottom:var(--s6)}
+.v6dg__row{display:grid;grid-template-columns:1fr;gap:var(--s4);width:100%;max-width:860px}
+@media (min-width:760px){.v6dg__row--3{grid-template-columns:repeat(3,1fr)}}
+.v6dg__n{border:1px solid var(--line-2);background:var(--void);padding:var(--s5);
+         display:flex;flex-direction:column;gap:var(--s3);align-items:center;text-align:center}
+.v6dg__k{font-family:var(--mono);font-size:var(--t-2xs);letter-spacing:.2em;
+         text-transform:uppercase;color:var(--brand)}
+.v6dg__l{display:flex;flex-wrap:wrap;gap:var(--s3);justify-content:center}
+.v6dg__l i{font-style:normal;font-family:var(--mono);font-size:var(--t-xs);letter-spacing:.1em;
+  color:var(--ink-2);border:1px solid var(--line);padding:5px 10px;background:var(--panel)}
+.v6dg__stem{width:1px;height:28px;background:var(--line-3);margin-block:var(--s2)}
+
+/* ---------- tile board ---------- */
+.v6tiles{display:grid;grid-template-columns:1fr;gap:1px;background:var(--line);
+         border:1px solid var(--line);margin-top:var(--s8)}
+@media (min-width:640px){.v6tiles{grid-template-columns:repeat(2,1fr)}}
+@media (min-width:1080px){.v6tiles{grid-template-columns:repeat(4,1fr)}}
+.v6tile{background:var(--void);padding:var(--s6) var(--s5);text-decoration:none;
+  display:flex;flex-direction:column;gap:var(--s2);transition:background .3s var(--ease)}
+.v6tile:hover{background:var(--brand-wash)}
+.v6tile__fn{font-family:var(--mono);font-size:var(--t-2xs);letter-spacing:.18em;
+  text-transform:uppercase;color:var(--ink-3);margin-bottom:var(--s3)}
+.v6tile .ph{font-size:24px;color:var(--line-3);margin-bottom:var(--s3);
+            transition:color .3s var(--ease)}
+.v6tile:hover .ph{color:var(--brand)}
+.v6tile__b{font-family:var(--display);font-weight:400;font-size:var(--t-lg);
+  letter-spacing:.03em;color:var(--ink);line-height:1}
+.v6tile__s{font-family:var(--mono);font-size:var(--t-2xs);letter-spacing:.1em;
+  color:var(--ink-3);line-height:1.4}
+.v6tile p{font-size:var(--t-sm);color:var(--ink-2);line-height:1.6;margin:var(--s3) 0 0;flex:1}
+.v6tile__p{font-family:var(--mono);font-size:var(--t-2xs);letter-spacing:.08em;
+  color:var(--brand-dim);margin-top:var(--s3)}
+.v6tile__go{font-family:var(--mono);font-size:var(--t-2xs);letter-spacing:.14em;
+  text-transform:uppercase;color:var(--ink-2);display:inline-flex;align-items:center;
+  gap:8px;margin-top:var(--s4)}
+.v6tile:hover .v6tile__go{color:var(--brand)}
+
+/* ---------- chain panel, product badges (deck page 8) ---------- */
+.v6badges{display:flex;flex-wrap:wrap;gap:var(--s2)}
+.v6badge{display:inline-flex;align-items:center;gap:8px;text-decoration:none;
+  border:1px solid var(--line-2);background:var(--panel);padding:7px 12px;
+  transition:border-color .3s var(--ease),background .3s var(--ease)}
+.v6badge:hover{border-color:var(--brand);background:var(--brand-wash)}
+.v6badge .ph{font-size:16px;color:var(--line-3);transition:color .3s var(--ease)}
+.v6badge:hover .ph{color:var(--brand)}
+.v6badge b{font-family:var(--display);font-weight:400;font-size:var(--t-sm);
+  letter-spacing:.04em;color:var(--ink)}
+.v6badge span{font-family:var(--mono);font-size:var(--t-2xs);letter-spacing:.12em;color:var(--ink-3)}
+.v6badge--plain{color:var(--ink-3);font-family:var(--mono);font-size:var(--t-2xs);
+  letter-spacing:.12em;cursor:default}
