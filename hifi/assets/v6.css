@@ -292,3 +292,629 @@ body{overflow-x:clip}
 .v6badge span{font-family:var(--mono);font-size:var(--t-2xs);letter-spacing:.12em;color:var(--ink-3)}
 .v6badge--plain{color:var(--ink-3);font-family:var(--mono);font-size:var(--t-2xs);
   letter-spacing:.12em;cursor:default}
+
+/* ============================================================
+   LOGOS. Real files replace the text placeholders.
+   ============================================================ */
+.v6trust__logos{display:flex;flex-direction:column;gap:var(--s3);min-width:0}
+.v6logo{margin:0;min-height:92px;padding:var(--s5) var(--s4);
+  transition:background .4s var(--ease)}
+.v6logo img{display:block;max-width:100%;max-height:34px;width:auto;height:auto;
+  object-fit:contain;transition:opacity .4s var(--ease)}
+
+/* mono: every mark rendered in one light tone, sitting quietly in
+   the dark theme. Uses the knocked out files where they exist. */
+.v6logos[data-mode="mono"] .v6logo__c{display:none}
+.v6logos[data-mode="mono"] .v6logo__m{filter:brightness(0) invert(1);opacity:.6}
+.v6logos[data-mode="mono"] .v6logo:hover .v6logo__m{opacity:1}
+
+/* colour: these marks are drawn for light grounds, and two of them
+   are mostly navy, so on the dark theme they need a light tile. */
+.v6logos[data-mode="colour"]{background:var(--line-2)}
+.v6logos[data-mode="colour"] .v6logo{background:#EEF0EC}
+.v6logos[data-mode="colour"] .v6logo__m{display:none}
+
+/* the toggle */
+.v6lt{display:inline-flex;align-self:flex-end;border:1px solid var(--line-2)}
+.v6lt button{font-family:var(--mono);font-size:var(--t-2xs);letter-spacing:.14em;
+  text-transform:uppercase;color:var(--ink-3);background:transparent;border:0;
+  padding:8px 14px;cursor:pointer;transition:color .3s var(--ease),background .3s var(--ease)}
+.v6lt button+button{border-left:1px solid var(--line-2)}
+.v6lt button:hover{color:var(--ink)}
+.v6lt button[aria-pressed="true"]{color:var(--ink);background:var(--panel)}
+.v6lt button:focus-visible{outline:2px solid var(--brand);outline-offset:2px}
+
+/* ============================================================
+   MODERNISING, SECOND PASS. An aerial bed behind the layers.
+   ============================================================ */
+.v6modwrap{position:relative;overflow:clip;border-top:1px solid var(--line)}
+.v6modwrap__bed{position:absolute;inset:0;z-index:0}
+.v6modwrap__bed img{width:100%;height:100%;object-fit:cover;opacity:.6}
+.v6modwrap__veil{position:absolute;inset:0;z-index:1;pointer-events:none;background:
+  linear-gradient(180deg,rgba(8,9,11,.94) 0%,rgba(8,9,11,.55) 42%,rgba(8,9,11,.7) 70%,rgba(8,9,11,.95) 100%)}
+.v6modwrap>.band{position:relative;z-index:2;background:transparent}
+
+.v6modwrap .v6mod__g{background:var(--line-2);border-color:var(--line-2)}
+.v6modwrap .v6mod__c{background:rgba(8,9,11,.8)}
+.v6mod__top{display:flex;justify-content:space-between;align-items:flex-start;
+  margin-bottom:var(--s4)}
+.v6mod__top .v6mod__ic{margin-bottom:0}
+.v6mod__n{font-family:var(--mono);font-size:var(--t-2xs);letter-spacing:.14em;color:var(--ink-3)}
+.v6modwrap .v6mod__close{background:rgba(18,21,26,.92)}
+
+/* ------------------------------------------------------------
+   Trust strip, layout fix. Six logos squeezed into the right hand
+   column of a two column grid rendered at 51px wide, with NCS 12px
+   and ST Engineering 9px tall. The strongest social proof on the
+   page was unreadable. The logos now take the full width under the
+   heading, and the mono tone is lifted so thin marks survive.
+   ------------------------------------------------------------ */
+.v6trust .shell{grid-template-columns:1fr !important;gap:var(--s6)}
+.v6trust__t{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;
+  gap:var(--s3) var(--s6)}
+.v6trust__t .label{margin-bottom:0}
+.v6trust__t p{max-width:56ch}
+.v6logos{grid-template-columns:repeat(2,1fr)}
+@media (min-width:560px){.v6logos{grid-template-columns:repeat(3,1fr)}}
+@media (min-width:980px){.v6logos{grid-template-columns:repeat(6,1fr)}}
+.v6logo{min-height:110px;padding:var(--s6) var(--s5)}
+.v6logo img{max-height:42px;max-width:150px}
+.v6logos[data-mode="mono"] .v6logo__m{opacity:.8}
+/* 1fr has a min-content floor, so the widest logo pushed its column
+   wider than the rest. minmax(0,1fr) gives six equal tiles. */
+.v6logos{grid-template-columns:repeat(2,minmax(0,1fr))}
+@media (min-width:560px){.v6logos{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media (min-width:980px){.v6logos{grid-template-columns:repeat(6,minmax(0,1fr))}}
+
+/* ============================================================
+   SYSTEM EXPLORER. Hierarchy left, detail right.
+   ============================================================ */
+.v6x__intro{margin:var(--s9) 0 var(--s6);padding-top:var(--s7);border-top:1px solid var(--line);
+  display:flex;flex-wrap:wrap;align-items:baseline;gap:var(--s3) var(--s6)}
+.v6x__intro p{margin:0;color:var(--ink-3);font-size:var(--t-sm)}
+
+.v6x{display:grid;grid-template-columns:1fr;border:1px solid var(--line);background:var(--deep)}
+@media (min-width:980px){.v6x{grid-template-columns:minmax(0,5fr) minmax(0,7fr)}}
+
+/* ---- the tree ---- */
+.v6x__tree{padding:var(--s6) var(--s5);border-bottom:1px solid var(--line)}
+@media (min-width:980px){.v6x__tree{border-bottom:0;border-right:1px solid var(--line);padding:var(--s7) var(--s6)}}
+.v6x__root{display:block;font-family:var(--mono);font-size:var(--t-2xs);letter-spacing:.2em;
+  text-transform:uppercase;color:var(--ink-3);padding-bottom:var(--s4);margin-bottom:var(--s5);
+  border-bottom:1px solid var(--line)}
+.v6x__list{display:flex;flex-direction:column;gap:var(--s5)}
+
+/* each function is a branch: a vertical line down its left edge,
+   and a short tick into every system it holds */
+.v6x__grp{position:relative;padding-left:var(--s5)}
+.v6x__grp::before{content:"";position:absolute;left:0;top:6px;bottom:18px;width:1px;background:var(--line-3)}
+.v6x__fn{display:block;font-family:var(--mono);font-size:var(--t-2xs);letter-spacing:.2em;
+  text-transform:uppercase;color:var(--brand);margin-bottom:var(--s2);position:relative}
+.v6x__fn::before{content:"";position:absolute;left:calc(-1 * var(--s5) - 3px);top:50%;
+  width:7px;height:7px;margin-top:-3px;border-radius:50%;background:var(--brand)}
+
+.v6x__it{position:relative;display:flex;align-items:center;gap:var(--s3);width:100%;
+  background:transparent;border:1px solid transparent;color:var(--ink-2);
+  padding:10px 12px;margin-top:4px;cursor:pointer;text-align:left;
+  transition:background .25s var(--ease),border-color .25s var(--ease),color .25s var(--ease)}
+.v6x__it::before{content:"";position:absolute;left:calc(-1 * var(--s5));top:50%;
+  width:calc(var(--s5) - 4px);height:1px;background:var(--line-3)}
+.v6x__it .ph{font-size:18px;color:var(--ink-3);flex:none;transition:color .25s var(--ease)}
+.v6x__it b{font-family:var(--display);font-weight:400;font-size:var(--t-base);
+  letter-spacing:.03em;color:inherit}
+.v6x__it span{margin-left:auto;font-family:var(--mono);font-size:var(--t-2xs);
+  letter-spacing:.12em;color:var(--ink-3)}
+.v6x__it:hover{background:var(--panel);color:var(--ink)}
+.v6x__it[aria-selected="true"]{background:var(--brand-wash);border-color:var(--brand-dim);color:var(--ink)}
+.v6x__it[aria-selected="true"] .ph{color:var(--brand)}
+.v6x__it[aria-selected="true"]::before{background:var(--brand)}
+.v6x__it:focus-visible{outline:2px solid var(--brand);outline-offset:2px}
+
+/* ---- the detail ---- */
+.v6x__panel{display:flex;flex-direction:column;min-width:0}
+.v6x__img{position:relative;margin:0;aspect-ratio:16/7;overflow:hidden;
+  border-bottom:1px solid var(--line);background:var(--panel)}
+.v6x__img img{width:100%;height:100%;object-fit:cover;display:block;
+  animation:v6xIn .45s var(--ease) both}
+.v6x__img::after{content:"";position:absolute;inset:0;
+  background:linear-gradient(to top,rgba(12,14,17,.85) 0%,rgba(12,14,17,0) 55%)}
+.v6x__fnb{position:absolute;left:var(--s6);bottom:var(--s4);z-index:1;font-family:var(--mono);
+  font-size:var(--t-2xs);letter-spacing:.2em;text-transform:uppercase;color:var(--brand)}
+.v6x__body{padding:var(--s6);display:flex;flex-direction:column;gap:var(--s5);
+  animation:v6xIn .35s var(--ease) both}
+@media (min-width:980px){.v6x__body{padding:var(--s7)}}
+.v6x__head{display:flex;flex-wrap:wrap;align-items:flex-start;gap:var(--s4)}
+.v6x__head>.ph{font-size:26px;color:var(--brand);margin-top:4px}
+.v6x__head h3{font-family:var(--display);font-weight:300;font-size:clamp(28px,3vw,42px);
+  letter-spacing:.01em;line-height:1;margin:0 0 var(--s2);color:var(--ink)}
+.v6x__sys{font-family:var(--mono);font-size:var(--t-2xs);letter-spacing:.1em;color:var(--ink-3)}
+.v6x__partner{margin-left:auto;font-family:var(--mono);font-size:var(--t-2xs);letter-spacing:.1em;
+  color:var(--brand);border:1px solid var(--brand-dim);padding:5px 10px;align-self:center}
+.v6x__desc{margin:0;font-size:var(--t-lg);line-height:1.55;color:var(--ink);max-width:56ch}
+.v6x__facts{margin:0;display:grid;gap:1px;background:var(--line);border:1px solid var(--line)}
+@media (min-width:760px){.v6x__facts{grid-template-columns:1fr 1fr}
+  .v6x__facts div:last-child{grid-column:1/-1}}
+.v6x__facts div{background:var(--void);padding:var(--s4) var(--s5)}
+.v6x__facts dt{font-family:var(--mono);font-size:var(--t-2xs);letter-spacing:.16em;
+  text-transform:uppercase;color:var(--ink-3);margin-bottom:var(--s2)}
+.v6x__facts dd{margin:0;font-size:var(--t-sm);color:var(--ink-2);line-height:1.6}
+.v6x__go{display:inline-flex;align-items:center;gap:var(--s3);align-self:flex-start;
+  font-family:var(--mono);font-size:var(--t-2xs);letter-spacing:.14em;text-transform:uppercase;
+  color:var(--ink);text-decoration:none;border:1px solid var(--line-2);padding:12px 16px;
+  transition:border-color .3s var(--ease),color .3s var(--ease)}
+.v6x__go span{color:var(--ink-3);letter-spacing:.08em;text-transform:none}
+.v6x__go:hover{border-color:var(--brand);color:var(--brand)}
+
+@keyframes v6xIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){.v6x__img img,.v6x__body{animation:none}}
+
+/* Narrow screens. Stacked, the full tree was 688px tall, so tapping a
+   system changed a panel that was off screen and nothing appeared to
+   happen. The tree packs into chips per function instead. */
+@media (max-width:979px){
+  .v6x__list{gap:var(--s4)}
+  .v6x__grp{padding-left:0;display:flex;flex-wrap:wrap;align-items:center;gap:6px}
+  .v6x__grp::before,.v6x__fn::before,.v6x__it::before{display:none}
+  .v6x__fn{width:100%;margin-bottom:2px}
+  .v6x__it{width:auto;margin-top:0;border-color:var(--line-2);padding:8px 10px;gap:8px}
+  .v6x__it span{margin-left:4px}
+  .v6x__root{margin-bottom:var(--s4)}
+}
+@media (max-width:979px){
+  /* chips carried icon, brand and acronym at 140 to 175px, so two never
+     fit in the ~295px row; the brand alone is enough to name the tab */
+  .v6x__it span{display:none}
+  .v6x__it{padding:7px 10px}
+  /* single system functions sit side by side */
+  .v6x__list{display:grid;grid-template-columns:1fr 1fr;gap:var(--s4) var(--s3)}
+  .v6x__grp:nth-child(3),.v6x__grp:nth-child(4){grid-column:1/-1}
+}
+
+/* ============================================================
+   EXPLORER, REVISION 2.
+   Left: the diagram hierarchy, clickable. Right: compacted so the
+   whole explorer fits a 1366x768 laptop (about 650px of viewport)
+   without scrolling. The detail used to run past 900px.
+   ============================================================ */
+.v6x__tree--dg{display:flex;flex-direction:column}
+.v6x__tree--dg .v6x__list{display:flex;flex-direction:column;align-items:stretch;gap:0}
+.v6xd__row{display:grid;grid-template-columns:1fr;gap:var(--s3)}
+.v6xd__row--3{grid-template-columns:repeat(3,minmax(0,1fr))}
+.v6xd__n{border:1px solid var(--line-2);background:var(--void);padding:var(--s4) var(--s3);
+  display:flex;flex-direction:column;align-items:center;gap:var(--s3);text-align:center}
+.v6xd__k{font-family:var(--mono);font-size:var(--t-2xs);letter-spacing:.18em;
+  text-transform:uppercase;color:var(--brand)}
+.v6xd__l{display:flex;flex-wrap:wrap;justify-content:center;gap:6px}
+.v6xd__stem{width:1px;height:20px;background:var(--line-3);align-self:center}
+
+/* the tabs: chips in the diagram, overriding the tree list styling */
+.v6x__tree--dg .v6xd__b{width:auto;margin:0;padding:6px 10px;gap:0;
+  font-family:var(--mono);font-size:var(--t-xs);letter-spacing:.1em;color:var(--ink-2);
+  border:1px solid var(--line);background:var(--panel)}
+.v6x__tree--dg .v6xd__b::before{display:none}
+.v6x__tree--dg .v6xd__b:hover{border-color:var(--line-3);color:var(--ink)}
+.v6x__tree--dg .v6xd__b[aria-selected="true"]{background:var(--brand-wash);
+  border-color:var(--brand);color:var(--brand)}
+.v6x__hint{margin-top:auto;padding-top:var(--s5);font-family:var(--mono);font-size:var(--t-2xs);
+  letter-spacing:.12em;color:var(--ink-3)}
+
+/* ---- compact detail ---- */
+.v6x__img{aspect-ratio:auto;height:128px}
+.v6x__body{padding:var(--s5) var(--s6);gap:var(--s4)}
+@media (min-width:980px){.v6x__body{padding:var(--s5) var(--s6)}}
+.v6x__head{gap:var(--s3);align-items:center}
+.v6x__head>.ph{font-size:22px;margin-top:0}
+.v6x__head h3{font-size:clamp(24px,2.4vw,32px);margin-bottom:4px}
+.v6x__desc{font-size:var(--t-base);line-height:1.5}
+.v6x__facts{grid-template-columns:1fr}
+@media (min-width:760px){.v6x__facts{grid-template-columns:1fr 1fr}}
+.v6x__facts div{padding:var(--s3) var(--s4)}
+.v6x__facts dt{margin-bottom:4px}
+.v6x__facts dd{font-size:var(--t-xs);line-height:1.5}
+.v6x__go{padding:10px 14px}
+
+@media (max-width:559px){
+  .v6xd__row--3{grid-template-columns:1fr}
+}
+/* 609px left about 27px hidden under the 68px sticky nav on a 650px
+   viewport, so the image band and the vertical rhythm come down. */
+.v6x__img{height:96px}
+.v6x__body{padding:var(--s4) var(--s6) var(--s5);gap:var(--s3)}
+.v6x__tree--dg{padding-top:var(--s5);padding-bottom:var(--s5)}
+.v6x__root{padding-bottom:var(--s3);margin-bottom:var(--s4)}
+/* Stacking the top row to one column made the diagram 672px on a
+   phone. The boxes are small enough to stay three across. */
+@media (max-width:559px){
+  .v6xd__row--3{grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}
+  .v6xd__n{padding:var(--s3) 6px}
+  .v6x__tree--dg .v6xd__b{padding:5px 7px;font-size:var(--t-2xs)}
+}
+
+/* ============================================================
+   DIAGRAM, FLOW. A bus joins the top three, light runs the route.
+   One 3.6s cycle; every segment shares it and is offset by delay,
+   so the pulses stay in sequence however long the page is open.
+   ============================================================ */
+.v6dg{--cyc:3.6s;--gap:var(--s4);--glow:0 0 10px 1px rgba(94,165,255,.75)}
+.v6dg__row--3{gap:var(--gap)}
+.v6dg__n{transition:border-color .4s var(--ease)}
+.v6dg__n:hover{border-color:var(--line-3)}
+
+/* chips are links now */
+.v6dg__c{font-family:var(--mono);font-size:var(--t-xs);letter-spacing:.1em;color:var(--ink-2);
+  border:1px solid var(--line);padding:5px 10px;background:var(--panel);text-decoration:none;
+  transition:border-color .25s var(--ease),color .25s var(--ease),background .25s var(--ease)}
+.v6dg__c:hover{border-color:var(--brand);color:var(--brand);background:var(--brand-wash)}
+.v6dg__c:focus-visible{outline:2px solid var(--brand);outline-offset:2px}
+
+/* the bus: same three columns as the row above, so the stems land
+   exactly under each box */
+.v6dg__bus{position:relative;width:100%;max-width:860px;height:56px;
+  display:grid;grid-template-columns:repeat(3,1fr);gap:var(--gap)}
+.v6dg__bus>i{justify-self:center;width:1px;height:24px}
+.v6dg__bus>b{position:absolute;top:24px;height:1px}
+.v6dg__bus>.v6f--l{left:calc((100% - 2 * var(--gap)) / 6);right:50%}
+.v6dg__bus>.v6f--r{left:50%;right:calc((100% - 2 * var(--gap)) / 6)}
+.v6dg__bus>u{position:absolute;left:50%;top:24px;width:1px;height:32px;transform:translateX(-50%)}
+.v6dg__dot{position:absolute;left:50%;top:24px;width:7px;height:7px;margin:-3px 0 0 -3px;
+  border-radius:50%;background:var(--brand-dim)}
+.v6dg__link{width:1px;height:32px;position:relative}
+.v6dg__link>u{position:absolute;inset:0}
+
+/* every segment: a static hairline, with its pulse on ::after */
+.v6f{display:block;position:relative;background:var(--line-3);text-decoration:none}
+.v6f::after{content:"";position:absolute;opacity:0;pointer-events:none;border-radius:2px;
+  box-shadow:var(--glow)}
+.v6f--y::after{left:-1px;width:3px;height:60%;top:0;
+  background:linear-gradient(to bottom,transparent,var(--brand),transparent)}
+.v6f--x::after{top:-1px;height:3px;width:34%;
+  background:linear-gradient(to right,transparent,var(--brand),transparent)}
+.v6f--l::after{left:0}
+.v6f--r::after{right:0}
+
+@media (prefers-reduced-motion:no-preference){
+  .v6f--a::after{animation:v6fy var(--cyc) linear infinite}
+  .v6f--l::after{animation:v6fxl var(--cyc) linear infinite;animation-delay:calc(var(--cyc) * .14)}
+  .v6f--r::after{animation:v6fxr var(--cyc) linear infinite;animation-delay:calc(var(--cyc) * .14)}
+  .v6dg__dot{animation:v6dot var(--cyc) ease-out infinite;animation-delay:calc(var(--cyc) * .30)}
+  .v6f--b::after{animation:v6fy var(--cyc) linear infinite;animation-delay:calc(var(--cyc) * .32)}
+  .v6dg__n--m{animation:v6box var(--cyc) ease-out infinite;animation-delay:calc(var(--cyc) * .44)}
+  .v6f--c::after{animation:v6fy var(--cyc) linear infinite;animation-delay:calc(var(--cyc) * .56)}
+  .v6dg__n--g{animation:v6box var(--cyc) ease-out infinite;animation-delay:calc(var(--cyc) * .68)}
+}
+/* each pulse is live for a slice of the cycle and dark for the rest */
+@keyframes v6fy{
+  0%{transform:translateY(-60%);opacity:0}
+  3%{opacity:1}
+  11%{opacity:1}
+  14%,100%{transform:translateY(170%);opacity:0}
+}
+@keyframes v6fxl{
+  0%{transform:translateX(-100%);opacity:0}
+  3%{opacity:1}
+  14%{opacity:1}
+  17%,100%{transform:translateX(300%);opacity:0}
+}
+@keyframes v6fxr{
+  0%{transform:translateX(100%);opacity:0}
+  3%{opacity:1}
+  14%{opacity:1}
+  17%,100%{transform:translateX(-300%);opacity:0}
+}
+@keyframes v6dot{
+  0%,100%{background:var(--brand-dim);box-shadow:none}
+  4%{background:var(--brand);box-shadow:0 0 0 4px rgba(94,165,255,.18),var(--glow)}
+  16%{background:var(--brand-dim);box-shadow:none}
+}
+@keyframes v6box{
+  0%,100%{border-color:var(--line-2);box-shadow:none}
+  5%{border-color:var(--brand-dim);box-shadow:inset 0 0 24px rgba(94,165,255,.08),0 0 18px rgba(94,165,255,.08)}
+  20%{border-color:var(--line-2);box-shadow:none}
+}
+
+/* stacked to one column the bus geometry means nothing: keep the
+   centre stem and its pulse, drop the three-way join */
+@media (max-width:759px){
+  .v6dg__bus{grid-template-columns:1fr;height:32px}
+  .v6dg__bus>i,.v6dg__bus>b,.v6dg__dot{display:none}
+  .v6dg__bus>u{top:0}
+}
+
+/* ============================================================
+   PAGE TRANSITION. Every route arrives the same way.
+   ============================================================ */
+@keyframes v6PageIn{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+#main.v6enter{animation:v6PageIn .55s cubic-bezier(.22,1,.36,1) both}
+@keyframes v6MenuIn{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:none}}
+.menu:not([hidden]){animation:v6MenuIn .22s cubic-bezier(.22,1,.36,1) both}
+@media (prefers-reduced-motion:reduce){
+  #main.v6enter,.menu:not([hidden]){animation:none}
+}
+
+/* ============================================================
+   SIMULATE. INTEGRATE. DEPLOY. Client supplied image.
+   The holographic terrain sits centre left of the photograph, so
+   the frame is anchored left and the copy takes the right, over a
+   veil that only darkens the side the text needs.
+   ============================================================ */
+.v6say--cmd{min-height:clamp(520px,72dvh,760px)}
+.v6say__img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
+  object-position:28% 50%}
+.v6say--cmd .v6say__veil{background:
+  linear-gradient(270deg,rgba(6,10,18,.97) 0%,rgba(6,10,18,.9) 30%,rgba(6,10,18,.45) 58%,rgba(6,10,18,.1) 80%),
+  linear-gradient(to top,rgba(8,9,11,.6),rgba(8,9,11,0) 30%)}
+.v6say--cmd .v6say__in{max-width:44ch}
+.v6say--cmd h2{max-width:none;margin-bottom:var(--s5)}
+.v6say--cmd p{margin-bottom:var(--s5);color:var(--ink-2)}
+.v6cmd__rule{display:block;width:40px;height:1px;background:var(--brand);margin-bottom:var(--s6)}
+.v6cmd{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:var(--s5)}
+.v6cmd li{display:flex;flex-direction:column;gap:var(--s3)}
+.v6cmd .ph{font-size:26px;color:var(--brand)}
+.v6cmd span{font-size:var(--t-xs);line-height:1.45;color:var(--ink-2)}
+@media (max-width:999px){
+  /* the copy covers the photograph on a narrow screen, so let the
+     image read above and darken more evenly */
+  .v6say--cmd .v6say__veil{background:linear-gradient(to top,rgba(6,10,18,.96) 0%,rgba(6,10,18,.85) 55%,rgba(6,10,18,.35) 100%)}
+  .v6say--cmd .shell{justify-content:flex-start}
+  .v6say__img{object-position:40% 50%}
+}
+@media (max-width:480px){.v6cmd{grid-template-columns:1fr;gap:var(--s4)}
+  .v6cmd li{flex-direction:row;align-items:center}}
+/* On a phone the title lands on the brightest monitor in the photograph,
+   so the top of the veil can no longer be the thin end. */
+@media (max-width:999px){
+  .v6say--cmd .v6say__veil{background:linear-gradient(to top,rgba(6,10,18,.96) 0%,rgba(6,10,18,.86) 50%,rgba(6,10,18,.74) 100%)}
+}
+
+/* The photograph ended in hard edges on all four sides, with a rule
+   along the top, so it read as a rectangle pasted onto the page. Every
+   edge now dissolves into the page ground, the left as well as the
+   copy side, the way the other image sections do. */
+.v6say--cmd{border-top:0}
+@media (min-width:1000px){
+  .v6say--cmd .v6say__veil{background:
+    /* top and bottom melt into the sections either side */
+    linear-gradient(to bottom,var(--void) 0%,rgba(8,9,11,0) 22%),
+    linear-gradient(to top,var(--void) 0%,rgba(8,9,11,0) 26%),
+    /* left edge */
+    linear-gradient(90deg,var(--void) 0%,rgba(8,9,11,.75) 9%,rgba(8,9,11,0) 30%),
+    /* right: the copy side, darkest, ending in the page ground */
+    linear-gradient(270deg,var(--void) 0%,rgba(6,10,18,.92) 26%,rgba(6,10,18,.5) 55%,rgba(6,10,18,0) 78%)}
+}
+@media (max-width:999px){
+  .v6say--cmd .v6say__veil{background:
+    linear-gradient(to bottom,var(--void) 0%,rgba(8,9,11,0) 14%),
+    linear-gradient(to top,var(--void) 0%,rgba(6,10,18,.88) 45%,rgba(6,10,18,.74) 100%)}
+}
+/* the next section's top rule cut straight across the fade */
+.v6say--cmd + .band{border-top-color:transparent}
+
+/* ============================================================
+   CHAIN PANEL, deck page 8. Picture of the step, one line,
+   data as chips, systems as product medallions in brand blue.
+   ============================================================ */
+.panel__in.v6cp{grid-template-columns:1fr;gap:var(--s6);padding-block:var(--s7);align-items:center}
+@media (min-width:900px){.panel__in.v6cp{grid-template-columns:minmax(0,6fr) minmax(0,5fr);gap:var(--s8)}}
+.v6cp__img{position:relative;margin:0;aspect-ratio:16/9;overflow:hidden;border:1px solid var(--line-2);
+  background:var(--panel)}
+.v6cp__img img{width:100%;height:100%;object-fit:cover;display:block}
+.v6cp__img::after{content:"";position:absolute;inset:0;
+  background:linear-gradient(to top,rgba(8,9,11,.82) 0%,rgba(8,9,11,0) 45%)}
+.v6cp__n{position:absolute;left:var(--s5);bottom:var(--s4);z-index:1;font-family:var(--mono);
+  font-size:var(--t-2xs);letter-spacing:.2em;text-transform:uppercase;color:var(--brand)}
+.v6cp__body{display:flex;flex-direction:column;gap:var(--s5)}
+.panel .v6cp__body h3{margin:0;max-width:22ch;font-size:clamp(22px,2.2vw,30px);font-weight:300;line-height:1.15}
+.panel .v6cp__body p{margin:0;font-size:var(--t-lg);line-height:1.5;color:var(--ink);max-width:40ch}
+.v6cp__lbl{display:block;font-family:var(--mono);font-size:var(--t-2xs);letter-spacing:.16em;
+  text-transform:uppercase;color:var(--ink-3);margin-bottom:var(--s3)}
+.v6cp__chips{display:flex;flex-wrap:wrap;gap:6px}
+.v6cp__chips i{font-style:normal;font-size:var(--t-xs);color:var(--ink-2);border:1px solid var(--line-2);
+  padding:4px 10px;background:var(--void)}
+/* the step crossfades in, so changing step reads as a change */
+.v6cp--in .v6cp__img,.v6cp--in .v6cp__body{animation:v6cpIn .4s cubic-bezier(.22,1,.36,1) both}
+.v6cp--in .v6cp__body{animation-delay:.05s}
+@keyframes v6cpIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+
+/* product medallion: a disc with a double ring, in the theme's blue */
+.v6medals{display:flex;flex-wrap:wrap;gap:var(--s5)}
+.v6medal{display:flex;flex-direction:column;align-items:center;gap:6px;text-decoration:none;min-width:84px}
+.v6medal__disc{position:relative;width:64px;height:64px;border-radius:50%;display:grid;place-items:center;
+  background:radial-gradient(circle at 50% 35%,#16314f 0%,#0b1626 70%);
+  box-shadow:0 0 0 1px var(--brand-dim),0 0 0 5px var(--deep),0 0 0 6px rgba(94,165,255,.45),
+             0 6px 22px rgba(94,165,255,.18);
+  transition:box-shadow .3s var(--ease),transform .3s var(--ease)}
+.v6medal__disc .ph{font-size:26px;color:var(--brand)}
+.v6medal b{font-family:var(--display);font-weight:400;font-size:var(--t-sm);letter-spacing:.08em;color:var(--ink)}
+.v6medal span{font-family:var(--mono);font-size:var(--t-2xs);letter-spacing:.14em;color:var(--ink-3);margin-top:-4px}
+.v6medal:hover .v6medal__disc{transform:translateY(-2px);
+  box-shadow:0 0 0 1px var(--brand),0 0 0 5px var(--deep),0 0 0 6px var(--brand),0 8px 28px rgba(94,165,255,.35)}
+.v6medal:focus-visible{outline:2px solid var(--brand);outline-offset:4px}
+
+/* ============================================================
+   IMAGE LED FEATURE SECTIONS: partners (deck 11), assurance (12)
+   The photograph fills the top right and dissolves into the page
+   on every edge; the cards sit on the ground beneath it.
+   ============================================================ */
+.v6feat{position:relative;overflow:clip;padding-block:var(--s9);background:var(--void)}
+.v6feat__media{position:absolute;top:0;right:0;width:min(1200px,72%);height:min(620px,72%);z-index:0}
+.v6feat__media img{width:100%;height:100%;object-fit:cover;object-position:60% 40%}
+.v6feat__veil{position:absolute;top:0;right:0;width:min(1200px,72%);height:min(620px,72%);z-index:1;
+  pointer-events:none;background:
+  linear-gradient(90deg,var(--void) 0%,rgba(8,9,11,.65) 22%,rgba(8,9,11,0) 55%),
+  linear-gradient(to top,var(--void) 0%,rgba(8,9,11,0) 45%),
+  linear-gradient(to bottom,var(--void) 0%,rgba(8,9,11,0) 18%),
+  linear-gradient(270deg,rgba(8,9,11,.6) 0%,rgba(8,9,11,0) 12%)}
+.v6feat .shell{position:relative;z-index:2}
+.v6feat__head{max-width:52ch;min-height:clamp(260px,32vw,400px);display:flex;flex-direction:column;
+  justify-content:center;margin-bottom:var(--s7)}
+.v6feat__head .label{color:var(--brand);margin-bottom:var(--s4)}
+.v6feat__head h2{font-size:clamp(30px,4.2vw,56px);font-weight:300;line-height:1.04;letter-spacing:-.03em;
+  margin:0 0 var(--s5)}
+.v6feat__head p{margin:0;color:var(--ink-2);max-width:50ch}
+
+.v6feat__grid{display:grid;grid-template-columns:1fr;gap:var(--s4)}
+@media (min-width:700px){.v6feat__grid--4,.v6feat__grid--3{grid-template-columns:repeat(2,1fr)}}
+@media (min-width:1080px){.v6feat__grid--4{grid-template-columns:repeat(4,1fr)}
+  .v6feat__grid--3{grid-template-columns:repeat(3,1fr)}}
+
+.v6fc{position:relative;display:flex;flex-direction:column;gap:var(--s3);padding:var(--s6) var(--s5);
+  background:rgba(12,14,17,.86)}
+.v6fc__n{font-family:var(--mono);font-size:var(--t-2xs);letter-spacing:.16em;color:var(--brand)}
+.v6fc .ph{font-size:28px;color:var(--brand)}
+.v6fc h3{margin:0;font-size:var(--t-lg);font-weight:400;letter-spacing:-.01em;color:var(--ink)}
+.v6fc p{margin:0;font-size:var(--t-sm);line-height:1.6;color:var(--ink-3)}
+
+/* partners: one connected rail, a blue rule along the top */
+.v6feat__grid--rail{gap:0;border-top:1px solid var(--brand-dim)}
+.v6feat__grid--rail .v6fc{border-right:1px solid var(--line)}
+.v6feat__grid--rail .v6fc:last-child{border-right:0}
+.v6feat__grid--rail .v6fc::before{content:"";position:absolute;top:-1px;left:0;width:56%;height:2px;
+  background:linear-gradient(90deg,var(--brand),rgba(94,165,255,0))}
+
+/* assurance: boxed controls with a short blue accent on the base */
+.v6fc--box{border:1px solid var(--line-2);transition:border-color .3s var(--ease)}
+.v6fc--box::after{content:"";position:absolute;left:0;bottom:-1px;width:28%;height:2px;background:var(--brand)}
+.v6fc--box:hover{border-color:var(--brand-dim)}
+
+.v6feat__cta{display:flex;flex-wrap:wrap;align-items:center;gap:var(--s5);margin-top:var(--s7)}
+.v6feat__cta .btn{border-color:var(--brand);color:var(--ink);display:inline-flex;gap:10px;align-items:center}
+.v6feat__tag{font-style:italic;font-size:var(--t-sm);color:var(--ink-3);display:flex;align-items:center;gap:var(--s3)}
+.v6feat__tag::before{content:"";width:40px;height:1px;background:var(--line-3)}
+
+@media (max-width:899px){
+  .v6feat__media,.v6feat__veil{width:100%;height:420px}
+  .v6feat__veil{background:linear-gradient(to top,var(--void) 0%,rgba(8,9,11,.55) 45%,rgba(8,9,11,.35) 100%)}
+  .v6feat__head{min-height:300px;justify-content:flex-end}
+}
+@media (prefers-reduced-motion:reduce){.v6cp--in .v6cp__img,.v6cp--in .v6cp__body{animation:none}}
+
+/* ============================================================
+   COMPANY, deck 13. Typographic, boxed points with icon + number.
+   ============================================================ */
+.v6co__head{max-width:56ch;margin-bottom:var(--s7)}
+.v6co__head .label{color:var(--brand);display:block;margin-bottom:var(--s4)}
+.v6co__head h2{font-size:clamp(28px,3.8vw,50px);font-weight:300;line-height:1.06;letter-spacing:-.03em;margin:0 0 var(--s5)}
+.v6co__head p{margin:0;color:var(--ink-2)}
+.v6fc__top{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:var(--s3)}
+.v6fc--co .v6fc__n{display:flex;align-items:center;gap:8px}
+.v6fc--co .v6fc__n::before{content:"";width:1px;height:12px;background:var(--line-3)}
+.v6fc--co{background:var(--void)}
+
+/* ============================================================
+   QUESTIONS, deck 14. Numbered rows, chevrons, side note.
+   ============================================================ */
+.v6q__head{display:grid;gap:var(--s4);margin-bottom:var(--s7)}
+@media (min-width:860px){.v6q__head{grid-template-columns:1fr auto;align-items:end}}
+.v6q__head .label{color:var(--brand);display:block;margin-bottom:var(--s3)}
+.v6q__head h2{margin:0;font-size:clamp(28px,3.6vw,48px);font-weight:300;letter-spacing:-.03em;line-height:1.05}
+.v6q__head p{margin:0;font-size:var(--t-sm);color:var(--ink-3);max-width:26ch;padding-left:var(--s5);
+  border-left:1px solid var(--line-2)}
+.v6q{border-top:1px solid var(--line-2)}
+.v6q details{border-bottom:1px solid var(--line-2)}
+.v6q summary{display:grid;grid-template-columns:3.5ch 1fr auto;align-items:center;gap:var(--s4);
+  padding:var(--s5) 0;cursor:pointer;list-style:none}
+.v6q summary::-webkit-details-marker{display:none}
+.v6q__n{font-family:var(--mono);font-size:var(--t-2xs);letter-spacing:.14em;color:var(--brand)}
+.v6q__t{font-size:var(--t-base);color:var(--ink);transition:color .25s var(--ease)}
+.v6q summary:hover .v6q__t{color:var(--brand)}
+.v6q summary .ph{font-size:16px;color:var(--ink-3);transition:transform .3s var(--ease),color .3s var(--ease)}
+.v6q details[open] summary .ph{transform:rotate(180deg);color:var(--brand)}
+.v6q summary:focus-visible{outline:2px solid var(--brand);outline-offset:4px}
+.v6q details p{margin:0 0 var(--s5);padding-left:calc(3.5ch + var(--s4));max-width:84ch;
+  font-size:var(--t-sm);line-height:1.7;color:var(--ink-3)}
+.v6q details[open] p{animation:v6qIn .3s cubic-bezier(.22,1,.36,1) both}
+@keyframes v6qIn{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:none}}
+
+/* ============================================================
+   CONTACT, deck 15. Contour ground, tagline, image cards.
+   ============================================================ */
+.v6close{position:relative;overflow:clip}
+.v6close .shell{position:relative;z-index:1}
+.v6close__topo,.v6foot__topo{position:absolute;inset:0;z-index:0;color:rgba(94,165,255,.09);pointer-events:none;
+  -webkit-mask-image:linear-gradient(100deg,transparent 30%,#000 75%);mask-image:linear-gradient(100deg,transparent 30%,#000 75%)}
+.v6close__topo svg,.v6foot__topo svg{width:100%;height:100%}
+.v6close__grid{display:grid;gap:var(--s6);margin-bottom:var(--s7)}
+@media (min-width:980px){.v6close__grid{grid-template-columns:1fr auto;align-items:start}}
+.v6close__grid .label{color:var(--brand);display:block;margin-bottom:var(--s4)}
+.v6close__grid .lead{max-width:58ch;margin:0}
+.v6close__tag{display:flex;flex-direction:column;gap:4px;padding-left:var(--s5);border-left:1px solid var(--line-3);
+  font-family:var(--mono);font-size:var(--t-2xs);letter-spacing:.16em;text-transform:uppercase;color:var(--ink-3)}
+.v6rel a{padding:0;gap:0}
+.v6rel__img{display:block;height:120px;overflow:hidden;border-bottom:1px solid var(--line-2)}
+.v6rel__img img{width:100%;height:100%;object-fit:cover;transition:transform .6s var(--ease)}
+.v6rel a:hover .v6rel__img img{transform:scale(1.04)}
+.v6rel__body{display:flex;flex-direction:column;gap:var(--s3);padding:var(--s5);flex:1}
+.v6close__foot{display:flex;flex-wrap:wrap;align-items:center;gap:var(--s5);margin-top:var(--s7)}
+.v6close__foot .btn{display:inline-flex;gap:10px;align-items:center}
+.v6close__foot span{font-size:var(--t-sm);color:var(--ink-3);max-width:44ch;padding-left:var(--s5);
+  border-left:1px solid var(--line-2)}
+
+/* ============================================================
+   FOOTER, deck 16
+   ============================================================ */
+.v6foot{position:relative;overflow:clip;background:linear-gradient(180deg,var(--deep),#0a1018);
+  border-top:1px solid var(--line);padding-top:var(--s9)}
+.v6foot .shell{position:relative;z-index:1}
+.v6foot__grid{display:grid;grid-template-columns:1fr;gap:var(--s7)}
+@media (min-width:760px){.v6foot__grid{grid-template-columns:1fr 1fr}}
+@media (min-width:1080px){.v6foot__grid{grid-template-columns:minmax(0,1.3fr) minmax(0,1.3fr) minmax(0,.8fr) minmax(0,.7fr);gap:0}
+  .v6foot__grid>*{padding-inline:var(--s6);border-left:1px solid var(--line-2)}
+  .v6foot__grid>*:first-child{padding-left:0;border-left:0}}
+.v6foot__word{display:inline-block;text-decoration:none;font-family:var(--display);font-weight:400;
+  font-size:26px;letter-spacing:.32em;text-transform:uppercase;color:var(--ink);margin-bottom:var(--s5)}
+.v6foot__word b{font-weight:400;color:var(--brand)}
+.v6foot__brand p{font-size:var(--t-sm);line-height:1.7;color:var(--ink-2);max-width:42ch;margin:0 0 var(--s6)}
+.v6foot__geo{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-family:var(--mono);font-size:var(--t-2xs);
+  letter-spacing:.16em;text-transform:uppercase;color:var(--ink-3)}
+.v6foot__geo::before{content:"";width:32px;height:1px;background:var(--brand)}
+.v6foot__geo span+span::before{content:"\00b7";margin-right:10px;color:var(--line-3)}
+.v6foot__col h4{font-family:var(--mono);font-size:var(--t-2xs);letter-spacing:.18em;text-transform:uppercase;
+  color:var(--ink-3);font-weight:400;margin:0 0 var(--s5)}
+.v6foot__col a{display:block;font-size:var(--t-sm);color:var(--ink-2);text-decoration:none;padding:5px 0;
+  transition:color .25s var(--ease)}
+.v6foot__col a:hover{color:var(--brand)}
+.v6foot .v6connect{display:flex;align-items:center;gap:10px}
+.v6foot .v6connect .ph-fill{font-size:22px;color:var(--brand)}
+.v6foot__legal{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:var(--s4);
+  margin-top:var(--s8);padding-block:var(--s6);border-top:1px solid var(--line-2);
+  font-size:var(--t-xs);color:var(--ink-3)}
+.v6foot__legal nav{display:flex;flex-wrap:wrap;align-items:center}
+.v6foot__legal nav a{color:var(--ink-3);text-decoration:none;padding:0 var(--s4);border-left:1px solid var(--line-3)}
+.v6foot__legal nav a:first-child{border-left:0}
+.v6foot__legal nav a:last-child{padding-right:0}
+.v6foot__legal nav a:hover{color:var(--brand)}
+
+/* app.css styles every `footer .shell` as a three column grid and every
+   `footer a` as a block with a bottom margin. Both outrank the classes
+   above on specificity, which split Connect onto its own row and folded
+   the legal line into a narrow column. Scoped back to the v6 footer. */
+footer.v6foot .shell{display:block;padding-block:0}
+footer.v6foot .v6foot__grid{display:grid;grid-template-columns:1fr;gap:var(--s7);padding-bottom:0}
+@media (min-width:760px){footer.v6foot .v6foot__grid{grid-template-columns:1fr 1fr}}
+@media (min-width:1080px){footer.v6foot .v6foot__grid{
+  grid-template-columns:minmax(0,1.3fr) minmax(0,1.3fr) minmax(0,.8fr) minmax(0,.7fr);gap:0}}
+footer.v6foot a{margin-bottom:0}
+footer.v6foot .v6foot__word{display:inline-block}
+footer.v6foot .v6foot__legal nav a{display:inline-block}
+/* the region line wrapped APAC onto a second row in the brand column */
+footer.v6foot .v6foot__geo{letter-spacing:.1em;gap:8px;flex-wrap:nowrap;white-space:nowrap}
+footer.v6foot .v6foot__geo::before{width:24px}
+footer.v6foot .v6foot__geo span+span::before{margin-right:8px}
+@media (max-width:420px){footer.v6foot .v6foot__geo{flex-wrap:wrap;white-space:normal}}
+
+/* product pages */
+.v6pp{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:0 var(--s7)}
+.v6pp li{display:flex;gap:var(--s4);padding:var(--s4) 0;border-top:1px solid var(--line-2);color:var(--ink)}
+.v6pp li span,.v6pf li>span{font-family:'IBM Plex Mono',monospace;font-size:12px;color:var(--brand);padding-top:3px}
+.v6pm{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:var(--s7)}
+.v6pm__g h3{display:flex;align-items:center;gap:var(--s3);font-size:18px;padding-bottom:var(--s4);border-bottom:1px solid var(--brand);margin:0 0 var(--s4)}
+.v6pm__g h3 i{color:var(--brand)}
+.v6pm__g ul{list-style:none;margin:0;padding:0}
+.v6pm__g li{padding:var(--s3) 0;border-bottom:1px solid var(--line);color:var(--ink-2);font-size:15px}
+.v6pf{list-style:none;margin:var(--s6) 0 0;padding:0}
+.v6pf li{display:flex;gap:var(--s4);padding:var(--s4) 0;border-top:1px solid var(--line-2)}
+.v6pf b{display:block;color:var(--ink);font-weight:500}
+.v6pf p{margin:4px 0 0;color:var(--ink-2)}
+.v6po{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:var(--s6)}
+.v6po p{margin:0;padding-left:var(--s4);border-left:2px solid var(--brand);font-family:Archivo,sans-serif;font-weight:300;font-size:20px;line-height:1.35;color:var(--ink)}
