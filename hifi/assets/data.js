@@ -15,7 +15,8 @@ var MEDIA_READY = [
   "home-control-room",
   "home-range-dawn",
   "rcs", "vms", "eva", "pwats", "ewms", "eams", "hums", "as",
-  "integration-bench", "assurance-estop"
+  "integration-bench", "assurance-estop",
+  "hero-a", "hero-b", "hero-c", "hero-d","hero-e"
   /* company-floor stays off. Not generated: the brief forbids people in
      frame, and an empty office earns nothing. Photograph the real one. */
 ];

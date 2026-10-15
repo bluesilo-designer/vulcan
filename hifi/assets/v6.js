@@ -128,7 +128,7 @@ var V6STACK=[
 /* ---------- where we operate ---------- */
 var V6OPS=[
   ["ph-graduation-cap","Training","Military training"],
-  ["ph-crosshair","Ranges","Live fire range operations"],
+  ["ph-crosshair","Ranges","Indoor and outdoor live fire ranges"],
   ["ph-package","Assets","Weapons and ammunition"],
   ["ph-users-three","Readiness","Personnel operations"],
   ["ph-shield-check","Security","Surveillance, AI and video"],
@@ -429,6 +429,7 @@ function pHomeV6(){
   '<section class="v6hero">'+
     '<div class="v6hero__bed">'+media({id:"home-control-room",kind:"Video",ratio:"",
       label:"Control room before a serial",brief:"Range control room, empty, screens live."})+'</div>'+
+    v6heroSwitch()+
     '<div class="v6hero__veil"></div>'+
     '<div class="shell">'+
       '<span class="label v6eyebrow">Defence and security technology</span>'+
@@ -472,7 +473,7 @@ function pHomeV6(){
      a place. It was the plainest band on the page before this. */
   '<section class="v6modwrap">'+
     '<div class="v6modwrap__bed" aria-hidden="true">'+
-      '<img src="media/s-aerial.jpg" alt="" loading="lazy" decoding="async"></div>'+
+      '<img data-slot="aerial" src="media/s-aerial.jpg" alt="" loading="lazy" decoding="async"></div>'+
     '<div class="v6modwrap__veil" aria-hidden="true"></div>'+
   band({body:
     '<div class="v6mod rv">'+
@@ -535,7 +536,7 @@ function pHomeV6(){
   /* ---- 4. where we operate ---- */
   '<section class="v6say">'+
     '<div class="v6say__bed">'+media({id:"home-range-dawn",kind:"Image",ratio:"",
-      label:"Indoor range before first light",brief:"Lanes receding to the target line."})+'</div>'+
+      label:"Indoor and outdoor ranges before first light",brief:"Lanes receding to the target line."})+'</div>'+
     '<div class="v6say__veil"></div>'+
     '<div class="shell"><div class="v6say__in rv">'+
       '<span class="label">Where we operate</span>'+
@@ -577,7 +578,7 @@ function pHomeV6(){
      with the client's command centre image, and the three points set as
      icon and label in a row, as the attached example has them. */
   '<section class="v6say v6say--r v6say--cmd">'+
-    '<div class="v6say__bed"><img class="v6say__img" src="media/sim-command-4k.jpg" alt="" decoding="async" loading="lazy"></div>'+
+    '<div class="v6say__bed"><img data-slot="command" class="v6say__img" src="media/sim-command-4k.jpg" alt="" decoding="async" loading="lazy"></div>'+
     '<div class="v6say__veil"></div>'+
     '<div class="shell"><div class="v6say__in rv">'+
       '<h2>Simulate.<br>Integrate. Deploy.</h2>'+
@@ -632,7 +633,7 @@ function pHomeV6(){
    points at Integration, which did not carry this at all. */
 function v6partners(){
   return '<section class="v6feat v6feat--partner">'+
-    '<div class="v6feat__media" aria-hidden="true"><img src="media/partners.jpg" alt="" loading="lazy" decoding="async"></div>'+
+    '<div class="v6feat__media" aria-hidden="true"><img data-slot="partners" src="media/partners.jpg" alt="" loading="lazy" decoding="async"></div>'+
     '<div class="v6feat__veil" aria-hidden="true"></div>'+
     '<div class="shell">'+
       '<div class="v6feat__head rv"><span class="label">Engagement</span>'+
@@ -652,7 +653,7 @@ function v6partners(){
    page so the two cannot drift apart again. */
 function v6assure(){
   return '<section class="v6feat v6feat--assure">'+
-    '<div class="v6feat__media" aria-hidden="true"><img src="media/assurance.jpg" alt="" loading="lazy" decoding="async"></div>'+
+    '<div class="v6feat__media" aria-hidden="true"><img data-slot="assurance" src="media/assurance.jpg" alt="" loading="lazy" decoding="async"></div>'+
     '<div class="v6feat__veil" aria-hidden="true"></div>'+
     '<div class="shell">'+
       '<div class="v6feat__head rv"><span class="label">Assurance</span>'+
@@ -946,7 +947,61 @@ function v6anchor(){
 /* Footer ground, drawn once. */
 (function(){ var t=document.querySelector('.v6foot__topo'); if(t) t.innerHTML=v6topo(); })();
 
-function v6after(){ v6menu(); v6media(); v6title(); v6chain(); v6logos(); v6xbind(); v6enter(); v6anchor(); }
+
+/* Hero video switcher. A review tool, not a feature: a floating,
+   draggable chip that swaps the hero film between candidate cuts.
+   A cut whose file is not in MEDIA_READY shows as pending and makes
+   no request. Remove before go-live. */
+var V6HEROCUTS=[
+  {id:"home-control-room",k:"Current",d:"Control room"},
+  {id:"hero-a",k:"A",d:"The plan comes alive"},
+  {id:"hero-b",k:"B",d:"One second, everywhere"},
+  {id:"hero-c",k:"C",d:"One day on the range, eight systems"},
+  {id:"hero-d",k:"D",d:"The digital range, eight layers"},
+  {id:"hero-e",k:"E",d:"One trainee, indoor and outdoor, 18 s"}
+];
+function v6heroSwitch(){
+  return '<div class="v6sw" role="group" aria-label="Hero video">'+
+    '<span class="v6sw__grip" aria-hidden="true"><i class="ph ph-dots-six-vertical"></i></span>'+
+    V6HEROCUTS.map(function(c,i){
+      var ok=MEDIA_READY.indexOf(c.id)>-1;
+      return '<button type="button" class="v6sw__b'+(i===0?' is-on':'')+'" data-cut="'+c.id+'"'+
+        (ok?'':' disabled')+' title="'+c.d+(ok?'':' (pending)')+'">'+c.k+'</button>';
+    }).join('')+'</div>';
+}
+function v6heroBind(){
+  document.querySelectorAll('body > .v6sw').forEach(function(x){ x.remove(); });
+  var sw=document.querySelector('.v6sw'); if(!sw) return;
+  document.body.appendChild(sw);
+  var fig=document.querySelector('.v6hero__bed .media');
+  try{ var p=JSON.parse(localStorage.getItem('v6sw')||'null');
+    if(p){ sw.style.left=p.x+'px'; sw.style.top=p.y+'px'; sw.style.right='auto'; sw.style.bottom='auto'; } }catch(e){}
+  sw.addEventListener('click',function(e){
+    var b=e.target.closest('.v6sw__b'); if(!b||b.disabled||sw.dataset.moved) return;
+    var v=fig.querySelector('video'); if(!v) return;
+    v.src='media/'+b.dataset.cut+'.mp4'; v.play().catch(function(){});
+    sw.querySelectorAll('.v6sw__b').forEach(function(x){ x.classList.toggle('is-on',x===b); });
+  });
+  sw.addEventListener('pointerdown',function(e){
+    var r=sw.getBoundingClientRect(), ox=e.clientX-r.left, oy=e.clientY-r.top, sx=e.clientX, sy=e.clientY;
+    delete sw.dataset.moved;
+    function mv(ev){
+      if(!sw.dataset.moved && Math.abs(ev.clientX-sx)+Math.abs(ev.clientY-sy)<5) return;
+      sw.dataset.moved='1';
+      var x=Math.max(8,Math.min(innerWidth-r.width-8,ev.clientX-ox)),
+          y=Math.max(8,Math.min(innerHeight-r.height-8,ev.clientY-oy));
+      sw.style.left=x+'px'; sw.style.top=y+'px'; sw.style.right='auto'; sw.style.bottom='auto';
+    }
+    function up(){
+      removeEventListener('pointermove',mv); removeEventListener('pointerup',up);
+      if(sw.dataset.moved){ try{ localStorage.setItem('v6sw',JSON.stringify({x:parseInt(sw.style.left),y:parseInt(sw.style.top)})); }catch(e){}
+        setTimeout(function(){ delete sw.dataset.moved; },0); }
+    }
+    addEventListener('pointermove',mv); addEventListener('pointerup',up);
+  });
+}
+
+function v6after(){ v6heroBind(); v6menu(); v6media(); v6title(); v6chain(); v6logos(); v6xbind(); v6enter(); v6anchor(); }
 
 ROUTES['']=ROUTES['/']=pHomeV6;
 /* app.js stored these functions in ROUTES when it loaded, so replacing

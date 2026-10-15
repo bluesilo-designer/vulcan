@@ -13,18 +13,18 @@
 var V6PRODUCT={
 
 rcs:{
-  lead:"The control layer of a live firing range. VULCAN plans the session, presents the course of fire, holds the range state and records every shot, so the officer in charge runs the range from one place and the review starts from fact.",
-  problem:["A lane goes hot while someone is still downrange","Cease fire depends on reaching one console","A stoppage quietly invalidates a score nobody notices","Firers sit on the wrong lane and scores land on the wrong person","Lanes reset slowly between details and the day runs late","Results are keyed by hand into the training record"],
+  lead:"The control layer of a live firing range, indoor or outdoor. VULCAN plans the session, presents the course of fire, holds the range state and records every shot, so the officer in charge runs the range from one place and the review starts from fact.",
+  problem:["A lane goes hot while someone is still downrange","Cease fire depends on reaching one console","A stoppage quietly invalidates a score nobody notices","Firers sit on the wrong lane and scores land on the wrong person","Lanes reset slowly between details and the day runs late","Results are keyed by hand into the training record","An outdoor danger area is not confirmed clear before the range goes hot"],
   mods:[
-    {k:"Plan",i:"ph-calendar-check",m:["Session booking against slot inventory","Nominal roll and lane assignment","Mission planning and course of fire builder","Range allocation across lanes and details"]},
-    {k:"Prepare",i:"ph-list-checks",m:["Readiness check before the range goes hot","Targetry and effects configuration","Dry run without live rounds","Scenario time compression for rehearsal"]},
+    {k:"Plan",i:"ph-calendar-check",m:["Indoor and outdoor ranges under one control model","Session booking against slot inventory","Nominal roll and lane assignment","Mission planning and course of fire builder","Range allocation across lanes and details"]},
+    {k:"Prepare",i:"ph-list-checks",m:["Readiness check before the range goes hot","Targetry and effects configuration","Dry run without live rounds","Scenario time compression for rehearsal","Weather, light and visibility inputs for outdoor ranges","Danger area and boundary clearance before going hot outdoors"]},
     {k:"Conduct",i:"ph-crosshair",m:["Session control: start, pause, resume, end","Range hot and cold as a system state","Emergency stop above all scenario logic","Live monitoring of every lane and firer","Reshoot and stoppage handling, logged with reason"]},
     {k:"Review",i:"ph-film-reel",m:["Event markers on one shared clock","Playback synchronised with shot data","Assessment against the course standard","After-action review and clip export"]},
     {k:"Records",i:"ph-database",m:["Results flow to the training record without re-keying","Data import and export in open formats","Range equipment health handed to PRIMUS"]}
   ],
   flow:[["Book","A detail is booked into a slot with its roll, lanes and course of fire."],["Ready","The readiness check runs. The range cannot go hot until it passes."],["Brief","Firers are confirmed against their lanes on the line."],["Conduct","Targets present to the course. Every shot is scored and shown at once."],["Stop","A cease fire from any control point stops every lane."],["Review","Shots, states and video replay on one clock for the AAR."]],
   out:["Scores reach the firer and the instructor as each shot lands, so nobody walks downrange to check.","The stop sits above scenario logic, so a cease fire from any control point halts every lane.","Every shot, state change and video frame shares one clock, so the review shows what actually happened.","A course of fire is defined once and reused, so every detail runs to the same standard."],
-  std:[["IEC 62443","Security for software that controls physical equipment, applied to the range control network"],["Range safety doctrine","Hot and cold states, cease fire by anyone, officer in charge and safety officer roles, modelled on public range safety publications"],["MIL-STD-1472","Human engineering for operator stations and console layout"]]
+  std:[["IEC 62443","Security for software that controls physical equipment, applied to the range control network"],["Range safety doctrine","Hot and cold states, danger areas for outdoor ranges, cease fire by anyone, officer in charge and safety officer roles, modelled on public range safety publications"],["MIL-STD-1472","Human engineering for operator stations and console layout"]]
 },
 
 trms:{

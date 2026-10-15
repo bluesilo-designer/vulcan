@@ -398,7 +398,8 @@ function render(){
     if(a.getAttribute('data-route')===key) a.setAttribute('aria-current','page'); else a.removeAttribute('aria-current');
   });
   closeMenu(); bindChain(); observe(); window.scrollTo(0,0);
-  document.title=(m?PRODUCTS.filter(function(p){return p.id===m[1];})[0].acr+'. ':'')+'Blue Silo. Range Training Systems';
+  var tp=m&&PRODUCTS.filter(function(p){return p.id===m[1];})[0];
+  document.title=(tp?tp.acr+'. ':'')+'Blue Silo. Range Training Systems';
 }
 
 function bindChain(){
