@@ -736,14 +736,24 @@ CHAIN.forEach(function(c){
 
 /* A band of an app.js page, found by its heading, so a page can be
    edited section by section without copying the whole template. */
+/* Bands can contain nested <section> elements (the assurance controls
+   do), so a lazy regex stops at the first inner </section> and leaves
+   the rest of the band orphaned on the page. Walk the tags instead. */
+function v6bandRange(html,heading){
+  var at=html.indexOf(heading); if(at<0) return null;
+  var start=html.lastIndexOf('<section class="band',at); if(start<0) return null;
+  var re=/<section\b|<\/section>/g, depth=0, m; re.lastIndex=start;
+  while((m=re.exec(html))){
+    depth+= m[0]==='</section>'?-1:1;
+    if(depth===0) return [start,re.lastIndex];
+  }
+  return null;
+}
 function v6dropBand(html,heading){
-  var re=new RegExp('<section class="band[^"]*"[^>]*>(?:(?!</section>)[\\s\\S])*?'+heading.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+'[\\s\\S]*?</section>');
-  return html.replace(re,'');
+  var r=v6bandRange(html,heading); return r?html.slice(0,r[0])+html.slice(r[1]):html;
 }
 function v6swapBand(html,heading,withHtml){
-  var marker='<!--v6swap-->';
-  var out=v6dropBand(html.replace(new RegExp('(<section class="band[^"]*"[^>]*>(?:(?!</section>)[\\s\\S])*?'+heading.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+')'),marker+'$1'),heading);
-  return out.replace(marker,withHtml);
+  var r=v6bandRange(html,heading); return r?html.slice(0,r[0])+withHtml+html.slice(r[1]):html;
 }
 
 /* Company. The review struck the "small company" question from the

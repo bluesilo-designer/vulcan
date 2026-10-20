@@ -68,7 +68,7 @@ function v6ctlPanel(){
           '<span class="v6ctl__sw">'+l.sw.map(function(c){return '<i style="background:'+c+'"></i>';}).join('')+'</span>'+
           '<span><b>'+l.k+'</b><em>'+l.d+'</em></span></label>';}).join('')+'</fieldset>'+
       (typeof V6PSETS!=='undefined'?'<fieldset><legend>Product page imagery</legend>'+V6PSETS.map(function(l){
-        return '<label class="v6ctl__opt"><input type="radio" name="v6pset" value="'+l.id+'"'+((V6CTL.pset||'day')===l.id?' checked':'')+'>'+
+        return '<label class="v6ctl__opt"><input type="radio" name="v6pset" value="'+l.id+'"'+((V6CTL.pset||'steel')===l.id?' checked':'')+'>'+
           '<span><b>'+l.k+'</b><em>'+l.d+'</em></span></label>';}).join('')+'</fieldset>':'')+
       (cuts.length?'<fieldset><legend>Hero film</legend><div class="v6ctl__cuts">'+cuts.map(function(c){
         var ok=MEDIA_READY.indexOf(c.id)>-1, on=(V6CTL.hero||cuts[0].id)===c.id;
@@ -121,5 +121,5 @@ window.addEventListener('hashchange',function(){ setTimeout(v6ctlRun,0); });
 /* v6.js boots the router before v6-products and v6-pvis have loaded,
    so a product page opened directly would show the older template.
    Render once more now that every override is in place. */
-if(/^#\/products\//.test(location.hash)){ render(); v6after(); }
+render(); v6after();
 v6ctlRun();
