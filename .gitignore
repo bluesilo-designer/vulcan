@@ -1,6 +1,6 @@
 # Internal working documents — not for publication
 docs/
-site/docs
+docs/archive-site
 site/index.prototype.html
 
 # macOS
@@ -10,4 +10,7 @@ site/index.prototype.html
 CLAUDE.md
 
 # Hero film working files: keyframes, raw clips, contact sheets (99 MB)
-hifi/media/hero-src/
+media-src/
+node_modules/
+dist/
+*.tsbuildinfo

@@ -3,8 +3,14 @@
   "configurations": [
     {
       "name": "vulcan-site",
-      "runtimeExecutable": "python3",
-      "runtimeArgs": ["-m", "http.server", "3100", "--directory", "."],
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run", "dev"],
+      "port": 3100
+    },
+    {
+      "name": "vulcan-dist",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run", "preview"],
       "port": 3100
     }
   ]
