@@ -17,7 +17,8 @@ export const MEDIA_READY = [
   "hero-c",
   "hero-d",
   "hero-e",
-  "hero-f"
+  "hero-f",
+  "hero-g"
 ];
 
 export const HERO_CUTS = [
@@ -55,6 +56,11 @@ export const HERO_CUTS = [
     "id": "hero-f",
     "k": "F",
     "d": "The range as a scale model, 18 s, no text"
+  },
+  {
+    "id": "hero-g",
+    "k": "G",
+    "d": "Real people, documentary daylight, 28 s, no text"
   }
 ];
 
