@@ -86,6 +86,12 @@ export const LOOKS = [
     ]
   },
   {
+    "id": "golden2",
+    "k": "Golden 2.0",
+    "d": "Client pick: golden light, original assurance picture",
+    "sw": ["#2A2118", "#C9953F", "#5EA5FF"]
+  },
+  {
     "id": "daylight",
     "k": "Daylight",
     "d": "Overcast, olive, sand and terracotta",
