@@ -1,12 +1,11 @@
 import { Link } from 'react-router-dom';
 import { Media } from '../../ui/Media';
-import { HERO_CUTS } from '../../../content/media';
 import { isReady, mediaUrl } from '../../../lib/media';
-import { useReview } from '../../../lib/review';
+import { DEFAULTS, useReview } from '../../../lib/review';
 
 export function Hero() {
   const { state } = useReview();
-  const id = state.hero && isReady(state.hero) ? state.hero : HERO_CUTS[0].id;
+  const id = state.hero && isReady(state.hero) ? state.hero : DEFAULTS.hero!;
   return (
     <section className="v6hero">
       <div className="v6hero__bed">

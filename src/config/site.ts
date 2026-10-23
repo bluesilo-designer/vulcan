@@ -14,6 +14,7 @@ export const SITE = {
   /* Draft for review and the tender is live: keep search engines out
      until someone with the authority to publish says otherwise. */
   indexable: false,
-  /* The floating Content panel and hero switcher. Review only. */
+  /* The floating Content panel and hero switcher. Review only, and only
+     shown after visiting /__demo. */
   reviewTools: true,
 } as const;

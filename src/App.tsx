@@ -1,4 +1,6 @@
+import { useEffect } from 'react';
 import { Navigate, Route, Routes, useLocation } from 'react-router-dom';
+import { useReview } from './lib/review';
 import { Layout } from './components/layout/Layout';
 import { Home } from './pages/Home';
 import { Products } from './pages/Products';
@@ -16,6 +18,14 @@ function HashRedirect() {
   return <Home />;
 }
 
+/* Hidden entry to the review panel. Switches it on for this tab, then
+   lands on the home page. Not linked from anywhere. */
+function DemoEntry() {
+  const { enableDemo } = useReview();
+  useEffect(enableDemo, []); // eslint-disable-line react-hooks/exhaustive-deps
+  return <Navigate to="/" replace />;
+}
+
 export function App() {
   return (
     <Routes>
@@ -27,6 +37,7 @@ export function App() {
         <Route path="assurance" element={<Assurance />} />
         <Route path="company" element={<Company />} />
         <Route path="contact" element={<Contact />} />
+        <Route path="__demo" element={<DemoEntry />} />
         <Route path="*" element={<NotFound />} />
       </Route>
     </Routes>

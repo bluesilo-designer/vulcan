@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { HERO_CUTS, LOOKS, PRODUCT_IMAGE_SETS } from '../../content/media';
 import { isReady } from '../../lib/media';
-import { useReview } from '../../lib/review';
+import { DEFAULTS, useReview } from '../../lib/review';
 
 type Look = { id: string; k: string; d: string; sw: string[] };
 type Cut = { id: string; k: string; d: string };
@@ -32,7 +32,7 @@ export function ContentControl() {
       .then(() => { setCopied(true); setTimeout(() => setCopied(false), 1600); }, () => prompt('Link', t));
   };
   const cuts = HERO_CUTS as Cut[];
-  const curHero = state.hero || cuts[0].id;
+  const curHero = state.hero || DEFAULTS.hero;
 
   return (
     <div className="v6ctl" id="v6ctl">

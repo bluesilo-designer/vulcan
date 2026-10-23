@@ -5,11 +5,13 @@ import { Footer } from './Footer';
 import { Seo } from './Seo';
 import { useReveal } from '../../hooks/useReveal';
 import { SITE } from '../../config/site';
+import { useReview } from '../../lib/review';
 import { ContentControl } from '../review/ContentControl';
 
 export function Layout() {
   const { pathname, hash } = useLocation();
   const main = useRef<HTMLElement>(null);
+  const { demo } = useReview();
   useReveal();
 
   /* New route: top of page (or the anchor), and the short entrance fade. */
@@ -30,7 +32,7 @@ export function Layout() {
       <Header />
       <main id="main" ref={main}><Outlet /></main>
       <Footer />
-      {SITE.reviewTools && <ContentControl />}
+      {SITE.reviewTools && demo && <ContentControl />}
     </>
   );
 }
