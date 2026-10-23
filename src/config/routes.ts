@@ -1,4 +1,5 @@
 import { PRODUCTS, brandOf } from '../content/products';
+import { isVisible } from './site';
 
 /* Share images that exist for each product; others fall back to the default. */
 const SHARE_IMAGE: Record<string, string | undefined> = {
@@ -21,7 +22,7 @@ export const ROUTE_META: RouteMeta[] = [
     description: 'Mission-critical systems for military training, range operations, asset accountability and operational readiness, built to integrate.' },
   { path: '/products', title: 'Systems',
     description: 'Seven systems and a partner video platform that cover a training facility from the gate to the debrief.' },
-  ...PRODUCTS.map((p) => {
+  ...PRODUCTS.filter((p) => isVisible(p.id)).map((p) => {
     const b = brandOf(p.id);
     const name = b ? (b.brand ? `${b.brand}, ${b.sys}` : b.sys) : p.name;
     return { path: `/products/${p.id}`, title: name, description: DESCRIPTION[p.id] ?? `${b?.sys ?? p.name}. ${p.decides}`.slice(0, 160),

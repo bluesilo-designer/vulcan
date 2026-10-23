@@ -2,33 +2,36 @@ import { Band } from '../components/ui/Band';
 import { Table } from '../components/ui/Table';
 import { Media } from '../components/ui/Media';
 import { Closer } from '../components/ui/Closer';
+import { mediaUrl } from '../lib/media';
 
-const DISCIPLINES: [string, string][] = [
-  ['Control systems', 'Real time equipment control, safety interlocks, and degraded mode behaviour.'],
-  ['Systems integration', 'Interface design, ICD authorship, simulators, and staged integration testing.'],
-  ['Computer vision', 'Detection, re-identification and association, engineered for the edge.'],
-  ['Security engineering', 'Segmentation, classification handling, audit design, isolated operation.'],
+const DISCIPLINES: [string, string, string, string][] = [
+  ['Control systems', 'Real time equipment control, safety interlocks, and degraded mode behaviour.', 'control', 'ph-sliders-horizontal'],
+  ['Systems integration', 'Interface design, ICD authorship, simulators, and staged integration testing.', 'integration', 'ph-plugs-connected'],
+  ['Computer vision', 'Detection, re-identification and association, engineered for the edge.', 'vision', 'ph-eye'],
+  ['Security engineering', 'Segmentation, classification handling, audit design, isolated operation.', 'security', 'ph-shield-check'],
 ];
 const ACRA = <em className="dim">To confirm from the ACRA record</em>;
 
 export function Company() {
   return (
     <>
-      <div className="shell page-head rv"><span className="label">Company</span>
-        <h1>Blue Silo</h1>
-        <p className="lead">We build the software that runs range training complexes. That is the whole of what we do.</p></div>
+      <section className="pv-hero pv-hero--short">
+        <div className="pv-hero__bed pv-par"><img src={mediaUrl('c/hero.jpg')} alt="" decoding="async" /></div><div className="pv-hero__veil"></div>
+        <div className="shell pv-hero__in"><span className="label">Company</span>
+          <h1>Blue Silo</h1>
+          <p className="pv-hero__lead">We build the software that runs range training complexes. That is the whole of what we do.</p></div>
+      </section>
 
       <Band>
         <div className="split"><div className="rv"><h2>What we build, and why we build only this</h2>
           <div className="prose" style={{ marginTop: 'var(--s5)' }}>
             <p>Range training complexes are run by many systems from many suppliers, and the gaps between those systems are where accountability goes. Someone signs a form. Someone remembers a number. Someone reconciles at the end of a long day. It works, until the day it is questioned.</p>
             <p>We build the subsystems that close those gaps, and we treat the interfaces between them, including the ones to systems we do not own, as the product rather than as integration work to be scheduled later.</p>
-            <p><strong>We do not build anything else.</strong> A supplier serving range training and three other markets is a supplier whose attention is somewhere else when your programme needs it.</p></div></div>
-          <div className="rv" data-d="1"><Media m={{ id: 'company-floor', kind: 'Image', ratio: 'r-43', label: 'Engineering floor',
-            brief: 'Small engineering team workspace, two people at monitors seen from behind, screens abstracted. Warm task lighting against a dark room. 4:3.' }} /></div></div>
+            <p><strong>Range training is our only focus.</strong> We do not divide our attention across unrelated markets, so our engineering effort stays on your programme.</p></div></div>
+          <div className="rv" data-d="1"><figure className="pv-ctl__img co-img"><div className="pv-par"><img src={mediaUrl('c/floor.jpg')} alt="Blue Silo engineers at work" loading="lazy" decoding="async" /></div></figure></div></div>
       </Band>
 
-      <Band deep title="Leadership" intro="Few, and real. Every name here is verifiable, and evaluators do verify.">
+      <Band deep title="Leadership" intro="The people accountable for delivery.">
         <div className="g g3 rv">
           {[1, 2, 3].map((i) => (
             <div key={i}>
@@ -40,12 +43,24 @@ export function Company() {
       </Band>
 
       <Band title="Disciplines, not headcount">
-        <div className="g g4 rv">{DISCIPLINES.map((c) => <div className="tile" key={c[0]}><h4>{c[0]}</h4><p>{c[1]}</p></div>)}</div>
+        <div className="pv-ctl pv-ctl--4">{DISCIPLINES.map((c) => (
+          <article className="pv-ctl__i pv-up" key={c[0]}>
+            <figure className="pv-ctl__img"><div className="pv-par"><img src={mediaUrl(`c/${c[2]}.jpg`)} alt="" loading="lazy" decoding="async" /></div></figure>
+            <h3><i className={'ph ' + c[3]} aria-hidden="true"></i>{c[0]}</h3><p>{c[1]}</p></article>))}
+        </div>
       </Band>
 
+      <section className="pv-flow">
+        <div className="pv-flow__bed pv-par"><img src={mediaUrl('c/region.jpg')} alt="" loading="lazy" decoding="async" /></div><div className="pv-flow__veil"></div>
+        <div className="shell pv-flow__in"><span className="label">Where we are</span>
+          <h2>Headquartered in Singapore, delivering across Southeast Asia and APAC</h2></div>
+      </section>
+
       <Band title="Corporate">
-        <Table head={['Field', 'Detail']} rows={[
-          ['Registered entity', 'Blue Silo Pte. Ltd.'], ['UEN', ACRA], ['Registered address', ACRA], ['Incorporated', ACRA]]} />
+        <div className="split"><div className="rv">
+          <Table head={['Field', 'Detail']} rows={[
+            ['Registered entity', 'Blue Silo Pte. Ltd.'], ['UEN', ACRA], ['Registered address', ACRA], ['Incorporated', ACRA]]} /></div>
+          <div className="rv" data-d="1"><figure className="pv-ctl__img co-img"><div className="pv-par"><img src={mediaUrl('c/office.jpg')} alt="" loading="lazy" decoding="async" /></div></figure></div></div>
       </Band>
       <Closer />
     </>

@@ -1741,7 +1741,7 @@ export const TRMS = {
   "progs": [
     {
       "k": "Weapon",
-      "n": "Weapon simulator training",
+      "n": "Weapon (Firearms) Simulator Training",
       "slot": "weapon",
       "i": "ph-crosshair-simple",
       "trains": "Weapon proficiency for individuals and groups, in marksmanship, collective and judgemental modes.",
@@ -1784,8 +1784,8 @@ export const TRMS = {
       ]
     },
     {
-      "k": "Crew",
-      "n": "Crew simulator training",
+      "k": "Vehicle",
+      "n": "Vehicle Simulator Training",
       "slot": "crew",
       "i": "ph-steering-wheel",
       "trains": "Vehicle crew tactical training in an armoured vehicle simulator: driving, gunnery, vehicle and standalone.",
@@ -1817,7 +1817,7 @@ export const TRMS = {
     },
     {
       "k": "Command",
-      "n": "Command team training",
+      "n": "Command Team Training",
       "slot": "command",
       "i": "ph-users-four",
       "trains": "The same idea at command-team scale: many crews training together across several vehicle types.",
@@ -1867,8 +1867,8 @@ export const TRMS = {
       ],
       [
         "ph-arrow-u-down-left",
-        "A clear return path",
-        "Equipment is scanned back after the session, with a defined route for anything missing."
+        "Returned to the armoury",
+        "After the session, equipment is scanned back into the armoury. Any item not returned is flagged straight away and stays open until it is accounted for."
       ]
     ]
   },
@@ -1937,7 +1937,7 @@ export const TRMS = {
     ],
     [
       "Lane, cabin, cluster",
-      "The unit of simulator capacity for weapon, crew and command team training"
+      "The unit of simulator capacity for weapon, vehicle and command team training"
     ],
     [
       "Zone",
@@ -1982,7 +1982,7 @@ export const TRMS = {
     [
       "ph-arrow-u-down-left",
       "Return",
-      "Equipment scanned back, with a route for anything missing"
+      "Equipment scanned back into the armoury; anything not returned is flagged"
     ]
   ],
   "rules": [

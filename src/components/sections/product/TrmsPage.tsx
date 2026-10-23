@@ -21,10 +21,10 @@ type Trms = {
 const t = TRMS as unknown as Trms;
 
 const STATE_ROWS: [string, string][] = [
-  ['Weapon simulator training', 'Most complete. Booking, equipment, onboarding and the live session path are built; some end states are still being completed.'],
-  ['Crew simulator training', 'Booking, cabin set-up, trainee list, booking detail and onboarding exist as a working prototype.'],
-  ['Command team training', 'Booking, zone by zone cluster set-up, trainee list, saved bookings and onboarding start exist as a working prototype.'],
-  ['Platform', 'Shared modules reviewed against the design, with remaining differences being closed in batches.'],
+  ['Weapon (Firearms) Simulator Training', 'Most complete. Booking, equipment, onboarding and the live session path are built; some end states are still being completed.'],
+  ['Vehicle Simulator Training', 'Booking, cabin set-up, trainee list, booking detail and onboarding exist as a working prototype.'],
+  ['Command Team Training', 'Booking, zone by zone cluster set-up, trainee list, saved bookings and onboarding start exist as a working prototype.'],
+  ['Shared platform', 'The common modules used by all three (dashboard, equipment and RFID, sites, users, data, results) are reviewed against the design, with remaining differences being closed in batches.'],
 ];
 
 function PImg({ slot }: { slot: string }) {

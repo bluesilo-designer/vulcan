@@ -61,7 +61,7 @@ export function Assurance() {
       <Band deep title="How the software is actually built">
         <div className="g g4 rv">{BUILT.map((c) => <div className="tile" key={c[0]}><h4>{c[0]}</h4><p>{c[1]}</p></div>)}</div>
       </Band>
-      <Closer label="Request the assurance summary" line="The full assurance summary is released on request rather than published, because parts of it are close to material that should not sit on a public website." />
+      <Closer label="Talk to us" line="Speak with our team about security, safety and compliance for your programme." />
     </>
   );
 }

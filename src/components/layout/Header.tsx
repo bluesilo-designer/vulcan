@@ -1,8 +1,9 @@
 import { useEffect, useRef, useState } from 'react';
 import { Link, NavLink, useLocation } from 'react-router-dom';
 import { brandOf, productOf } from '../../content/products';
+import { isVisible } from '../../config/site';
 
-const MENU_ORDER = ['trms', 'rcs', 'ewms', 'eams', 'pwats', 'hums', 'vms', 'eva', 'as'];
+const MENU_ORDER = ['trms', 'rcs', 'ewms', 'eams', 'pwats', 'hums', 'vms', 'eva', 'as'].filter(isVisible);
 
 export function Header() {
   const [open, setOpen] = useState(false);

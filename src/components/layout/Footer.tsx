@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import { Topo } from '../ui/Topo';
 import { Icon } from '../ui/Icon';
+import { isVisible } from '../../config/site';
 
 const SYSTEMS: [string, string][] = [
   ['rcs', 'Range Management System'], ['trms', 'Training Resource Management System'],
@@ -21,7 +22,7 @@ export function Footer() {
         </div>
         <nav className="v6foot__col" aria-label="Systems">
           <h4>Systems</h4>
-          {SYSTEMS.map(([id, n]) => <Link key={id} to={`/products/${id}`}>{n}</Link>)}
+          {SYSTEMS.filter(([id]) => isVisible(id)).map(([id, n]) => <Link key={id} to={`/products/${id}`}>{n}</Link>)}
         </nav>
         <nav className="v6foot__col" aria-label="Explore">
           <h4>Explore</h4>

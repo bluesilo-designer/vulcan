@@ -18,3 +18,9 @@ export const SITE = {
      shown after visiting /__demo. */
   reviewTools: true,
 } as const;
+
+/* Products shown on the site for now. Hidden products keep their content
+   but are left out of navigation, listings, the home page and the build,
+   and their URLs redirect to /products. Add an id back to show it again. */
+export const VISIBLE_PRODUCTS = ['trms', 'rcs', 'hums', 'vms', 'ewms'];
+export const isVisible = (id: string) => VISIBLE_PRODUCTS.includes(id);

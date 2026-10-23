@@ -5,10 +5,10 @@ import { useReview } from '../../../lib/review';
 import { pad2 } from '../../../lib/html';
 
 /* Partners and integrators. Shared by the home page and Integration. */
-export function PartnersSection() {
+export function PartnersSection({ cta = true }: { cta?: boolean }) {
   const { state } = useReview();
   return (
-    <section className="v6feat v6feat--partner">
+    <section className="v6feat v6feat--partner" id="partners">
       <div className="v6feat__media" aria-hidden="true"><img data-slot="partners" src={slotSrc('partners', state.look)} alt="" loading="lazy" decoding="async" /></div>
       <div className="v6feat__veil" aria-hidden="true"></div>
       <div className="shell">
@@ -21,8 +21,8 @@ export function PartnersSection() {
               <i className={'ph ' + c[0]} aria-hidden="true"></i><h3>{c[1]}</h3><p>{c[2]}</p></div>
           ))}
         </div>
-        <div className="v6feat__cta rv"><Link className="btn btn--g" to="/integration">Our partner approach <i className="ph ph-arrow-right" aria-hidden="true"></i></Link>
-          <span className="v6feat__tag">Built for complex, multi-party defence programmes</span></div>
+        {cta && <div className="v6feat__cta rv"><Link className="btn btn--g" to="/integration">See how we integrate <i className="ph ph-arrow-right" aria-hidden="true"></i></Link>
+          <span className="v6feat__tag">Built for complex, multi-party defence programmes</span></div>}
       </div>
     </section>
   );

@@ -1090,9 +1090,11 @@ body > .v6sw{display:none}
 /* TRMS v2 */
 .pv-cta{display:flex;flex-wrap:wrap;gap:12px;margin-top:28px}
 .pv-jour{list-style:none;padding:0;margin:0;display:grid;grid-template-columns:repeat(7,1fr);gap:0;position:relative}
-.pv-jour::before{content:"";position:absolute;left:24px;right:24px;top:24px;height:2px;background:var(--line-2)}
-.pv-jour::after{content:"";position:absolute;left:24px;right:24px;top:24px;height:2px;background:var(--brand);transform-origin:left;transform:scaleX(1)}
-.pv-jour li{position:relative;padding-right:16px}
+.pv-jour::before{content:"";position:absolute;z-index:0;left:24px;right:calc(100% / 7 - 24px);top:24px;height:2px;background:var(--line-2)}
+.pv-jour::after{content:"";position:absolute;z-index:0;left:24px;right:calc(100% / 7 - 24px);top:24px;height:2px;background:var(--brand);transform-origin:left;transform:scaleX(1)}
+/* each step is its own stacking context (scroll reveal), so it must sit
+   above the connector line, not just its icon */
+.pv-jour li{position:relative;z-index:1;padding-right:16px}
 .pv-jour__ic{position:relative;z-index:1;display:flex;width:48px;height:48px;align-items:center;justify-content:center;background:var(--void);border:1px solid var(--brand);color:var(--brand);font-size:22px}
 .pv-jour__n{display:block;margin:16px 0 4px;font:500 11px 'IBM Plex Mono',monospace;color:var(--ink-3);letter-spacing:.1em}
 .pv-jour b{display:block;font-weight:500;font-size:17px;margin-bottom:6px}
@@ -1175,3 +1177,10 @@ body > .v6sw{display:none}
   .pv-ui__bar2{grid-column:1/-1}
   .pv-ui__row span:nth-child(2){display:none}
 }
+
+/* About page */
+.pv-ctl--4{grid-template-columns:repeat(4,1fr)}
+.co-img{margin:0}
+.pv-flow .label{display:block;margin-bottom:var(--s4)}
+@media (max-width:1100px){.pv-ctl--4{grid-template-columns:1fr 1fr}}
+@media (max-width:560px){.pv-ctl--4{grid-template-columns:1fr}}

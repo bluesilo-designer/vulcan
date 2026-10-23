@@ -17,7 +17,7 @@ export function Contact() {
       <Band deep title="Five fields, each with a reason">
         <form className="form rv" onSubmit={submit}>
           <div className="fr"><div className="field"><label htmlFor="org">Organisation</label>
-            <input id="org" name="org" type="text" placeholder="Who you are writing on behalf of" value={f.org} onChange={on('org')} />
+            <input id="org" name="org" type="text" placeholder="Organisation name" value={f.org} onChange={on('org')} />
             <small>Determines which terms apply to material we send back</small></div>
             <div className="field"><label htmlFor="nm">Name</label><input id="nm" name="nm" type="text" placeholder="Your name" value={f.nm} onChange={on('nm')} /></div></div>
           <div className="fr"><div className="field"><label htmlFor="rl">Role</label><input id="rl" name="rl" type="text" placeholder="Your role" value={f.rl} onChange={on('rl')} />
@@ -25,7 +25,7 @@ export function Contact() {
             <div className="field"><label htmlFor="ty">Type of enquiry</label><select id="ty" name="ty" value={f.ty} onChange={on('ty')}>
               <option>Procurement</option><option>Technical integration</option><option>General</option></select>
               <small>Routes to one of the three inboxes above</small></div></div>
-          <div className="field"><label htmlFor="ms">Message</label><textarea id="ms" name="ms" placeholder="What you need from us" value={f.ms} onChange={on('ms')} /></div>
+          <div className="field"><label htmlFor="ms">Message</label><textarea id="ms" name="ms" placeholder="Please describe your enquiry" value={f.ms} onChange={on('ms')} /></div>
           <div className="btns"><button className="btn btn--p" type="submit">Send enquiry</button></div>
           <p className="note" role="status">{sent ? 'Thank you' : ''}</p>
           <p className="note">No third party challenge test. Some of the people we most want to hear from work on devices that block it.</p>

@@ -1,4 +1,5 @@
-import { useParams } from 'react-router-dom';
+import { Navigate, useParams } from 'react-router-dom';
+import { isVisible } from '../config/site';
 import { PRODUCT_DETAIL, brandOf } from '../content/products';
 import { CHAIN } from '../content/home';
 import { Band } from '../components/ui/Band';
@@ -19,6 +20,7 @@ type Detail = {
 
 export function Product() {
   const { id = '' } = useParams();
+  if (!isVisible(id)) return <Navigate to="/products" replace />;
   if (id === 'trms') return <TrmsPage />;
   const p = productRec(id), b = brandOf(id);
   const c = (PRODUCT_DETAIL as unknown as Record<string, Detail>)[id];

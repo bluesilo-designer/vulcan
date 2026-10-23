@@ -1,11 +1,12 @@
 import { Link } from 'react-router-dom';
 import { Band } from '../../ui/Band';
 import { brandOf } from '../../../content/products';
+import { isVisible } from '../../../config/site';
 import { productRec } from './util';
 
 /* "Works with" register of related products. Renders nothing if none resolve. */
 export function WorksWith({ rel }: { rel?: string[] }) {
-  const items = (rel || []).map((r) => {
+  const items = (rel || []).filter(isVisible).map((r) => {
     const q = productRec(r), qb = brandOf(r);
     if (!q || !qb) return null;
     return (

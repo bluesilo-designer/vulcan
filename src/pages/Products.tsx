@@ -1,5 +1,12 @@
 import { Link } from 'react-router-dom';
-import { PRODUCTS } from '../content/products';
+import { PRODUCTS as ALL, brandOf } from '../content/products';
+import { isVisible } from '../config/site';
+import { WORDS } from '../content/home';
+
+const PRODUCTS = ALL.filter((p) => isVisible(p.id));
+const OURS = PRODUCTS.filter((p) => brandOf(p.id)?.brand !== 'ACCEL').length;
+const HAS_ACCEL = PRODUCTS.some((p) => brandOf(p.id)?.brand === 'ACCEL');
+const Word = (n: number) => { const w = (WORDS as string[])[n] || String(n); return w.charAt(0).toUpperCase() + w.slice(1); };
 import { Band } from '../components/ui/Band';
 import { Table } from '../components/ui/Table';
 import { Closer } from '../components/ui/Closer';
@@ -10,7 +17,7 @@ export function Products() {
     <>
       <div className="shell page-head rv">
         <span className="label">Products</span>
-        <h1>Seven systems, plus ACCEL</h1>
+        <h1>{Word(OURS)} systems{HAS_ACCEL ? ', plus ACCEL' : ''}</h1>
         <p className="lead">Take one, or take all of them. Every product page states what it decides, where it is deployed, and what has to exist for it to mean anything.</p>
       </div>
       <Band tight>
@@ -37,9 +44,9 @@ export function Products() {
       <Band deep title="Acronyms that look alike"
         intro="Four systems share a naming pattern and two handle video. Confusing them in a specification is expensive later.">
         <div className="g g4 rv">
-          <div className="tile"><h4>Ours</h4><p><strong>EWMS</strong> weapons as serialised assets. <strong>EAMS</strong> ammunition as a consumable.</p></div>
+          <div className="tile"><h4>Ours</h4><p><strong>EWMS</strong> weapons as serialised assets, held and issued under control.</p></div>
           <div className="tile"><h4>Counterparts</h4><p><strong>EKMS</strong> physical keys. <strong>EACS</strong> doors and zones. Neither is ours.</p></div>
-          <div className="tile"><h4>Two video systems, ours</h4><p><strong>VMS</strong> video for training inside the range. <strong>EVA</strong> edge analytics outside it.</p></div>
+          <div className="tile"><h4>Video for training</h4><p><strong>VMS</strong> recording and playback for training inside the range.</p></div>
           <div className="tile"><h4>A different system entirely</h4><p><strong>VSS</strong> facility security surveillance. Different purpose, different owner, outside this scope.</p></div>
         </div>
       </Band>

@@ -7,10 +7,10 @@ import { PartnersSection } from '../components/sections/shared/PartnersSection';
 import { INTERFACE_CATEGORIES } from '../content/integration';
 
 const PROVE: [string, string][] = [
-  ['Simulators and stubs', 'Every counterpart has a stub before it has a partner engineer.'],
-  ['Staged integration', 'Interfaces are integrated in dependency order, not all at once in the final month.'],
-  ['Change control', 'An interface change is a versioned document, not an email.'],
-  ['Frozen regression', 'Once an interface passes, it is regressed against on every build.'],
+  ['Simulated connections', 'Each connected system is first tested against a simulated version, so work starts before the real equipment is available.'],
+  ['Step by step integration', 'Connections are brought online one at a time, in the order they depend on each other, rather than all at once at the end.'],
+  ['Controlled changes', 'Every change to a connection is documented, versioned and agreed by both sides.'],
+  ['Re-tested on every release', 'Once a connection works, it is automatically re-tested with every new software release.'],
 ];
 
 export function Integration() {
@@ -22,7 +22,7 @@ export function Integration() {
         <div className="btns" style={{ marginTop: 'var(--s6)' }}><Link className="btn btn--p" to="/contact">Request the ICD pack</Link></div></div>
 
       <Band label="What we interface with" title="Built to connect to what is already on site"
-        intro="Blue Silo can integrate the entire training and range environment, from live targets and virtual training to infrastructure, operations, security and training management.">
+        intro="Integrate the entire training and range environment, from live targets and virtual training to infrastructure, operations, security and training management.">
         <div className="ifc rv">
           {(INTERFACE_CATEGORIES as string[][]).map((c) => (
             <div className="ifc__c" key={c[1]}><i className={'ph ' + c[0]} aria-hidden="true"></i><h3>{c[1]}</h3><p>{c[2]}</p></div>
@@ -30,15 +30,13 @@ export function Integration() {
         </div>
       </Band>
 
-      <Band deep title="One row per interface, with an owner"
-        intro="Not one row per module, and not one arrow on an architecture diagram. An interface that nobody owns is an interface that arrives late.">
-        <Table head={['Field', 'What it records']} caption="Register structure shown. Contents are supplied on request, under the terms that apply." rows={[
-          ['Initiator', 'Which side opens the exchange, and therefore which side fails first'],
-          ['Direction', 'One way or bidirectional, stated per payload rather than per system'],
-          ['Mode', 'Request and response, publish and subscribe, store and forward, or file exchange'],
-          ['Trigger', 'Scheduled, event driven, or continuous, and what happens when it is missed'],
-          ['Payload', 'What is carried, at the level of meaning rather than field names'],
-          ['Owner', 'The named person on each side who signs the change']]} />
+      <Band deep title="Every connection is documented and owned"
+        intro="For each system we connect to, both sides agree in writing how the connection works and who is responsible for it. This keeps integration predictable and avoids surprises late in the programme.">
+        <Table head={['What we agree', 'Why it matters']} caption="The full interface register is shared with programme teams on request." rows={[
+          ['Who starts the exchange', 'Makes clear which side acts first and which side to check if something stops'],
+          ['What information is shared', 'Both sides know exactly what is sent and received'],
+          ['How and when it is sent', 'On a schedule, when something happens, or continuously'],
+          ['Who is responsible', 'A named person on each side approves any change']]} />
       </Band>
 
       <Band>
@@ -58,10 +56,10 @@ export function Integration() {
           <p>Audit trails for weapon and ammunition handling belong in the programme log platform, not only in our own database where we control them.</p></div>
       </Band>
 
-      <Band title="How we prove it before site">
+      <Band title="Tested before it reaches your site" intro="Every connection is proven in our own test environment before installation, so commissioning on site is faster and lower risk.">
         <div className="g g4 rv">{PROVE.map((c) => <div className="tile" key={c[0]}><h4>{c[0]}</h4><p>{c[1]}</p></div>)}</div>
       </Band>
-      <PartnersSection />
+      <PartnersSection cta={false} />
       <Closer label="Request the ICD pack" line="Send us the architecture you need us to fit into, and we will come back with the interface register rather than with questions." />
     </>
   );

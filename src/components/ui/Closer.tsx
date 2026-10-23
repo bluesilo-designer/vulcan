@@ -5,7 +5,7 @@ export function Closer({ label = 'Send an enquiry', line }: { label?: string; li
     <section className="close">
       <div className="shell rv">
         <h2>Talk to the people who build it</h2>
-        <p className="lead">{line || 'Procurement, technical integration, or anything else. Three routes reach three different inboxes, so the question lands with someone who can answer it.'}</p>
+        <p className="lead">{line || 'Procurement, technical integration or general enquiries. Each enquiry is routed to the team best placed to respond.'}</p>
         <div className="btns"><Link className="btn btn--p" to="/contact">{label}</Link></div>
       </div>
     </section>

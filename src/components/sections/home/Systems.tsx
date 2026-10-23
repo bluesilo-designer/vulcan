@@ -6,10 +6,19 @@ import { EXPLORER_IMAGES, TILES } from '../../../content/home';
 import { brandOf, productOf } from '../../../content/products';
 import { mediaUrl } from '../../../lib/media';
 import { chipLabel, chipTitle } from './shared';
+import { isVisible } from '../../../config/site';
+import { WORDS } from '../../../content/home';
 
 type Tile = [string, string, string];
-const tiles = TILES as unknown as Tile[];
-const TOP: [string, string[]][] = [['Train', ['trms']], ['Operate', ['rcs']], ['Account', ['ewms', 'eams', 'pwats']]];
+const tiles = (TILES as unknown as Tile[]).filter((t) => isVisible(t[1]));
+const keep = (g: [string, string[]][]) => g.map(([k, ids]) => [k, ids.filter(isVisible)] as [string, string[]]).filter(([, ids]) => ids.length);
+const TOP = keep([['Train', ['trms']], ['Operate', ['rcs']], ['Account', ['ewms', 'eams', 'pwats']]]);
+const MON = keep([['Monitor', ['hums', 'vms']]]);
+const GOV = keep([['Govern', ['as']]]);
+const FUNCTIONS = TOP.length + MON.length + GOV.length;
+const OURS = tiles.filter((t) => brandOf(t[1])?.brand !== 'ACCEL').length;
+const word = (n: number) => (WORDS as string[])[n] || String(n);
+const Word = (n: number) => word(n).charAt(0).toUpperCase() + word(n).slice(1);
 
 function Diagram() {
   const chip = (id: string) => {
@@ -28,9 +37,9 @@ function Diagram() {
         <b className="v6f v6f--x v6f--l"></b><b className="v6f v6f--x v6f--r"></b>
         <u className="v6f v6f--y v6f--b"></u><em className="v6dg__dot"></em>
       </div>
-      <div className="v6dg__row">{node('Monitor', ['hums', 'vms'], ' v6dg__n--m')}</div>
-      <div className="v6dg__link" aria-hidden="true"><u className="v6f v6f--y v6f--c"></u></div>
-      <div className="v6dg__row">{node('Govern', ['as'], ' v6dg__n--g')}</div>
+      {MON.map((t) => <div className="v6dg__row" key={t[0]}>{node(t[0], t[1], ' v6dg__n--m')}</div>)}
+      {GOV.length > 0 && <div className="v6dg__link" aria-hidden="true"><u className="v6f v6f--y v6f--c"></u></div>}
+      {GOV.map((t) => <div className="v6dg__row" key={t[0]}>{node(t[0], t[1], ' v6dg__n--g')}</div>)}
     </figure>
   );
 }
@@ -75,7 +84,7 @@ function ExplorerPanel({ id }: { id: string }) {
   );
 }
 
-const ORDER = ['trms', 'rcs', 'ewms', 'eams', 'pwats', 'hums', 'vms', 'as'];
+const ORDER = ['trms', 'rcs', 'ewms', 'eams', 'pwats', 'hums', 'vms', 'as'].filter(isVisible);
 
 function Explorer() {
   const [sel, setSel] = useState(tiles[0][1]);
@@ -117,9 +126,9 @@ function Explorer() {
         <div className="v6x__list" role="tablist" aria-orientation="vertical" onKeyDown={onKey}>
           <div className="v6xd__row v6xd__row--3">{TOP.map((t) => node(t[0], t[1]))}</div>
           <div className="v6xd__stem" aria-hidden="true"></div>
-          <div className="v6xd__row">{node('Monitor', ['hums', 'vms'])}</div>
-          <div className="v6xd__stem" aria-hidden="true"></div>
-          <div className="v6xd__row">{node('Govern', ['as'])}</div>
+          {MON.map((t) => <div className="v6xd__row" key={t[0]}>{node(t[0], t[1])}</div>)}
+          {GOV.length > 0 && <div className="v6xd__stem" aria-hidden="true"></div>}
+          {GOV.map((t) => <div className="v6xd__row" key={t[0]}>{node(t[0], t[1])}</div>)}
         </div>
         <span className="v6x__hint">Select a system to see its detail</span>
       </nav>
@@ -132,12 +141,12 @@ function Explorer() {
 
 export function Systems() {
   return (
-    <Band id="systems" label="Systems" title="One line, five functions, each system available on its own"
-      intro="Seven systems from Blue Silo, plus ACCEL from our partner SigmaWave for video and vision AI. Take one, or take the line.">
+    <Band id="systems" label="Systems" title={`One line, ${word(FUNCTIONS)} functions, each system available on its own`}
+      intro={`${Word(OURS)} systems from Blue Silo, plus ACCEL from our partner SigmaWave for video and vision AI. Take one, or take the line.`}>
       <Diagram />
       <div className="v6tiles rv">{tiles.map((t) => <TileLink t={t} key={t[1]} />)}</div>
       <div className="v6x__intro rv"><span className="label">Alternative layout</span>
-        <p>The same seven systems and ACCEL, with the hierarchy as navigation and the detail beside it.</p></div>
+        <p>The same {word(OURS)} systems and ACCEL, with the hierarchy as navigation and the detail beside it.</p></div>
       <Explorer />
       <div className="btns" style={{ marginTop: 'var(--s7)' }}>
         <Link className="btn btn--g" to="/products">Compare every system</Link></div>
