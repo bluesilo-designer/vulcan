@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom';
 import { Band } from '../components/ui/Band';
 import { Table } from '../components/ui/Table';
 import { Media } from '../components/ui/Media';
+import { useV } from '../lib/version';
 import { Closer } from '../components/ui/Closer';
 import { mediaUrl } from '../lib/media';
 import { shown } from '../config/site';
@@ -16,10 +17,18 @@ const DISCIPLINES: [string, string, string, string][] = [
 ];
 const ACRA = <em className="dim">To confirm from the ACRA record</em>;
 
+const HOW: [string, string, string, string][] = [
+  ['Start from the range day', 'We map how your range actually runs, who books, who issues and who signs off, before we propose anything.', 'control', 'ph-path'],
+  ['Agree every interface first', 'Each connection to another system is written down and agreed with its owner before we build against it.', 'integration', 'ph-plugs-connected'],
+  ['Show working software early', 'Your team reviews running software at each stage, so surprises surface while they are cheap to fix.', 'vision', 'ph-monitor-play'],
+  ['Stay after handover', 'Documentation a third party can use, source code escrow and long-term support are part of the plan from day one.', 'security', 'ph-lifebuoy'],
+];
+
 export function Company() {
   /* The hero uses the range photograph that used to sit in the home page
      "Where we operate" section, so it follows the review panel's look. */
   const { state } = useReview();
+  const v2 = useV(2);
   return (
     <>
       <section className="pv-hero pv-hero--short">
@@ -37,6 +46,17 @@ export function Company() {
             <p><strong>Range training is our only focus.</strong> We do not divide our attention across unrelated markets, so our engineering effort stays on your programme.</p></div></div>
           <div className="rv" data-d="1"><figure className="pv-ctl__img co-img"><div className="pv-par"><img src={mediaUrl('c/floor.jpg')} alt="Blue Silo engineers at work" loading="lazy" decoding="async" /></div></figure></div></div>
       </Band>
+
+{/* v2: how an engagement runs, added at the client's request (Oct 2026) */}
+      {v2 && <section className="band band--deep"><div className="shell">
+        <div className="head"><h2>How we work with you</h2><p>Four habits we keep on every programme, from the first workshop to the years after handover.</p></div>
+        <ol className="co-how">{HOW.map((h, i) => (
+          <li className="pv-up" key={h[0]}>
+            <figure><img src={mediaUrl(`c/${h[2]}.jpg`)} alt="" loading="lazy" decoding="async" /></figure>
+            <span className="co-how__n">{String(i + 1).padStart(2, '0')}</span>
+            <h3><i className={'ph ' + h[3]} aria-hidden="true"></i>{h[0]}</h3><p>{h[1]}</p></li>))}
+        </ol>
+      </div></section>}
 
 {shown('company.leadership') && (
       <Band deep title="Leadership" intro="The people accountable for delivery.">
@@ -65,8 +85,8 @@ export function Company() {
         <div className="pv-flow__bed pv-par"><img src={mediaUrl('c/region.jpg')} alt="" loading="lazy" decoding="async" /></div><div className="pv-flow__veil"></div>
         <div className="shell pv-flow__in"><span className="label">Where we are</span>
           <h2>Headquartered in Singapore, delivering across Southeast Asia and APAC</h2>
-          <div className="pv-flow__cta"><Link className="btn btn--p" to="/contact">Discuss your requirements <i className="ph ph-arrow-right" aria-hidden="true"></i></Link>
-            <Link className="btn btn--g" to="/contact">Request a demonstration</Link></div></div>
+          {v2 && <div className="pv-flow__cta"><Link className="btn btn--p" to="/contact">Discuss your requirements <i className="ph ph-arrow-right" aria-hidden="true"></i></Link>
+            <Link className="btn btn--g" to="/contact">Request a demonstration</Link></div>}</div>
       </section>
 
 {shown('company.corporate') && (
@@ -77,7 +97,8 @@ export function Company() {
           <div className="rv" data-d="1"><figure className="pv-ctl__img co-img"><div className="pv-par"><img src={mediaUrl('c/office.jpg')} alt="" loading="lazy" decoding="async" /></div></figure></div></div>
       </Band>
       )}
-      <Closer />
+      {/* v2: the where-we-are band carries the CTA, so no closer */}
+      {!v2 && <Closer />}
     </>
   );
 }

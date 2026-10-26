@@ -2046,3 +2046,173 @@ export type Brand = { brand: string | null; acr: string; sys: string; partner?: 
 export type Product = (typeof PRODUCTS)[number];
 export const brandOf = (id: string): Brand | undefined => (BRAND as unknown as Record<string, Brand>)[id];
 export const productOf = (id: string): Product | undefined => PRODUCTS.find((p) => p.id === id);
+
+/* v2 product content, rewritten from the technical architecture work
+   (Oct 2026). Generic by design: no programme, zone, vendor or retention
+   figures. Missing fields fall back to PRODUCT_DETAIL. */
+export const PRODUCT_DETAIL_V2: Record<string, {
+  lead: string; problem: string[]; mods: { k: string; i: string; m: string[] }[];
+  flow: string[][]; out: string[]; arch: string[][];
+}> = {
+  rcs: {
+    lead: 'One place to plan, prepare, run and review a live firing range. RMS holds the range state, drives targetry and effects to the planned exercise, and records every session for the debrief.',
+    problem: [
+      'A lane goes hot before the range is confirmed ready',
+      'The briefing roll does not match who actually turned up',
+      'Targetry, effects and cameras are checked by hand, one by one',
+      'Instructor feedback lives on paper and never reaches the record',
+      'The debrief relies on memory instead of the recorded session',
+      'Results are re-keyed into the training record after the day',
+    ],
+    mods: [
+      { k: 'Plan', i: 'ph-calendar-check', m: [
+        'Ranges, lanes and details as bookable resources',
+        'Nominal roll from the day’s confirmed attendance',
+        'Exercise and scenario preparation ahead of the day',
+        'Accounts, roles and permissions per user' ] },
+      { k: 'Prepare', i: 'ph-list-checks', m: [
+        'Built-in test of network, services and databases at start-up',
+        'Range checklist for equipment, targetry and cameras',
+        'Repeat any failed check before going hot',
+        'Load the planned exercise in one step' ] },
+      { k: 'Conduct', i: 'ph-crosshair', m: [
+        'Live control of targetry and effects to the scenario',
+        'Range hot and cold held as a system state',
+        'Fixed console in the control room, tablet for instructors on the range',
+        'Physical emergency stop that works without the software',
+        '2.5D range view with locations and camera feeds' ] },
+      { k: 'Review', i: 'ph-film-reel', m: [
+        'Results, feedback and event timeline in one record',
+        'After-action playback beside the recorded video',
+        'Assessment against the course standard',
+        'Reshoots arranged from the debrief' ] },
+      { k: 'Records', i: 'ph-database', m: [
+        'Reports and analytics across sessions',
+        'Data import and export',
+        'Append-only log of user actions and key changes',
+        'Equipment health passed to HUMS' ] },
+    ],
+    flow: [
+      ['Book', 'Ranges, lanes and the nominal roll are allocated to the session.'],
+      ['Confirm', 'In the briefing room the operator matches the roll to who is present.'],
+      ['Ready', 'Built-in test and range checklist pass before the exercise loads.'],
+      ['Conduct', 'Targetry and effects run to plan while instructors log feedback.'],
+      ['Stop', 'The hard-wired emergency stop halts targetry and effects; RMS records it.'],
+      ['Debrief', 'Results, timeline and video replay together for the after-action review.'],
+    ],
+    out: [
+      'The range cannot go hot until its checks pass, and every session runs from one confirmed state.',
+      'Instructor feedback is captured at the firing point, not rewritten afterwards.',
+      'The debrief replays what happened, with results and video on the same clock.',
+      'If the video link drops, video panes close and training carries on.',
+    ],
+    arch: [
+      ['ph-door', 'One secured entry', 'Every request and live event passes a single gateway with encryption and token checks.'],
+      ['ph-fingerprint', 'Directory sign-in', 'Multi-factor sign-in against the customer directory, with role-based access.'],
+      ['ph-stack', 'Independent services', 'Booking, mission control, equipment, records and reporting run as separate containerised services.'],
+      ['ph-plugs-connected', 'Adapters only', 'Other systems are reached only through integration adapters and an event bus.'],
+    ],
+  },
+  hums: {
+    lead: 'One view of the health of every system on the range. HUMS gathers health, usage and fault data from each connected system, shows availability as it is, and turns trends into maintenance before a failure stops training.',
+    problem: [
+      'A fault is found when a session is already running',
+      'Each system reports health in its own console, so nobody sees the whole range',
+      'Availability is argued over instead of measured',
+      'Maintenance follows the calendar, not the condition of the equipment',
+      'Spares and obsolescence are noticed too late',
+      'A system that has gone quiet looks the same as a healthy one',
+    ],
+    mods: [
+      { k: 'Availability', i: 'ph-gauge', m: [
+        'Real-time availability for every connected system',
+        'Overall health of the range at a glance',
+        'Live status passed up to the operations centre' ] },
+      { k: 'Monitor', i: 'ph-heartbeat', m: [
+        'Utilisation, bandwidth and built-in test results',
+        'Battery, temperature, activations and operating hours',
+        'Heartbeats, so a silent system is flagged' ] },
+      { k: 'Events', i: 'ph-list-magnifying-glass', m: [
+        'Time-stamped start, stop and fault events',
+        'Recovery time after each fault',
+        'Abnormal traffic detection' ] },
+      { k: 'Predict', i: 'ph-chart-line-up', m: [
+        'Failure prediction from trends',
+        'Preventive maintenance scheduling',
+        'Obsolescence tracking and spares forecast' ] },
+      { k: 'Report', i: 'ph-export', m: [
+        'Reports and data export',
+        'Log of user actions and ingestion errors',
+        'Long-term history for reliability trending' ] },
+    ],
+    flow: [
+      ['Ingest', 'Each system reports its health and usage over standard protocols.'],
+      ['Watch', 'Availability and status update in real time.'],
+      ['Trend', 'History reveals the faults that are developing.'],
+      ['Plan', 'Maintenance and spares are scheduled between sessions.'],
+      ['Report', 'Availability and reliability are reported from logged events.'],
+    ],
+    out: [
+      'The whole range has one health picture, not one console per system.',
+      'Availability is calculated from logged events, so the operator and the owner see the same number.',
+      'Developing faults surface early enough to fix between sessions.',
+      'Long-term history supports reliability trending and technology refresh decisions.',
+    ],
+    arch: [
+      ['ph-download-simple', 'Ingestion adapters', 'REST, MQTT and syslog inputs with retry and tracking for every source system.'],
+      ['ph-fingerprint', 'Directory sign-in', 'Multi-factor sign-in with role-based access for maintenance, operators and instructors.'],
+      ['ph-database', 'Own data store', 'Health, events and audit logs in separate encrypted stores, with live status cached.'],
+      ['ph-clock', 'One clock', 'Time synchronised with the other range systems, so events line up.'],
+    ],
+  },
+  vms: {
+    lead: 'Video for training and safety on the range. ACCEL, our partner’s platform, records every lane, watches for unsafe situations as they happen, and works with range control so footage and range events share one clock.',
+    problem: [
+      'Footage is missing for the minutes that matter',
+      'Clips from different cameras have to be aligned by hand',
+      'An unsafe act is found on the recording after the session, not during it',
+      'The key moment is overwritten before anyone keeps it',
+    ],
+    mods: [
+      { k: 'Live', i: 'ph-video-camera', m: [
+        'Multi-camera live view with alerts',
+        'Standby and training modes, switched with the session',
+        'Camera control and PTZ presets',
+        'Event markers from range events' ] },
+      { k: 'Record', i: 'ph-record', m: [
+        'Continuous recording, higher quality during training and motion',
+        'Time and location tags on every recording',
+        'Failover recording',
+        'Starred clips that are never overwritten' ] },
+      { k: 'Review', i: 'ph-play', m: [
+        'Synchronised playback across cameras',
+        'Image enhancement for review',
+        'Debrief room playback and external projection',
+        'Export with a logged handling record' ] },
+      { k: 'Analytics', i: 'ph-scan', m: [
+        'Muzzle discipline monitoring',
+        'Person in the butt area',
+        'Unattended weapon',
+        'Fire and smoke in the butt area',
+        'Operator alert with a short evidence clip' ] },
+    ],
+    flow: [
+      ['Standby', 'Cameras record continuously at standby quality.'],
+      ['Train', 'The session starts and video switches to training recording.'],
+      ['Alert', 'Video analytics raise an operator alert with a short evidence clip.'],
+      ['Review', 'Playback follows the range timeline across every camera.'],
+    ],
+    out: [
+      'Unsafe situations are flagged during the session, with the evidence attached.',
+      'Every camera plays back on one clock, so an incident is seen from every angle at once.',
+      'Kept clips stay kept, and every export is logged.',
+      'Video runs standalone if the operations centre link is unavailable.',
+    ],
+    arch: [
+      ['ph-lock', 'Closed network', 'A closed wired network with end-to-end encryption for every stream.'],
+      ['ph-brain', 'Models that improve', 'Detection zones and rules are managed centrally, and operator feedback retrains the models.'],
+      ['ph-plugs', 'Open camera standards', 'Cameras connect over standard streaming and device protocols.'],
+      ['ph-heartbeat', 'Health reported', 'Camera, server and storage status is reported to HUMS.'],
+    ],
+  },
+};

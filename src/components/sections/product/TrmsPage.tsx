@@ -10,6 +10,8 @@ import { useReview } from '../../../lib/review';
 import { productRec } from './util';
 import { WorksWith } from './WorksWith';
 import { TrmsMock } from './TrmsMock';
+import { StoryRail } from './StoryRail';
+import { useV } from '../../../lib/version';
 
 type T3 = [string, string, string];
 type Prog = { k: string; n: string; slot: string; i: string; trains: string; books: string; steps: [string, string][]; pts: string[] };
@@ -46,6 +48,7 @@ export function TrmsPage() {
   const id = 'trms';
   const p = productRec(id)!, b = brandOf(id)!;
   const c = (PRODUCT_DETAIL as unknown as Record<string, { std: string[][] }>)[id];
+  const v2 = useV(2); /* v2: the story replaces the three why cards */
   const [tab, setTab] = useState(0);
   const tabRefs = useRef<(HTMLButtonElement | null)[]>([]);
 
@@ -84,12 +87,12 @@ export function TrmsPage() {
       </section>
 
       {/* 2 why */}
-      <section className="band band--deep"><div className="shell">
+      {v2 ? <StoryRail id="trms" /> : <section className="band band--deep"><div className="shell">
         <div className="head"><h2>Why it exists</h2><p>A training day needs a free station, the right equipment out and back, a roll of trainees who turn up, and results as they happen. TRMS follows one booking through all of it.</p></div>
         <ul className="pv-prob pv-prob--3">{t.why.map((w) => (
           <li className="pv-up" key={w[1]}><Icon name={w[0]} /><b>{w[1]}</b><span>{w[2]}</span></li>
         ))}</ul>
-      </div></section>
+      </div></section>}
 
       {/* 3 journey */}
       <section className="band" id="trms-journey"><div className="shell">

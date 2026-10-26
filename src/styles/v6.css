@@ -1286,3 +1286,59 @@ body > .v6sw{display:none}
   .p2-run__media{position:static}
   .p2-out{grid-template-columns:1fr}.p2-out li,.p2-out li:first-child{grid-column:auto}
 }
+
+/* v2 product story */
+.st__head{max-width:62ch;margin-bottom:var(--s8)}
+.st__head h2{font-family:var(--display);font-weight:300;font-size:clamp(32px,4vw,56px);line-height:1.05;letter-spacing:-.025em;margin:0 0 var(--s4)}
+.st__head p{margin:0;color:var(--ink-2);font-size:var(--t-md);line-height:1.55}
+.st__note{display:inline-flex;align-items:center;gap:8px;margin-top:var(--s4);font-size:var(--t-xs);color:var(--ink-3)}
+.st__grid{display:grid;grid-template-columns:200px minmax(0,1fr);gap:var(--s8)}
+.st__clock{position:sticky;top:calc(var(--nav-h) + 40px);align-self:start}
+.st__clock ol{list-style:none;margin:0;padding:0 0 0 18px;border-left:1px solid var(--line-2)}
+.st__clock li{position:relative}
+.st__clock li::before{content:"";position:absolute;left:-23px;top:14px;width:9px;height:9px;border-radius:50%;background:var(--deep);border:1px solid var(--line-3);transition:background .3s var(--ease),border-color .3s var(--ease)}
+.st__clock li.is-past::before{background:var(--line-3)}
+.st__clock li.is-on::before{background:var(--brand);border-color:var(--brand)}
+.st__clock button{all:unset;cursor:pointer;display:block;padding:8px 0}
+.st__clock button:focus-visible{outline:2px solid var(--brand);outline-offset:4px}
+.st__clock b{display:block;font:500 13px var(--mono);letter-spacing:.06em;color:var(--ink-3);transition:color .3s var(--ease)}
+.st__clock span{display:block;font-size:var(--t-xs);color:var(--ink-3);opacity:.7}
+.st__clock .is-on b{color:var(--brand)}
+.st__clock .is-on span{color:var(--ink-2);opacity:1}
+.st__chs{display:grid;gap:clamp(64px,9vw,128px)}
+.st__ch{display:grid;grid-template-columns:minmax(0,6fr) minmax(0,5fr);gap:var(--s7);align-items:center}
+.st__ch:nth-child(even) .st__img{order:2}
+.st__img{margin:0;aspect-ratio:4/3;overflow:hidden;border:1px solid var(--line-2)}
+.st__img img{width:100%;height:100%;object-fit:cover;display:block}
+.st__t{display:flex;align-items:center;gap:10px;font:500 12px var(--mono);letter-spacing:.08em;color:var(--brand)}
+.st__t i{width:24px;height:1px;background:var(--brand)}
+.st__txt h3{font-family:var(--display);font-weight:300;font-size:clamp(24px,2.3vw,32px);line-height:1.15;letter-spacing:-.015em;margin:var(--s4) 0 var(--s3)}
+.st__txt>p{margin:0;color:var(--ink-2);line-height:1.6}
+.st__vs{margin:var(--s6) 0 0;display:grid;gap:0;border-top:1px solid var(--line-2)}
+.st__vs>div{display:grid;grid-template-columns:72px 1fr;gap:var(--s4);padding:var(--s4) 0;border-bottom:1px solid var(--line)}
+.st__vs dt{display:flex;align-items:center;gap:6px;font:500 11px var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3);align-self:start;padding-top:3px}
+.st__vs dd{margin:0;font-size:var(--t-sm);line-height:1.55}
+.st__was dd{color:var(--ink-3)}
+.st__now dt{color:var(--brand)}
+.st__now dd{color:var(--ink)}
+@media (max-width:980px){
+  .st__grid{grid-template-columns:1fr}
+  .st__clock{display:none}
+  .st__ch{grid-template-columns:1fr}
+  .st__ch:nth-child(even) .st__img{order:0}
+}
+
+/* v2 hero: content on the page grid, heading clear of the nav */
+[data-v="2"] .pv-hero__in{width:100%;padding-top:calc(var(--nav-h) + 48px)}
+[data-v="2"] .pv-hero h1{font-size:clamp(36px,5.2vw,76px);max-width:16ch}
+
+/* v2 company: how we work */
+.co-how{list-style:none;padding:0;margin:0;display:grid;grid-template-columns:repeat(4,1fr);gap:var(--s6)}
+.co-how figure{margin:0 0 var(--s5);aspect-ratio:4/3;overflow:hidden;border:1px solid var(--line-2)}
+.co-how img{width:100%;height:100%;object-fit:cover;display:block}
+.co-how__n{font:500 12px var(--mono);letter-spacing:.1em;color:var(--brand)}
+.co-how h3{display:flex;align-items:center;gap:10px;margin:var(--s3) 0 var(--s3);font-size:var(--t-md);font-weight:500}
+.co-how h3 i{color:var(--brand);font-size:20px}
+.co-how p{margin:0;color:var(--ink-2);font-size:var(--t-sm);line-height:1.6}
+@media (max-width:980px){.co-how{grid-template-columns:1fr 1fr}}
+@media (max-width:600px){.co-how{grid-template-columns:1fr}}

@@ -1,6 +1,6 @@
 import { useRef, useState, type CSSProperties, type KeyboardEvent, type MouseEvent } from 'react';
 import { Link } from 'react-router-dom';
-import { PRODUCT_DETAIL, brandOf } from '../../../content/products';
+import { PRODUCT_DETAIL, PRODUCT_DETAIL_V2, brandOf } from '../../../content/products';
 import { EXPLORER_IMAGES } from '../../../content/home';
 import { Table } from '../../ui/Table';
 import { Closer } from '../../ui/Closer';
@@ -10,10 +10,11 @@ import { pad2 } from '../../../lib/html';
 import { mediaUrl } from '../../../lib/media';
 import { DEFAULT_DEP, productRec, v6acr } from './util';
 import { WorksWith } from './WorksWith';
+import { StoryRail } from './StoryRail';
 
 type Detail = {
   lead: string; problem: string[]; mods: { k: string; i: string; m: string[] }[];
-  flow: string[][]; out: string[]; std: string[][];
+  flow: string[][]; out: string[]; std: string[][]; arch?: string[][];
 };
 
 /* First sentence only: the hero carries one idea, the rest is on the page. */
@@ -33,7 +34,7 @@ function Acc({ icon, title, children }: { icon: string; title: string; children:
    connected line, outcomes, and the reference detail folded away. */
 export function ProductV2({ id }: { id: string }) {
   const p = productRec(id)!, b = brandOf(id)!;
-  const c = (PRODUCT_DETAIL as unknown as Record<string, Detail>)[id];
+  const c: Detail = { ...(PRODUCT_DETAIL as unknown as Record<string, Detail>)[id], ...(PRODUCT_DETAIL_V2[id] || {}) };
   const [tab, setTab] = useState(0);
   const tabRefs = useRef<(HTMLButtonElement | null)[]>([]);
   const hero = (EXPLORER_IMAGES as Record<string, string>)[id];
@@ -84,13 +85,8 @@ export function ProductV2({ id }: { id: string }) {
         </dl>
       </div></section>
 
-      {/* 3 problems */}
-      <section className="band band--deep"><div className="shell">
-        <div className="head"><h2>What goes wrong without it</h2></div>
-        <ul className="p2-prob">{c.problem.map((x, i) => (
-          <li className="pv-up" key={i}><Icon name="ph-warning-diamond" /><span>{x}</span></li>
-        ))}</ul>
-      </div></section>
+      {/* 3 the story */}
+      <StoryRail id={id} />
 
       {/* 4 modules, tabbed */}
       <section className="band"><div className="shell">
@@ -131,8 +127,16 @@ export function ProductV2({ id }: { id: string }) {
         ))}</ul>
       </div></section>
 
-      {/* 7 reference detail */}
-      <section className="band band--deep"><div className="shell">
+      {/* 7 how it is built */}
+      {c.arch && <section className="band band--deep"><div className="shell">
+        <div className="head"><h2>How it is built</h2></div>
+        <ul className="pv-plat">{c.arch.map((a) => (
+          <li className="pv-up" key={a[1]}><Icon name={a[0]} /><b>{a[1]}</b><span>{a[2]}</span></li>
+        ))}</ul>
+      </div></section>}
+
+      {/* 8 reference detail */}
+      <section className={'band' + (c.arch ? '' : ' band--deep')}><div className="shell">
         <div className="head"><h2>The detail, when you need it</h2></div>
         <Acc icon="ph-seal-check" title="Standards we design to">
           <p className="pv-acc__note">Stated as alignment. Blue Silo does not claim certification against these.</p>
