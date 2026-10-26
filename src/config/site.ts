@@ -24,3 +24,14 @@ export const SITE = {
    and their URLs redirect to /products. Add an id back to show it again. */
 export const VISIBLE_PRODUCTS = ['trms', 'rcs', 'hums', 'vms', 'ewms'];
 export const isVisible = (id: string) => VISIBLE_PRODUCTS.includes(id);
+
+/* Sections hidden at the client's request. The code and content stay;
+   remove a key from this list to bring the section back. */
+export const HIDDEN_SECTIONS = [
+  'home.tiles',            // the card grid under the systems diagram (23 Oct 2026)
+  'home.whereWeOperate',   // "Built for complex defence environments" (23 Oct 2026)
+  'company.leadership',    // portrait placeholders (23 Oct 2026)
+  'company.disciplines',   // "Disciplines, not headcount" (23 Oct 2026)
+  'company.corporate',     // registration table and office photo (23 Oct 2026)
+];
+export const shown = (key: string) => !HIDDEN_SECTIONS.includes(key);

@@ -3,6 +3,7 @@ import { Trust } from '../components/sections/home/Trust';
 import { Modernising } from '../components/sections/home/Modernising';
 import { Systems } from '../components/sections/home/Systems';
 import { WhereWeOperate } from '../components/sections/home/WhereWeOperate';
+import { shown } from '../config/site';
 import { Chain } from '../components/sections/home/Chain';
 import { Measures } from '../components/sections/home/Measures';
 import { IntegrationIntro } from '../components/sections/home/IntegrationIntro';
@@ -20,7 +21,7 @@ export function Home() {
       <Trust />
       <Modernising />
       <Systems />
-      <WhereWeOperate />
+      {shown('home.whereWeOperate') && <WhereWeOperate />}
       <Chain />
       <Measures />
       <IntegrationIntro />

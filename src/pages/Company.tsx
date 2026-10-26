@@ -3,6 +3,9 @@ import { Table } from '../components/ui/Table';
 import { Media } from '../components/ui/Media';
 import { Closer } from '../components/ui/Closer';
 import { mediaUrl } from '../lib/media';
+import { shown } from '../config/site';
+import { slotSrc } from '../lib/images';
+import { useReview } from '../lib/review';
 
 const DISCIPLINES: [string, string, string, string][] = [
   ['Control systems', 'Real time equipment control, safety interlocks, and degraded mode behaviour.', 'control', 'ph-sliders-horizontal'],
@@ -13,10 +16,13 @@ const DISCIPLINES: [string, string, string, string][] = [
 const ACRA = <em className="dim">To confirm from the ACRA record</em>;
 
 export function Company() {
+  /* The hero uses the range photograph that used to sit in the home page
+     "Where we operate" section, so it follows the review panel's look. */
+  const { state } = useReview();
   return (
     <>
       <section className="pv-hero pv-hero--short">
-        <div className="pv-hero__bed pv-par"><img src={mediaUrl('c/hero.jpg')} alt="" decoding="async" /></div><div className="pv-hero__veil"></div>
+        <div className="pv-hero__bed pv-par"><img src={slotSrc('ops', state.look)} alt="" decoding="async" /></div><div className="pv-hero__veil"></div>
         <div className="shell pv-hero__in"><span className="label">Company</span>
           <h1>Blue Silo</h1>
           <p className="pv-hero__lead">We build the software that runs range training complexes. That is the whole of what we do.</p></div>
@@ -31,6 +37,7 @@ export function Company() {
           <div className="rv" data-d="1"><figure className="pv-ctl__img co-img"><div className="pv-par"><img src={mediaUrl('c/floor.jpg')} alt="Blue Silo engineers at work" loading="lazy" decoding="async" /></div></figure></div></div>
       </Band>
 
+{shown('company.leadership') && (
       <Band deep title="Leadership" intro="The people accountable for delivery.">
         <div className="g g3 rv">
           {[1, 2, 3].map((i) => (
@@ -41,7 +48,9 @@ export function Company() {
           ))}
         </div>
       </Band>
+      )}
 
+{shown('company.disciplines') && (
       <Band title="Disciplines, not headcount">
         <div className="pv-ctl pv-ctl--4">{DISCIPLINES.map((c) => (
           <article className="pv-ctl__i pv-up" key={c[0]}>
@@ -49,6 +58,7 @@ export function Company() {
             <h3><i className={'ph ' + c[3]} aria-hidden="true"></i>{c[0]}</h3><p>{c[1]}</p></article>))}
         </div>
       </Band>
+      )}
 
       <section className="pv-flow">
         <div className="pv-flow__bed pv-par"><img src={mediaUrl('c/region.jpg')} alt="" loading="lazy" decoding="async" /></div><div className="pv-flow__veil"></div>
@@ -56,12 +66,14 @@ export function Company() {
           <h2>Headquartered in Singapore, delivering across Southeast Asia and APAC</h2></div>
       </section>
 
+{shown('company.corporate') && (
       <Band title="Corporate">
         <div className="split"><div className="rv">
           <Table head={['Field', 'Detail']} rows={[
             ['Registered entity', 'Blue Silo Pte. Ltd.'], ['UEN', ACRA], ['Registered address', ACRA], ['Incorporated', ACRA]]} /></div>
           <div className="rv" data-d="1"><figure className="pv-ctl__img co-img"><div className="pv-par"><img src={mediaUrl('c/office.jpg')} alt="" loading="lazy" decoding="async" /></div></figure></div></div>
       </Band>
+      )}
       <Closer />
     </>
   );

@@ -6,7 +6,7 @@ import { EXPLORER_IMAGES, TILES } from '../../../content/home';
 import { brandOf, productOf } from '../../../content/products';
 import { mediaUrl } from '../../../lib/media';
 import { chipLabel, chipTitle } from './shared';
-import { isVisible } from '../../../config/site';
+import { isVisible, shown } from '../../../config/site';
 import { WORDS } from '../../../content/home';
 
 type Tile = [string, string, string];
@@ -144,9 +144,11 @@ export function Systems() {
     <Band id="systems" label="Systems" title={`One line, ${word(FUNCTIONS)} functions, each system available on its own`}
       intro={`${Word(OURS)} systems from Blue Silo, plus ACCEL from our partner SigmaWave for video and vision AI. Take one, or take the line.`}>
       <Diagram />
+      {shown('home.tiles') && <>
       <div className="v6tiles rv">{tiles.map((t) => <TileLink t={t} key={t[1]} />)}</div>
       <div className="v6x__intro rv"><span className="label">Alternative layout</span>
         <p>The same {word(OURS)} systems and ACCEL, with the hierarchy as navigation and the detail beside it.</p></div>
+      </>}
       <Explorer />
       <div className="btns" style={{ marginTop: 'var(--s7)' }}>
         <Link className="btn btn--g" to="/products">Compare every system</Link></div>
