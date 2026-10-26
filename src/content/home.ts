@@ -370,19 +370,22 @@ export const STACK = [
 
 export const RELEASE = [
   [
-    "Capability Statement",
-    "An overview of our defence systems, capabilities and experience.",
-    "rel-capability"
+    "Product Demonstration",
+    "See our systems running on a working setup, guided by the people who build them.",
+    "rel-capability",
+    "Request a demonstration"
   ],
   [
     "Assurance Summary",
     "Our approach to licensing, hardening, cybersecurity and compliance.",
-    "rel-assurance"
+    "rel-assurance",
+    "Request a copy"
   ],
   [
     "Integration & Interface Pack",
     "Interface structures, protocol patterns and our approach to multi-system delivery.",
-    "rel-interface"
+    "rel-interface",
+    "Request a copy"
   ]
 ];
 

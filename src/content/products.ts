@@ -1753,7 +1753,7 @@ export const TRMS = {
         ],
         [
           "ph-hourglass",
-          "Wait for the day"
+          "Scheduled"
         ],
         [
           "ph-scan",
@@ -1769,7 +1769,7 @@ export const TRMS = {
         ],
         [
           "ph-chart-bar",
-          "Results"
+          "Live results"
         ],
         [
           "ph-arrow-u-down-left",
@@ -1955,9 +1955,9 @@ export const TRMS = {
       "Mode, courseware, date and session, then lanes and the trainee roll"
     ],
     [
-      "ph-hourglass",
-      "Hold",
-      "The booking waits, conflict checked, until training day"
+      "ph-calendar-check",
+      "Scheduled",
+      "The booking is confirmed and its stations are reserved until training day"
     ],
     [
       "ph-scan",
@@ -1976,8 +1976,8 @@ export const TRMS = {
     ],
     [
       "ph-chart-bar",
-      "Results",
-      "Results arrive during the session, not after it"
+      "Live results",
+      "Results update live during the session, compared against the session and overall results"
     ],
     [
       "ph-arrow-u-down-left",
@@ -1993,13 +1993,13 @@ export const TRMS = {
     ],
     [
       "ph-prohibit",
-      "No shared slot",
-      "Two groups cannot hold the same station in the same slot."
+      "Shared slots, if allowed",
+      "Decide whether two groups may share a station in the same slot."
     ],
     [
       "ph-calendar-x",
-      "No mixed day",
-      "A group and an individual cannot share a day on the same station."
+      "Mixed days, if allowed",
+      "Decide whether groups and individuals may train on the same station on the same day."
     ],
     [
       "ph-rows",

@@ -19,7 +19,7 @@ export function Integration() {
       <div className="shell page-head rv"><span className="label">Integration</span>
         <h1>Interfaces are the product, not the work left at the end</h1>
         <p className="lead">We arrive with an interface register and a simulator, not with a request for a meeting.</p>
-        <div className="btns" style={{ marginTop: 'var(--s6)' }}><Link className="btn btn--p" to="/contact">Request the ICD pack</Link></div></div>
+        <div className="btns" style={{ marginTop: 'var(--s6)' }}><Link className="btn btn--p" to="/contact">Talk to us</Link></div></div>
 
       <Band label="What we interface with" title="Built to connect to what is already on site"
         intro="Integrate the entire training and range environment, from live targets and virtual training to infrastructure, operations, security and training management.">
@@ -60,7 +60,7 @@ export function Integration() {
         <div className="g g4 rv">{PROVE.map((c) => <div className="tile" key={c[0]}><h4>{c[0]}</h4><p>{c[1]}</p></div>)}</div>
       </Band>
       <PartnersSection cta={false} />
-      <Closer label="Request the ICD pack" line="Send us the architecture you need us to fit into, and we will come back with the interface register rather than with questions." />
+      <Closer label="Talk to us" line="Tell us which systems you need us to connect to, and we will walk you through how the integration works." />
     </>
   );
 }

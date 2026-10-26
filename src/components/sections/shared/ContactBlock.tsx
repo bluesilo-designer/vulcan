@@ -21,7 +21,7 @@ export function ContactBlock() {
             <Link to="/contact" key={r[0]}><span className="v6rel__img"><img src={mediaUrl(r[2] + '.jpg')} alt="" loading="lazy" decoding="async" /></span>
               <span className="v6rel__body"><span className="v6rel__n">{pad2(i)}</span>
                 <h3>{r[0]}</h3><p>{r[1]}</p>
-                <span className="v6rel__cta">Request <i className="ph ph-arrow-right" aria-hidden="true"></i></span></span></Link>
+                <span className="v6rel__cta">{r[3] || 'Request'} <i className="ph ph-arrow-right" aria-hidden="true"></i></span></span></Link>
           ))}
         </div>
         <div className="v6close__foot rv"><Link className="btn btn--p" to="/contact">Discuss your requirements <i className="ph ph-arrow-right" aria-hidden="true"></i></Link>

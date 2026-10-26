@@ -76,7 +76,7 @@ export function TrmsPage() {
           <div className="v6pbrand"><span className="v6pbrand__s">{b.acr}</span><span className="pv-status"><Icon name="ph-flask" />{t.status}</span></div>
           <h1>{b.sys}</h1><p className="pv-hero__lead">{t.short}</p>
           <div className="pv-cta">
-            <Link className="btn btn--p" to="/contact">Request a walkthrough</Link>
+            <Link className="btn btn--p" to="/contact">Request a demonstration</Link>
             <a className="btn btn--g" href="#trms-journey" data-anchor onClick={toJourney}>See how a booking flows</a>
           </div>
         </div>
@@ -112,7 +112,7 @@ export function TrmsPage() {
 
       {/* 5 rules */}
       <section className="band"><div className="shell">
-        <div className="head"><h2>Rules the system enforces, so nobody has to remember them</h2></div>
+        <div className="head"><h2>Booking rules, set by you and enforced by the system</h2><p>Each training facility decides its own rules. TRMS applies them automatically, so nobody has to remember them. For example:</p></div>
         <ul className="pv-rules">{t.rules.map((r) => (
           <li className="pv-up" key={r[1]}><Icon name={r[0]} /><b>{r[1]}</b><span>{r[2]}</span></li>
         ))}</ul>
@@ -186,7 +186,7 @@ export function TrmsPage() {
       </section>
 
       <WorksWith rel={p.rel} />
-      <Closer label="Request a walkthrough" line="See the booking flow, the live session screen and the equipment path on a working prototype." />
+      <Closer label="Request a demonstration" line="See the booking flow, the live session screen and the equipment path on a working prototype." />
     </>
   );
 }
