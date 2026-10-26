@@ -10,6 +10,7 @@ import { useReview } from '../../../lib/review';
 import { productRec } from './util';
 import { WorksWith } from './WorksWith';
 import { TrmsMock } from './TrmsMock';
+import { TrmsPageV2 } from './TrmsPageV2';
 import { TrmsWhat, TrmsFeatures, TrmsScoreboard, TrmsLeaderboard, JOURNEY_V2 } from './TrmsV2';
 import { useV } from '../../../lib/version';
 
@@ -45,6 +46,11 @@ function Acc({ icon, title, children }: { icon: string; title: string; children:
 
 /* legacy pTrmsV6 */
 export function TrmsPage() {
+  if (useV(2)) return <TrmsPageV2 />;
+  return <TrmsPageV1 />;
+}
+
+function TrmsPageV1() {
   const id = 'trms';
   const p = productRec(id)!, b = brandOf(id)!;
   const c = (PRODUCT_DETAIL as unknown as Record<string, { std: string[][] }>)[id];
