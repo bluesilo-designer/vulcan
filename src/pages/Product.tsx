@@ -10,6 +10,8 @@ import { Icon } from '../components/ui/Icon';
 import { pad2 } from '../lib/html';
 import { Products } from './Products';
 import { TrmsPage } from '../components/sections/product/TrmsPage';
+import { ProductV2 } from '../components/sections/product/ProductV2';
+import { useV } from '../lib/version';
 import { WorksWith } from '../components/sections/product/WorksWith';
 import { DEFAULT_DEP, productRec, v6acr } from '../components/sections/product/util';
 
@@ -20,8 +22,10 @@ type Detail = {
 
 export function Product() {
   const { id = '' } = useParams();
+  const v2 = useV(2);
   if (!isVisible(id)) return <Navigate to="/products" replace />;
   if (id === 'trms') return <TrmsPage />;
+  if (v2 && productRec(id) && brandOf(id)) return <ProductV2 id={id} />;
   const p = productRec(id), b = brandOf(id);
   const c = (PRODUCT_DETAIL as unknown as Record<string, Detail>)[id];
   if (!p || !b || !c) return <Products />;

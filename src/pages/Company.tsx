@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import { Band } from '../components/ui/Band';
 import { Table } from '../components/ui/Table';
 import { Media } from '../components/ui/Media';
@@ -63,7 +64,9 @@ export function Company() {
       <section className="pv-flow">
         <div className="pv-flow__bed pv-par"><img src={mediaUrl('c/region.jpg')} alt="" loading="lazy" decoding="async" /></div><div className="pv-flow__veil"></div>
         <div className="shell pv-flow__in"><span className="label">Where we are</span>
-          <h2>Headquartered in Singapore, delivering across Southeast Asia and APAC</h2></div>
+          <h2>Headquartered in Singapore, delivering across Southeast Asia and APAC</h2>
+          <div className="pv-flow__cta"><Link className="btn btn--p" to="/contact">Discuss your requirements <i className="ph ph-arrow-right" aria-hidden="true"></i></Link>
+            <Link className="btn btn--g" to="/contact">Request a demonstration</Link></div></div>
       </section>
 
 {shown('company.corporate') && (

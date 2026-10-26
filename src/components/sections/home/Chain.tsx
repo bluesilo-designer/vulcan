@@ -35,21 +35,22 @@ export function Chain() {
             <button className="step" type="button" role="tab" data-i={i} key={i} aria-selected={i === cur}
               tabIndex={i === cur ? 0 : -1} aria-controls="panel" ref={(el) => { refs.current[i] = el; }}
               onClick={() => go(i, false)}>
-              <span className="step__n">{pad2(i)}</span><span className="step__k">{s.k}</span><span className="step__s">{s.s}</span>
+              <span className="step__n">{pad2(i)}</span>{v2 && (s as { i?: string }).i && <i className={'ph step__i ' + (s as { i?: string }).i} aria-hidden="true"></i>}<span className="step__k">{s.k}</span><span className="step__s">{s.s}</span>
             </button>
           ))}
         </div>
         <div className="panel"><div className="shell">
-          <div className="panel__in v6cp v6cp--in" id="panel" role="tabpanel" key={cur}>
+          <div className={'panel__in v6cp v6cp--in' + (v2 ? ' v6cp--v2' : '')} id="panel" role="tabpanel" key={cur}>
             <figure className="v6cp__img"><img src={mediaUrl(`chain-${n}.jpg`)} alt="" decoding="async" />
               <span className="v6cp__n">{n} / {c.k}</span></figure>
             <div className="v6cp__body">
+              {v2 && (c as { h?: string }).h && <span className="v6cp__q"><i className={'ph ' + ((c as { i?: string }).i || '')} aria-hidden="true"></i>{(c as { h?: string }).h}</span>}
               <h3>{c.t}</h3>
               <p>{STEPS[cur] || c.b}</p>
-              <div className="v6cp__data"><span className="v6cp__lbl">Data that moves</span>
+              <div className="v6cp__meta"><div className="v6cp__data"><span className="v6cp__lbl">Data that moves</span>
                 <span className="v6cp__chips">{data.map((d) => <i key={d}>{d}</i>)}</span></div>
               {String(c.s || '').trim() && <div className="v6cp__sys"><span className="v6cp__lbl">Systems on this step</span>
-                <span className="v6medals">{String(c.s || '').split('·').map((r, i) => <Medal raw={r} key={i} />)}</span></div>}
+                <span className="v6medals">{String(c.s || '').split('·').map((r, i) => <Medal raw={r} key={i} />)}</span></div>}</div>
             </div>
           </div>
         </div></div>

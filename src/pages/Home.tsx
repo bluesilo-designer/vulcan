@@ -16,7 +16,7 @@ import { ContactBlock } from '../components/sections/shared/ContactBlock';
 import { useV } from '../lib/version';
 
 export function Home() {
-  /* v2 drops Modernising and Measures, and moves the questions to /faq */
+  /* v2 drops Modernising, Measures and CompanyFacts, and moves the questions to /faq */
   const v2 = useV(2);
   return (
     <>
@@ -31,7 +31,7 @@ export function Home() {
       <Simulate />
       <PartnersSection />
       <AssureFeature />
-      <CompanyFacts />
+      {!v2 && <CompanyFacts />}
       {!v2 && <Questions />}
       <ContactBlock />
     </>
