@@ -7,6 +7,7 @@ import { brandOf, productOf } from '../../../content/products';
 import { mediaUrl } from '../../../lib/media';
 import { chipLabel, chipTitle } from './shared';
 import { isVisible, shown } from '../../../config/site';
+import { useV } from '../../../lib/version';
 import { WORDS } from '../../../content/home';
 
 type Tile = [string, string, string];
@@ -62,6 +63,7 @@ function TileLink({ t }: { t: Tile }) {
 
 function ExplorerPanel({ id }: { id: string }) {
   const t = tiles.find((x) => x[1] === id), p = productOf(id), b = brandOf(id);
+  const v2 = useV(2); /* v2: bigger picture, one line, no facts table */
   if (!t || !p || !b) return null;
   return (
     <>
@@ -73,11 +75,11 @@ function ExplorerPanel({ id }: { id: string }) {
           {b.partner && <span className="v6x__partner">Partner, {b.partner}</span>}
         </div>
         <p className="v6x__desc">{t[2]}</p>
-        <dl className="v6x__facts">
+        {!v2 && <dl className="v6x__facts">
           <div><dt>Used by</dt><dd>{p.users.slice(0, 4).join(', ')}</dd></div>
           <div><dt>Deployed at</dt><dd>{p.where}</dd></div>
           <div><dt>The decision it supports</dt><dd>{p.decides.split(/(?<=\.)\s/)[0]}</dd></div>
-        </dl>
+        </dl>}
         <Link className="v6x__go" to={`/products/${id}`}>Explore {b.acr} <span>{p.groups.length} capability areas</span> <Icon name="ph-arrow-right" /></Link>
       </div>
     </>

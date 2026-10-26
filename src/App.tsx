@@ -10,6 +10,7 @@ import { Assurance } from './pages/Assurance';
 import { Company } from './pages/Company';
 import { Contact } from './pages/Contact';
 import { NotFound } from './pages/NotFound';
+import { Faq } from './pages/Faq';
 
 /* Old hash links (#/products/trms) keep working: redirect to the real path. */
 function HashRedirect() {
@@ -37,6 +38,7 @@ export function App() {
         <Route path="assurance" element={<Assurance />} />
         <Route path="company" element={<Company />} />
         <Route path="contact" element={<Contact />} />
+        <Route path="faq" element={<Faq />} />
         <Route path="__demo" element={<DemoEntry />} />
         <Route path="*" element={<NotFound />} />
       </Route>

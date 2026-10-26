@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { HERO_CUTS, LOOKS, PRODUCT_IMAGE_SETS } from '../../content/media';
 import { isReady } from '../../lib/media';
 import { DEFAULTS, useReview } from '../../lib/review';
+import { useVersion } from '../../lib/version';
 
 type Look = { id: string; k: string; d: string; sw: string[] };
 type Cut = { id: string; k: string; d: string };
@@ -11,6 +12,7 @@ type PSet = { id: string; k: string; d: string };
    set and the hero film. Turned off with SITE.reviewTools before go-live. */
 export function ContentControl() {
   const { state, set, reset } = useReview();
+  const { v, setV } = useVersion();
   const [open, setOpen] = useState(false);
   const [copied, setCopied] = useState(false);
   const fab = useRef<HTMLButtonElement>(null);
@@ -41,6 +43,14 @@ export function ContentControl() {
       </button>
       <div className="v6ctl__body" id="v6ctlBody" hidden={!open}>
         <div className="v6ctl__h"><b>Content control</b><span>Review only</span></div>
+        <fieldset>
+          <legend>Site version</legend>
+          <div className="v6ctl__cuts">
+            {([1, 2] as const).map((n) => (
+              <button key={n} type="button" className={v === n ? 'is-on' : ''} onClick={() => setV(n)}>Version {n}</button>
+            ))}
+          </div>
+        </fieldset>
         <fieldset>
           <legend>Image set</legend>
           {(LOOKS as Look[]).map((l) => (

@@ -34,6 +34,8 @@ export const ROUTE_META: RouteMeta[] = [
     description: 'Secure by design: licensing, hardening, tamper-proof architecture, multi-factor sign-in, network segregation and standards alignment.' },
   { path: '/company', title: 'Company',
     description: 'Blue Silo is a Singapore-headquartered defence technology company delivering mission-critical systems across Southeast Asia and APAC.' },
+  { path: '/faq', title: 'FAQ',
+    description: 'Answers to what defence organisations, programme teams and evaluators ask Blue Silo first.' },
   { path: '/contact', title: 'Contact',
     description: 'Talk to the people who build it: procurement, technical integration, or anything else.' },
 ];

@@ -30,7 +30,7 @@ export function Footer() {
           <Link to="/integration">Integration</Link>
           <Link to="/assurance">Assurance</Link>
           <Link to="/company">About Blue Silo</Link>
-          <Link to="/#questions">Questions</Link>
+          <Link to="/faq">FAQ</Link>
           <Link to="/contact">Contact</Link>
         </nav>
         <div className="v6foot__col">
