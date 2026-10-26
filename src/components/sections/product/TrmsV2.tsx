@@ -143,9 +143,9 @@ export function TrmsLeaderboard() {
     <section className="band"><div className="shell">
       <div className="lb-wrap">
         <div className="lb-txt">
-          <h2>The leaderboard on the wall</h2>
-          <p>Results do not stay in the system. A screen in the training centre ranks units as sessions finish, with a podium, the full table, and each unit’s own standing per scoring pillar.</p>
-          <p className="lb-note"><i className="ph ph-info" aria-hidden="true"></i>Wireframe of the prototype screen. Units and scores are placeholders.</p>
+          <h2>A live leaderboard that keeps units motivated</h2>
+          <p>Put results on a screen in the centre. Units see the podium, the full ranking and how they compare in each category.</p>
+          <p className="lb-note"><i className="ph ph-info" aria-hidden="true"></i>Illustration. Units and scores are examples.</p>
         </div>
         <figure className="lb-tv" aria-label="Wireframe of the leaderboard screen">
           <div className="lb">

@@ -86,7 +86,7 @@ export function ProductV2({ id }: { id: string }) {
 
       {/* 3 problems */}
       <section className="band band--deep"><div className="shell">
-        <div className="head"><h2>What goes wrong without it</h2></div>
+        <div className="head"><h2>The problems it solves</h2></div>
         <ul className="p2-prob">{c.problem.map((x, i) => (
           <li className="pv-up" key={i}><Icon name="ph-warning-diamond" /><span>{x}</span></li>
         ))}</ul>
@@ -94,7 +94,7 @@ export function ProductV2({ id }: { id: string }) {
 
       {/* 4 modules, tabbed */}
       <section className="band"><div className="shell">
-        <div className="head"><h2>What it does, grouped by the moment it serves</h2></div>
+        <div className="head"><h2>What it does</h2></div>
         <div className="pv-tabs" role="tablist" aria-label={`${b.acr} capability areas`}>{c.mods.map((g, i) => (
           <button key={g.k} type="button" role="tab" id={`p2t-${i}`} aria-controls={`p2p-${i}`}
             aria-selected={tab === i} tabIndex={tab === i ? 0 : -1}
@@ -114,7 +114,7 @@ export function ProductV2({ id }: { id: string }) {
         <div className="p2-run">
           <div className="p2-run__media pv-up"><Media m={p.media} /></div>
           <div>
-            <div className="head"><h2>How it runs</h2></div>
+            <div className="head"><h2>How it works</h2></div>
             <ol className="p2-line" style={{ '--n': c.flow.length } as CSSProperties}>{c.flow.map((f, i) => (
               <li className="pv-up" key={f[0]}><span className="p2-line__n">{pad2(i)}</span>
                 <div><b>{f[0]}</b><p>{v6acr(f[1])}</p></div></li>
@@ -125,7 +125,7 @@ export function ProductV2({ id }: { id: string }) {
 
       {/* 6 outcomes */}
       <section className="band"><div className="shell">
-        <div className="head"><h2>What changes on the range</h2></div>
+        <div className="head"><h2>What you gain</h2></div>
         <ul className="p2-out">{c.out.map((x, i) => (
           <li className="pv-up" key={x}><Icon name={i === 0 ? 'ph-trend-up' : 'ph-check-circle'} /><p>{v6acr(x)}</p></li>
         ))}</ul>
@@ -133,7 +133,7 @@ export function ProductV2({ id }: { id: string }) {
 
       {/* 7 how it is built */}
       {c.arch && <section className="band band--deep"><div className="shell">
-        <div className="head"><h2>How it is built</h2></div>
+        <div className="head"><h2>Secure, and ready to connect</h2></div>
         <ul className="pv-plat">{c.arch.map((a) => (
           <li className="pv-up" key={a[1]}><Icon name={a[0]} /><b>{a[1]}</b><span>{a[2]}</span></li>
         ))}</ul>

@@ -85,16 +85,16 @@ function CreateScreen({ s }: { s: number }) {
 function Create() {
   const [s, setS] = useState(0);
   const say = [
-    'Who is training, in which mode, on which courseware. Unit and instructor details sit on the booking, not in an email thread.',
-    'Pick a session and a date. Station availability is checked against the date before the booking can move on.',
-    'Switch on the lanes this courseware needs and assign what is fired on each.',
-    'The trainee list, by import or by hand. Each trainee carries platoon, weapon and role.',
-    'One summary of everything above. Confirm, and the stations are held for the day.',
+    'Choose the unit, training mode and courseware.',
+    'Pick a date and session. Availability is checked instantly, so stations are never double booked.',
+    'Set up the lanes the session needs.',
+    'Add trainees by import or by hand.',
+    'Check the summary and confirm. The stations are reserved.',
   ];
   return (
     <section className="band" id="t2-create"><div className="shell">
-      <div className="t2-h"><h2>A booking is made once, in five steps</h2>
-        <p>Everything the training day needs is captured here, so nothing has to be chased later.</p></div>
+      <div className="t2-h"><h2>Book a session in five simple steps</h2>
+        <p>Everything the training day needs, captured once.</p></div>
       <div className="t2-stage">
         <ol className="t2-steps" role="tablist" aria-label="Create booking steps">{STEPS.map((x, i) => (
           <li key={x}><button type="button" role="tab" aria-selected={s === i} onClick={() => setS(i)}>
@@ -108,29 +108,29 @@ function Create() {
 
 /* ---------- 2 the life of a booking ---------- */
 const STATES: [string, string, string][] = [
-  ['ph-calendar-check', 'Upcoming', 'Stations held, roll attached'],
-  ['ph-package', 'Assets issued', 'Kit scanned out to the booking'],
-  ['ph-user-check', 'Onboarding', 'Attendance confirmed on the day'],
-  ['ph-play-circle', 'Ongoing', 'Details running per station'],
-  ['ph-arrow-u-down-left', 'Return assets', 'Kit scanned back in'],
-  ['ph-check-circle', 'Completed', 'Results final, booking closed'],
+  ['ph-calendar-check', 'Upcoming', 'Stations reserved'],
+  ['ph-package', 'Assets issued', 'Equipment handed out'],
+  ['ph-user-check', 'Onboarding', 'Trainees checked in'],
+  ['ph-play-circle', 'Ongoing', 'Training in progress'],
+  ['ph-arrow-u-down-left', 'Return assets', 'Equipment coming back'],
+  ['ph-check-circle', 'Completed', 'Results saved'],
 ];
 const BRANCH: [string, string, string][] = [
-  ['ph-plus-circle', 'Top up', 'More kit issued mid-session, on the same booking'],
-  ['ph-circle-half', 'Partial return', 'Some items back, the rest stay open by name'],
-  ['ph-warning', 'Missing', 'Completed, but flagged until every item is found'],
-  ['ph-clock-countdown', 'Overdue', 'Past its end time and still not returned'],
-  ['ph-x-circle', 'Cancelled', 'Stations released, history kept'],
+  ['ph-plus-circle', 'Top up', 'Extra equipment added mid-session'],
+  ['ph-circle-half', 'Partial return', 'See exactly what is still out'],
+  ['ph-warning', 'Missing', 'Flagged until it is found'],
+  ['ph-clock-countdown', 'Overdue', 'Late returns highlighted'],
+  ['ph-x-circle', 'Cancelled', 'Stations freed for others'],
 ];
 function Life() {
   return (
     <section className="band band--deep"><div className="shell">
-      <div className="t2-h"><h2>Every booking always has one state</h2>
-        <p>The same booking moves through six states. When the day does not go to plan, it branches, and the exception stays on the record until it is resolved.</p></div>
+      <div className="t2-h"><h2>Always know where every booking stands</h2>
+        <p>Each booking shows its status at a glance, from scheduled to completed.</p></div>
       <ol className="t2-life">{STATES.map((x) => (
         <li key={x[1]}><span className="t2-life__ic"><Icon name={x[0]} /></span><b>{x[1]}</b><p>{x[2]}</p></li>
       ))}</ol>
-      <div className="t2-branch"><span className="t2-branch__k">When it does not go to plan</span>
+      <div className="t2-branch"><span className="t2-branch__k">And it flags what needs attention</span>
         <ul>{BRANCH.map((x) => <li key={x[1]}><Icon name={x[0]} /><span><b>{x[1]}</b>{x[2]}</span></li>)}</ul></div>
     </div></section>
   );
@@ -150,15 +150,15 @@ function Day() {
   const tabs = ['Check in', 'Run the session'];
   return (
     <section className="band"><div className="shell">
-      <div className="t2-h"><h2>On the day, the roll is who actually came</h2>
-        <p>Trainees are checked in by ID scan or list. The session then runs in details, small groups queued per station, with results recorded as each run ends.</p></div>
+      <div className="t2-h"><h2>Training day, without the paperwork</h2>
+        <p>Check trainees in with a scan, run the session from one screen and see results as they come in.</p></div>
       <div className="t2-tabs" role="tablist">{tabs.map((x, i) => (
         <button key={x} type="button" role="tab" aria-selected={t === i} onClick={() => setT(i)}>{x}</button>))}</div>
       <div className="t2-day">
         <div className="t2-day__s">{t === 0 ? <OnboardScreen /> : <TrmsScoreboard />}</div>
         <ul className="t2-day__pts">{(t === 0
-          ? [['ph-scan', 'Scan or import', 'Attendance from an ID scan or an uploaded list'], ['ph-user-minus', 'Absences visible', 'Absent trainees are taken out before details are formed'], ['ph-squares-four', 'Lanes ready', 'Lane configuration can still change before the start']]
-          : [['ph-users-three', 'Details per station', 'Who is on, who is next'], ['ph-arrow-counter-clockwise', 'Reshoot', 'Without losing the first result'], ['ph-chart-bar', 'Live results', 'Marksman, pass and fail counted as runs end']]
+          ? [['ph-scan', 'Fast check-in', 'Scan an ID or import a list'], ['ph-user-minus', 'Absences at a glance', 'Know who is missing before you start'], ['ph-squares-four', 'Last-minute changes', 'Adjust lanes right up to the start']]
+          : [['ph-users-three', 'Smooth queues', 'See who is on and who is next'], ['ph-arrow-counter-clockwise', 'Easy reshoots', 'The first result is kept'], ['ph-chart-bar', 'Live results', 'Pass and fail counts as they happen']]
         ).map((p) => <li key={p[1]}><Icon name={p[0]} /><span><b>{p[1]}</b>{p[2]}</span></li>)}</ul>
       </div>
     </div></section>
@@ -188,10 +188,10 @@ function ResultScreen() {
 function After() {
   return (
     <section className="band band--deep"><div className="shell">
-      <div className="t2-h"><h2>It closes only when everything is back</h2>
-        <p>Kit is scanned back in against the booking. Anything not returned stays open by name. Results are kept per trainee and per booking.</p></div>
-      <div className="t2-two"><figure><ReturnScreen /><figcaption>Return assets: partial and missing items stay visible.</figcaption></figure>
-        <figure><ResultScreen /><figcaption>Training result: the record each trainee leaves with.</figcaption></figure></div>
+      <div className="t2-h"><h2>Finish with nothing left behind</h2>
+        <p>Scan equipment back in and get every trainee’s result in one place.</p></div>
+      <div className="t2-two"><figure><ReturnScreen /><figcaption>Know instantly what has come back.</figcaption></figure>
+        <figure><ResultScreen /><figcaption>Results for every trainee, ready to share.</figcaption></figure></div>
     </div></section>
   );
 }
@@ -244,16 +244,16 @@ function HwScreen() {
 function Centre() {
   const [t, setT] = useState(0);
   const tabs: [string, string, () => JSX.Element][] = [
-    ['Dashboard', 'Every station, every session, on one day view.', DashScreen],
-    ['Availability', 'Uptime and downtime per month, measured from the system’s own records.', AvailScreen],
-    ['Sites and lanes', 'Stations, lanes, maintenance and blackout dates that bookings respect.', SiteScreen],
-    ['Hardware and RFID', 'Tagged assets, readers and antennas, with a notification for every movement.', HwScreen],
+    ['Dashboard', 'See every station and session for the day.', DashScreen],
+    ['Availability', 'Track availability month by month.', AvailScreen],
+    ['Sites and lanes', 'Plan maintenance and block out dates.', SiteScreen],
+    ['Hardware and RFID', 'Track every tagged item with RFID.', HwScreen],
   ];
   const S = tabs[t][2];
   return (
     <section className="band"><div className="shell">
-      <div className="t2-h"><h2>Around the bookings, the centre itself</h2>
-        <p>The same system shows the centre’s day, its availability, its sites and its hardware.</p></div>
+      <div className="t2-h"><h2>Manage the whole centre, not just bookings</h2>
+        <p>Your day, your availability, your sites and your equipment, in the same system.</p></div>
       <div className="t2-tabs" role="tablist">{tabs.map((x, i) => (
         <button key={x[0]} type="button" role="tab" aria-selected={t === i} onClick={() => setT(i)}>{x[0]}</button>))}</div>
       <p className="t2-cap">{tabs[t][1]}</p>
@@ -270,18 +270,18 @@ const ROLES: [string, string, string][] = [
   ['ph-magnifying-glass', 'Auditor', 'Reviews records and activity'],
 ];
 const COVER: [string, string, string, string][] = [
-  ['ph-crosshair-simple', 'Weapon simulator training', 'Most complete', 'The full path above: booking, assets, onboarding, live session, results, return.'],
-  ['ph-steering-wheel', 'Vehicle simulator training', 'In build', 'Booking with cabins, crew roles and call signs. Session screens to follow.'],
-  ['ph-users-four', 'Command team training', 'In build', 'Booking with clusters grouped into zones. Session screens to follow.'],
+  ['ph-crosshair-simple', 'Weapon simulator training', 'Most complete', 'Stations and lanes for individual and group shooting'],
+  ['ph-steering-wheel', 'Vehicle simulator training', 'In build', 'Cabins with crew roles and call signs'],
+  ['ph-users-four', 'Command team training', 'In build', 'Workstation clusters grouped into zones'],
 ];
 function Who() {
   return (
     <section className="band band--deep"><div className="shell">
       <div className="t2-who">
-        <div><h2>Seven roles, one record</h2><p className="t2-lead">Each role sees and changes only its part of the booking, and every change is logged.</p>
+        <div><h2>Built for everyone in the centre</h2><p className="t2-lead">Each person sees what they need, with access set by role.</p>
           <ul className="t2-roles">{ROLES.map((r) => <li key={r[1]}><Icon name={r[0]} /><span><b>{r[1]}</b>{r[2]}</span></li>)}</ul></div>
-        <div><h2>Where it stands</h2><p className="t2-lead">A working prototype in active design and build.</p>
-          <ul className="t2-cover">{COVER.map((c) => <li key={c[1]}><Icon name={c[0]} /><span><b>{c[1]}<em className={c[2] === 'Most complete' ? 'is-ok' : ''}>{c[2]}</em></b>{c[3]}</span></li>)}</ul></div>
+        <div><h2>Three kinds of training, one system</h2><p className="t2-lead">Book and manage all your simulators in one place.</p>
+          <ul className="t2-cover">{COVER.map((c) => <li key={c[1]}><Icon name={c[0]} /><span><b>{c[1]}</b>{c[3]}</span></li>)}</ul></div>
       </div>
     </div></section>
   );
@@ -295,11 +295,11 @@ export function TrmsPageV2() {
       <section className="pv-hero">
         <div className="pv-hero__bed pv-par"><img src={productImg('trms', 'hero', state.pset)} alt="" decoding="async" /></div><div className="pv-hero__veil"></div>
         <div className="shell pv-hero__in">
-          <div className="v6pbrand"><span className="v6pbrand__s">TRMS</span><span className="pv-status"><Icon name="ph-flask" />Working prototype</span></div>
+          <div className="v6pbrand"><span className="v6pbrand__s">TRMS</span><span className="pv-status"><Icon name="ph-monitor-play" />Available for demonstration</span></div>
           <h1>Training Resource Management System</h1>
-          <p className="pv-hero__lead">Every simulator booking, from the day it is made to the result it produces, in one record.</p>
+          <p className="pv-hero__lead">Book stations, issue equipment, run sessions and capture results. One system for your whole simulator training centre.</p>
           <div className="pv-cta"><Link className="btn btn--p" to="/contact">Request a demonstration</Link>
-            <button type="button" className="btn btn--g" onClick={go}>Follow a booking</button></div>
+            <button type="button" className="btn btn--g" onClick={go}>See how it works</button></div>
         </div>
       </section>
       <Create />
@@ -309,7 +309,7 @@ export function TrmsPageV2() {
       <After />
       <Centre />
       <Who />
-      <Closer title="See TRMS running" label="Request a demonstration" line="We walk through a booking end to end on the working prototype." />
+      <Closer title="See TRMS running" label="Request a demonstration" line="We will walk you through a full training day in TRMS." />
     </>
   );
 }
