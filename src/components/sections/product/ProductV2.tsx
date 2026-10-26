@@ -10,7 +10,6 @@ import { pad2 } from '../../../lib/html';
 import { mediaUrl } from '../../../lib/media';
 import { DEFAULT_DEP, productRec, v6acr } from './util';
 import { WorksWith } from './WorksWith';
-import { StoryRail } from './StoryRail';
 
 type Detail = {
   lead: string; problem: string[]; mods: { k: string; i: string; m: string[] }[];
@@ -85,8 +84,13 @@ export function ProductV2({ id }: { id: string }) {
         </dl>
       </div></section>
 
-      {/* 3 the story */}
-      <StoryRail id={id} />
+      {/* 3 problems */}
+      <section className="band band--deep"><div className="shell">
+        <div className="head"><h2>What goes wrong without it</h2></div>
+        <ul className="p2-prob">{c.problem.map((x, i) => (
+          <li className="pv-up" key={i}><Icon name="ph-warning-diamond" /><span>{x}</span></li>
+        ))}</ul>
+      </div></section>
 
       {/* 4 modules, tabbed */}
       <section className="band"><div className="shell">

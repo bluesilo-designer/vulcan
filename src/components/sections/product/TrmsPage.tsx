@@ -10,7 +10,7 @@ import { useReview } from '../../../lib/review';
 import { productRec } from './util';
 import { WorksWith } from './WorksWith';
 import { TrmsMock } from './TrmsMock';
-import { StoryRail } from './StoryRail';
+import { TrmsWhat, TrmsFeatures, TrmsScoreboard, TrmsLeaderboard, JOURNEY_V2 } from './TrmsV2';
 import { useV } from '../../../lib/version';
 
 type T3 = [string, string, string];
@@ -48,7 +48,7 @@ export function TrmsPage() {
   const id = 'trms';
   const p = productRec(id)!, b = brandOf(id)!;
   const c = (PRODUCT_DETAIL as unknown as Record<string, { std: string[][] }>)[id];
-  const v2 = useV(2); /* v2: the story replaces the three why cards */
+  const v2 = useV(2); /* v2: what-it-is replaces the why cards; no rules, no detail block */
   const [tab, setTab] = useState(0);
   const tabRefs = useRef<(HTMLButtonElement | null)[]>([]);
 
@@ -77,7 +77,7 @@ export function TrmsPage() {
         <div className="pv-hero__bed pv-par"><PImg slot="hero" /></div><div className="pv-hero__veil"></div>
         <div className="shell pv-hero__in">
           <div className="v6pbrand"><span className="v6pbrand__s">{b.acr}</span><span className="pv-status"><Icon name="ph-flask" />{t.status}</span></div>
-          <h1>{b.sys}</h1><p className="pv-hero__lead">{t.short}</p>
+          <h1>{b.sys}</h1><p className="pv-hero__lead">{v2 ? 'A booking system for simulator training centres. It follows each booking from the first request to the last piece of equipment returned.' : t.short}</p>
           <div className="pv-cta">
             <Link className="btn btn--p" to="/contact">Request a demonstration</Link>
             <a className="btn btn--g" href="#trms-journey" data-anchor onClick={toJourney}>See how a booking flows</a>
@@ -87,7 +87,7 @@ export function TrmsPage() {
       </section>
 
       {/* 2 why */}
-      {v2 ? <StoryRail id="trms" /> : <section className="band band--deep"><div className="shell">
+      {v2 ? <TrmsWhat /> : <section className="band band--deep"><div className="shell">
         <div className="head"><h2>Why it exists</h2><p>A training day needs a free station, the right equipment out and back, a roll of trainees who turn up, and results as they happen. TRMS follows one booking through all of it.</p></div>
         <ul className="pv-prob pv-prob--3">{t.why.map((w) => (
           <li className="pv-up" key={w[1]}><Icon name={w[0]} /><b>{w[1]}</b><span>{w[2]}</span></li>
@@ -97,7 +97,7 @@ export function TrmsPage() {
       {/* 3 journey */}
       <section className="band" id="trms-journey"><div className="shell">
         <div className="head"><h2>One booking, from request to returned equipment</h2><p>Each step has to finish before the next can begin, so nothing is skipped and nothing is left open.</p></div>
-        <ol className="pv-jour">{t.journey.map((s, i) => (
+        <ol className={'pv-jour' + (v2 ? ' pv-jour--v2' : '')}>{(v2 ? JOURNEY_V2 : t.journey).map((s, i) => (
           <li className="pv-up" key={s[1]}><span className="pv-jour__ic"><Icon name={s[0]} /></span>
             <span className="pv-jour__n">{pad2(i)}</span><b>{s[1]}</b><p>{s[2]}</p></li>
         ))}</ol>
@@ -110,16 +110,18 @@ export function TrmsPage() {
             <li key={x[1]}><Icon name={x[0]} /><span><b>{x[1]}</b>{x[2]}</span></li>
           ))}</ul>
         </div>
-        <div className="pv-live__ui pv-up"><TrmsMock /></div>
+        <div className="pv-live__ui pv-up">{v2 ? <TrmsScoreboard /> : <TrmsMock />}</div>
       </div></div></section>
 
+      {v2 && <TrmsLeaderboard />}
+
       {/* 5 rules */}
-      <section className="band"><div className="shell">
+      {!v2 && <section className="band"><div className="shell">
         <div className="head"><h2>Booking rules, set by you and enforced by the system</h2><p>Each training facility decides its own rules. TRMS applies them automatically, so nobody has to remember them. For example:</p></div>
         <ul className="pv-rules">{t.rules.map((r) => (
           <li className="pv-up" key={r[1]}><Icon name={r[0]} /><b>{r[1]}</b><span>{r[2]}</span></li>
         ))}</ul>
-      </div></section>
+      </div></section>}
 
       {/* 6 three kinds, tabbed */}
       <section className="band band--deep"><div className="shell">
@@ -137,9 +139,9 @@ export function TrmsPage() {
             <figure className="pv-tabp__img"><div className="pv-par"><PImg slot={g.slot} /></div></figure>
             <div className="pv-tabp__txt">
               <dl className="pv-dl"><div><dt>Trains</dt><dd>{g.trains}</dd></div><div><dt>Books</dt><dd>{g.books}</dd></div></dl>
-              <ol className="pv-life" aria-label={`${g.n} lifecycle`}>{g.steps.map((s) => (
+              {!v2 && <ol className="pv-life" aria-label={`${g.n} lifecycle`}>{g.steps.map((s) => (
                 <li key={s[1]}><Icon name={s[0]} /><span>{s[1]}</span></li>
-              ))}</ol>
+              ))}</ol>}
               <ul className="pv-ticks">{g.pts.map((x) => <li key={x}><Icon name="ph-check" />{x}</li>)}</ul>
             </div>
           </div>
@@ -158,15 +160,15 @@ export function TrmsPage() {
       </section>
 
       {/* 8 platform */}
-      <section className="band band--deep"><div className="shell">
+      {v2 ? <TrmsFeatures /> : <section className="band band--deep"><div className="shell">
         <div className="head"><h2>One platform behind all three</h2></div>
         <ul className="pv-plat">{t.platform.map((m) => (
           <li className="pv-up" key={m[1]}><Icon name={m[0]} /><b>{m[1]}</b><span>{m[2]}</span></li>
         ))}</ul>
-      </div></section>
+      </div></section>}
 
       {/* 9 detail */}
-      <section className="pv-more">
+      {!v2 && <section className="pv-more">
         <div className="pv-more__bed pv-par"><PImg slot="close" /></div><div className="pv-more__veil"></div>
         <div className="shell pv-more__in"><h2>The detail, when you need it</h2>
           <Acc icon="ph-flask" title="Where the product stands">
@@ -186,10 +188,10 @@ export function TrmsPage() {
               rows={p.ifc.map((r) => [r[0], <span className="arrow">{r[1]}</span>, r[2]])} />
           </Acc>
         </div>
-      </section>
+      </section>}
 
       <WorksWith rel={p.rel} />
-      <Closer label="Request a demonstration" line="See the booking flow, the live session screen and the equipment path on a working prototype." />
+      {v2 ? <Closer title="See TRMS running" label="Request a demonstration" line="See the booking flow, the live session and the leaderboard on the working prototype." /> : <Closer label="Request a demonstration" line="See the booking flow, the live session screen and the equipment path on a working prototype." />}
     </>
   );
 }
