@@ -1,11 +1,16 @@
 import { useRef, useState, type KeyboardEvent } from 'react';
 import { Band } from '../../ui/Band';
-import { CHAIN, STEPS } from '../../../content/home';
+import { CHAIN as CHAIN_V1, STEPS as STEPS_V1, CHAIN_V2 } from '../../../content/home';
+import { useV } from '../../../lib/version';
 import { pad2 } from '../../../lib/html';
 import { mediaUrl } from '../../../lib/media';
 import { Medal } from './shared';
 
 export function Chain() {
+  /* v2: content rewritten from the range-day flow; v1 kept as it was */
+  const v2 = useV(2);
+  const CHAIN = (v2 ? CHAIN_V2 : CHAIN_V1) as typeof CHAIN_V1;
+  const STEPS: string[] = v2 ? CHAIN_V2.map((c) => c.b) : (STEPS_V1 as string[]);
   const [cur, setCur] = useState(0);
   const refs = useRef<(HTMLButtonElement | null)[]>([]);
   const go = (i: number, focus: boolean) => { setCur(i); if (focus) refs.current[i]?.focus(); };
@@ -43,8 +48,8 @@ export function Chain() {
               <p>{STEPS[cur] || c.b}</p>
               <div className="v6cp__data"><span className="v6cp__lbl">Data that moves</span>
                 <span className="v6cp__chips">{data.map((d) => <i key={d}>{d}</i>)}</span></div>
-              <div className="v6cp__sys"><span className="v6cp__lbl">Systems on this step</span>
-                <span className="v6medals">{String(c.s || '').split('·').map((r, i) => <Medal raw={r} key={i} />)}</span></div>
+              {String(c.s || '').trim() && <div className="v6cp__sys"><span className="v6cp__lbl">Systems on this step</span>
+                <span className="v6medals">{String(c.s || '').split('·').map((r, i) => <Medal raw={r} key={i} />)}</span></div>}
             </div>
           </div>
         </div></div>

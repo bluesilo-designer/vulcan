@@ -415,3 +415,41 @@ export const WORDS = [
   "eleven",
   "twelve"
 ];
+
+/* v2 range day, rewritten 26 Oct 2026 from the technical proposal's
+   day-in-the-range flow. Only systems shown on the site are named; steps
+   carried by systems that are hidden for now name none. Generic wording:
+   no programme, facility or authority system names. */
+export const CHAIN_V2 = [
+  { k: 'Access', s: '', t: 'Cleared before anyone arrives',
+    b: 'Bookings made in advance are consolidated into the day’s appointments, and the cleared list of people and vehicles is passed to access control the day before. At the gate, licence plates and credentials are checked against that list and the barrier opens on a match.',
+    d: 'Cleared personnel list, vehicle clearance, booking reference', h: 'Who is expected today' },
+  { k: 'Register', s: '', t: 'Check in, and the roll builds itself',
+    b: 'Each person checks in at a kiosk against their booking, sees where to go, and collects a tracking card or wearable. Every check-in updates the day’s attendance as it happens.',
+    d: 'Attendance, assigned briefing room, tracking card', h: 'Who has actually arrived' },
+  { k: 'Brief', s: 'RMS', t: 'Briefing against who actually came',
+    b: 'In the briefing room the range operator opens the booking, confirms attendance, and adjusts lanes and the detail list to the people who are really there before the session begins.',
+    d: 'Confirmed attendance, lane configuration, detail list', h: 'The confirmed composition of each detail' },
+  { k: 'Draw', s: 'EWMS', t: 'Weapons issued to the right hands',
+    b: 'Weapons are released only to the person and booking they belong to, and every issue is recorded at the counter. Ammunition is collected when the detail is called forward.',
+    d: 'Weapon issue record, person, booking', h: 'Who holds which weapon' },
+  { k: 'Prepare', s: 'RMS · HUMS', t: 'Range ready before the first detail',
+    b: 'At start-up a built-in test checks the network, services and databases. The operator then works through the range checklist for equipment, targetry and cameras, repeats any failed check, and loads the planned exercise.',
+    d: 'Built-in test result, range checklist, loaded exercise', h: 'Whether the range is ready to go hot' },
+  { k: 'Conduct', s: 'RMS', t: 'One operator, one range state',
+    b: 'The operator runs targetry and effects to the planned scenario while instructors log feedback and points of interest on a tablet at the firing point. The physical emergency stop works independently of the software.',
+    d: 'Scenario, target and effect commands, instructor feedback', h: 'What is happening on every lane' },
+  { k: 'Observe', s: 'VMS', t: 'Every lane recorded, in step',
+    b: 'When the session starts, video switches to training recording at full quality. Every camera is time-stamped on the same clock as the range events, so any moment can be found again.',
+    d: 'Training recording, event markers, camera time stamps', h: 'What each lane looked like, moment by moment' },
+  { k: 'Review', s: 'RMS · VMS', t: 'The debrief starts from fact',
+    b: 'Back in the briefing room, results, instructor feedback and the event timeline are replayed alongside the recorded video. Reshoots are arranged where they are needed.',
+    d: 'Results, instructor feedback, event timeline, video', h: 'How each trainee performed, and why' },
+  { k: 'Return', s: 'EWMS', t: 'Weapons back, accounts closed',
+    b: 'Weapons are returned and scanned back into the armoury and unused ammunition is handed in. Anything not returned is flagged straight away and stays open until it is accounted for.',
+    d: 'Return record, outstanding items', h: 'That everything issued has come back' },
+  { k: 'Sustain', s: 'HUMS', t: 'The health of every system, every day',
+    b: 'Health, usage and fault data from every connected system and piece of equipment is collected in one place, so availability is visible and maintenance is planned before a failure stops training.',
+    d: 'Health and usage data, faults, availability', h: 'What needs attention before the next range day' },
+];
+export const STEPS_V2 = CHAIN_V2.map((c) => c.b.split(/(?<=\.)\s/)[0]);

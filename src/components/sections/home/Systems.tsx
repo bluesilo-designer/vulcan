@@ -132,7 +132,7 @@ function Explorer() {
           {GOV.length > 0 && <div className="v6xd__stem" aria-hidden="true"></div>}
           {GOV.map((t) => <div className="v6xd__row" key={t[0]}>{node(t[0], t[1])}</div>)}
         </div>
-        <span className="v6x__hint">Select a system to see its detail</span>
+        {!useV(2) && <span className="v6x__hint">Select a system to see its detail</span>}
       </nav>
       <div className="v6x__panel" id="v6x-panel" role="tabpanel" aria-live="polite" aria-labelledby={`v6x-t-${sel}`} ref={panelRef}>
         <ExplorerPanel id={sel} />
@@ -142,18 +142,20 @@ function Explorer() {
 }
 
 export function Systems() {
+  /* v2: no diagram above the explorer, no hint line, no compare button */
+  const v2 = useV(2);
   return (
     <Band id="systems" label="Systems" title={`One line, ${word(FUNCTIONS)} functions, each system available on its own`}
       intro={`${Word(OURS)} systems from Blue Silo, plus ACCEL from our partner SigmaWave for video and vision AI. Take one, or take the line.`}>
-      <Diagram />
+      {!v2 && <Diagram />}
       {shown('home.tiles') && <>
       <div className="v6tiles rv">{tiles.map((t) => <TileLink t={t} key={t[1]} />)}</div>
       <div className="v6x__intro rv"><span className="label">Alternative layout</span>
         <p>The same {word(OURS)} systems and ACCEL, with the hierarchy as navigation and the detail beside it.</p></div>
       </>}
       <Explorer />
-      <div className="btns" style={{ marginTop: 'var(--s7)' }}>
-        <Link className="btn btn--g" to="/products">Compare every system</Link></div>
+      {!v2 && <div className="btns" style={{ marginTop: 'var(--s7)' }}>
+        <Link className="btn btn--g" to="/products">Compare every system</Link></div>}
     </Band>
   );
 }
