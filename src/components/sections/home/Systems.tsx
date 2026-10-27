@@ -145,8 +145,8 @@ export function Systems() {
   /* v2: no diagram above the explorer, no hint line, no compare button */
   const v2 = useV(2);
   return (
-    <Band id="systems" label="Systems" title={`One line, ${word(FUNCTIONS)} functions, each system available on its own`}
-      intro={`${Word(OURS)} systems from Blue Silo, plus ACCEL from our partner SigmaWave for video and vision AI. Take one, or take the line.`}>
+    <Band id="systems" label="Systems" title={v2 ? `${Word(OURS)} systems, each available on its own` : `One line, ${word(FUNCTIONS)} functions, each system available on its own`}
+      intro={v2 ? `${Word(OURS)} systems from Blue Silo, plus ACCEL from our partner SigmaWave for video and vision AI. Use one on its own, or connect them all.` : `${Word(OURS)} systems from Blue Silo, plus ACCEL from our partner SigmaWave for video and vision AI. Take one, or take the line.`}>
       {!v2 && <Diagram />}
       {shown('home.tiles') && <>
       <div className="v6tiles rv">{tiles.map((t) => <TileLink t={t} key={t[1]} />)}</div>

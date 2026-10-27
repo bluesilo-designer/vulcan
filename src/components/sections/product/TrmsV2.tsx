@@ -138,13 +138,14 @@ const TABLE: [number, string, number, number, number, number][] = [
 ];
 const PILLARS: [string, string, string][] = [['ph-crosshair', 'Pillar 1', '7th'], ['ph-shield-check', 'Pillar 2', '6th'], ['ph-target', 'Pillar 3', '7th']];
 
-export function TrmsLeaderboard() {
+/* bare: the screen only, under a heading the caller already gave */
+export function TrmsLeaderboard({ bare }: { bare?: boolean } = {}) {
   return (
-    <section className="band"><div className="shell">
+    <section className={'band' + (bare ? ' band--deep tr-lb-bare' : '')}><div className="shell">
       <div className="lb-wrap">
         <div className="lb-txt">
-          <h2>A live leaderboard that keeps units motivated</h2>
-          <p>Put results on a screen in the centre. Units see the podium, the full ranking and how they compare in each category.</p>
+          {!bare && <h2>A live leaderboard for the whole centre</h2>}
+          <p>Put results on a screen in the centre. Each group sees the podium, the full ranking and how it compares in each category.</p>
           <p className="lb-note"><i className="ph ph-info" aria-hidden="true"></i>Illustration. Units and scores are examples.</p>
         </div>
         <figure className="lb-tv" aria-label="Wireframe of the leaderboard screen">

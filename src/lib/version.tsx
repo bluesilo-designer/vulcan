@@ -57,3 +57,33 @@ export function CompanyLayoutProvider({ children }: { children: ReactNode }) {
   return <CoCtx.Provider value={{ co, setCo }}>{children}</CoCtx.Provider>;
 }
 export const useCompanyLayout = () => useContext(CoCtx);
+
+/* TRMS product page layout sub-versions inside v2 (?tr=a|b|c), same idea
+   as the Company layouts. '0' is the v2 page as it was before (27 Oct
+   2026) and stays the default until the client picks one. Review only. */
+export const TRMS_LAYOUTS = [
+  { id: '0', k: 'Current', d: 'Version 2 page as it is' },
+  { id: 'a', k: 'A', d: 'Short and simple: four benefits, one training day' },
+  { id: 'b', k: 'B', d: 'Proof led: before and after, live screens, honest status' },
+  { id: 'c', k: 'C', d: 'Four chapters: plan, train, close, manage' },
+] as const;
+export type TrmsLayout = (typeof TRMS_LAYOUTS)[number]['id'];
+export const TRMS_DEFAULT: TrmsLayout = '0';
+const TR_KEY = 'bs-trms';
+const isTr = (s: string | null): s is TrmsLayout => TRMS_LAYOUTS.some((l) => l.id === s);
+
+function initialTr(): TrmsLayout {
+  const q = new URLSearchParams(location.search).get('tr');
+  if (isTr(q)) { try { sessionStorage.setItem(TR_KEY, q); } catch { /* ignore */ } return q; }
+  try { const s = sessionStorage.getItem(TR_KEY); if (isTr(s)) return s; } catch { /* ignore */ }
+  return TRMS_DEFAULT;
+}
+
+const TrCtx = createContext<{ tr: TrmsLayout; setTr: (t: TrmsLayout) => void }>({ tr: TRMS_DEFAULT, setTr: () => {} });
+
+export function TrmsLayoutProvider({ children }: { children: ReactNode }) {
+  const [tr, setState] = useState<TrmsLayout>(initialTr);
+  const setTr = (t: TrmsLayout) => { try { sessionStorage.setItem(TR_KEY, t); } catch { /* ignore */ } setState(t); };
+  return <TrCtx.Provider value={{ tr, setTr }}>{children}</TrCtx.Provider>;
+}
+export const useTrmsLayout = () => useContext(TrCtx);

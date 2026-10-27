@@ -64,3 +64,9 @@ export const PARTNERS = [
     "Changes are documented, agreed and controlled across all parties to keep the programme aligned."
   ]
 ];
+
+/* v2 (27 Oct 2026): the virtual training card repeated the live-fire text. */
+export const INTERFACE_CATEGORIES_V2 = (INTERFACE_CATEGORIES as unknown as string[][]).map((c) =>
+  c[1] === 'Virtual Training & Simulation Systems'
+    ? [c[0], c[1], 'Simulator stations, scenarios and results exchanged with training sessions, so virtual and live training share one record.']
+    : c);

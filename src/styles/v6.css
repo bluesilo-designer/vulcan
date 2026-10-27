@@ -1566,3 +1566,8 @@ body > .v6sw{display:none}
 .t2-two .lf__search{display:none}
 .pv-flow--cta h2{margin-bottom:var(--s4);max-width:22ch}
 .pv-flow__line{color:var(--ink-2);max-width:52ch;margin:0;text-shadow:0 1px 8px rgba(0,0,0,.6)}
+
+/* 27 Oct 2026: on narrow screens the wall screen scrolls sideways inside
+   its frame instead of widening the whole page. */
+@media (max-width:900px){.lb-wrap>*{min-width:0}.lb-tv{overflow-x:auto;-webkit-overflow-scrolling:touch}.lb{min-width:560px}}
+.t2-wide{overflow-x:auto;-webkit-overflow-scrolling:touch}

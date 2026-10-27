@@ -203,3 +203,12 @@ export const LICENSING_CONTROLS = [
     ]
   }
 ];
+
+/* v2 (27 Oct 2026): claims brought back to what we can evidence.
+   "Tamper-proof" and "built to meet" overstated; we state alignment. */
+export const ASSURANCE_CONTROLS_V2 = ASSURANCE_CONTROLS.map((c) =>
+  c[1] === 'Tamper-proof architecture'
+    ? [c[0], 'Tamper-resistant architecture', 'Critical components are integrity checked, and subsystems are separated by function so a fault stays local.']
+    : c[1] === 'Standards alignment and compliance'
+      ? [c[0], 'Standards alignment', 'Designed in line with relevant defence and government standards. The assurance summary sets out how.']
+      : c);

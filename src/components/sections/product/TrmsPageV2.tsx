@@ -5,6 +5,8 @@ import { Closer } from '../../ui/Closer';
 import { productImg } from '../../../lib/images';
 import { useReview } from '../../../lib/review';
 import { TrmsScoreboard, TrmsLeaderboard } from './TrmsV2';
+import { useTrmsLayout } from '../../../lib/version';
+import { TrmsA, TrmsB, TrmsC } from './TrmsLayouts';
 
 /* v2 TRMS page. The spine is one booking, followed from the moment it is
    created to the result it produces, with the centre's operating layer
@@ -14,7 +16,7 @@ import { TrmsScoreboard, TrmsLeaderboard } from './TrmsV2';
 /* ---------- lo-fi primitives ---------- */
 const NAV = ['Dashboard', 'Bookings', 'Training results', 'Resource planning', 'Availability', 'Site management', 'System hardware'];
 
-function Win({ title, crumb, active, children }: { title: string; crumb: string; active: string; children: ReactNode }) {
+export function Win({ title, crumb, active, children }: { title: string; crumb: string; active: string; children: ReactNode }) {
   return (
     <div className="lf" role="img" aria-label={`Illustration of the ${title} screen`}>
       <aside className="lf__side"><b>TRMS</b>
@@ -27,30 +29,30 @@ function Win({ title, crumb, active, children }: { title: string; crumb: string;
   );
 }
 type PK = 'ok' | 'warn' | 'bad' | 'info' | 'mute';
-const Pill = ({ k, children }: { k: PK; children: ReactNode }) => <i className={'lf-p lf-p--' + k}>{children}</i>;
-function Tbl({ head, rows }: { head: string[]; rows: ReactNode[][] }) {
+export const Pill = ({ k, children }: { k: PK; children: ReactNode }) => <i className={'lf-p lf-p--' + k}>{children}</i>;
+export function Tbl({ head, rows }: { head: string[]; rows: ReactNode[][] }) {
   return (
     <table className="lf-t"><thead><tr>{head.map((h) => <th key={h}>{h}</th>)}</tr></thead>
       <tbody>{rows.map((r, i) => <tr key={i}>{r.map((c, j) => <td key={j}>{c}</td>)}</tr>)}</tbody></table>
   );
 }
-const Field = ({ l, v, w }: { l: string; v: ReactNode; w?: boolean }) => (
+export const Field = ({ l, v, w }: { l: string; v: ReactNode; w?: boolean }) => (
   <label className={'lf-f' + (w ? ' lf-f--w' : '')}><span>{l}</span><b>{v}</b></label>
 );
-const Chips = ({ items, on }: { items: string[]; on: string }) => (
+export const Chips = ({ items, on }: { items: string[]; on: string }) => (
   <span className="lf-chips">{items.map((x) => <i key={x} className={x === on ? 'is-on' : ''}>{x}</i>)}</span>
 );
 const NAMES = ['R. Tan', 'M. Hakim', 'J. Lim', 'A. Kumar', 'D. Ong', 'S. Wong'];
 
 /* ---------- 1 create booking, five steps ---------- */
 const STEPS = ['Booking details', 'Schedule', 'Lane configuration', 'Nominal roll', 'Review'];
-function CreateScreen({ s }: { s: number }) {
+export function CreateScreen({ s }: { s: number }) {
   const body = [
     <div className="lf-form" key="0">
       <Field l="Training type" v={<Chips items={['Group', 'Individual']} on="Group" />} />
       <Field l="Training mode" v={<Chips items={['Collective', 'Judgemental', 'Marksmanship']} on="Collective" />} />
       <Field l="Courseware" v="Day test, component training" w />
-      <Field l="Unit" v="Unit Alpha" /><Field l="Instructor" v="Capt. L. Ng" />
+      <Field l="Unit" v="Unit Alpha" /><Field l="Instructor" v="L. Ng" />
       <Field l="Options" v={<Chips items={['Include dry run', 'Include briefing room']} on="Include dry run" />} w />
     </div>,
     <div className="lf-split" key="1">
@@ -65,10 +67,10 @@ function CreateScreen({ s }: { s: number }) {
       <ul className="lf-list"><li className="is-on">Day test<span>Station 01, flat screen</span></li><li>Component training A<span>Station 04, C-shaped</span></li></ul>
       <Tbl head={['Lane', 'Weapon', 'Active']} rows={[1, 2, 3, 4, 5].map((n) => [`Lane ${n}`, n === 4 ? '-' : 'Rifle', <i className={'lf-tg' + (n === 4 ? '' : ' is-on')} key="t"></i>])} />
     </div>,
-    <Tbl key="3" head={['No', 'Name', 'Platoon', 'Weapon', 'Role']} rows={NAMES.slice(0, 5).map((n, i) => [i + 1, n, `Platoon ${1 + (i > 2 ? 1 : 0)}`, i === 3 ? 'LMG' : 'Rifle', i === 0 ? 'Section commander' : 'Rifleman'])} />,
+    <Tbl key="3" head={['No', 'Name', 'Group', 'Equipment', 'Role']} rows={NAMES.slice(0, 5).map((n, i) => [i + 1, n, `Group ${1 + (i > 2 ? 1 : 0)}`, 'Simulator rifle', i === 0 ? 'Team lead' : 'Trainee'])} />,
     <div className="lf-split" key="4">
       <div className="lf-card"><b>Booking summary</b>
-        <Field l="Training" v="Group, collective, dry run" /><Field l="Unit" v="Unit Alpha" /><Field l="Instructor" v="Capt. L. Ng" /></div>
+        <Field l="Training" v="Group, collective, dry run" /><Field l="Unit" v="Unit Alpha" /><Field l="Instructor" v="L. Ng" /></div>
       <div className="lf-card"><b>Courseware 1</b>
         <Field l="When" v="Thu 12 Nov, AM session" /><Field l="Where" v="Station 01, lanes 1-3, 5" />
         <div className="lf-ok"><Icon name="ph-check-circle" />Lanes assigned, roll complete</div></div>
@@ -137,11 +139,11 @@ function Life() {
 }
 
 /* ---------- 3 the training day ---------- */
-function OnboardScreen() {
+export function OnboardScreen() {
   return (
     <Win title="Confirm attendance" crumb="Bookings / Unit Alpha / Onboarding" active="Bookings">
       <div className="lf-bar"><Chips items={['All 6', 'Present 5', 'Absent 1']} on="All 6" /><span className="lf-btn"><Icon name="ph-scan" />Scan ID</span><span className="lf-btn">Import list</span></div>
-      <Tbl head={['No', 'Name', 'Weapon', 'Role', 'Attendance']} rows={NAMES.map((n, i) => [i + 1, n, i === 3 ? 'LMG' : 'Rifle', i === 0 ? 'Section commander' : 'Rifleman', i === 4 ? <Pill k="bad">Absent</Pill> : <Pill k="ok">Present</Pill>])} />
+      <Tbl head={['No', 'Name', 'Equipment', 'Role', 'Attendance']} rows={NAMES.map((n, i) => [i + 1, n, 'Simulator rifle', i === 0 ? 'Team lead' : 'Trainee', i === 4 ? <Pill k="bad">Absent</Pill> : <Pill k="ok">Present</Pill>])} />
     </Win>
   );
 }
@@ -166,7 +168,7 @@ function Day() {
 }
 
 /* ---------- 4 after the session ---------- */
-function ReturnScreen() {
+export function ReturnScreen() {
   return (
     <Win title="Return assets" crumb="Bookings / Unit Alpha / Assets" active="Bookings">
       <div className="lf-kpi"><span><b>24</b>Issued</span><span className="ok"><b>21</b>Returned</span><span className="warn"><b>2</b>Pending</span><span className="bad"><b>1</b>Missing</span></div>
@@ -176,7 +178,7 @@ function ReturnScreen() {
     </Win>
   );
 }
-function ResultScreen() {
+export function ResultScreen() {
   return (
     <Win title="Training result" crumb="Training results / Unit Alpha" active="Training results">
       <div className="lf-kpi"><span><b>6</b>Trainees</span><span className="info"><b>1</b>Marksman</span><span className="ok"><b>4</b>Pass</span><span className="bad"><b>1</b>Fail</span></div>
@@ -197,7 +199,7 @@ function After() {
 }
 
 /* ---------- 5 running the centre ---------- */
-function DashScreen() {
+export function DashScreen() {
   const rows: [string, [number, number, string, string][]][] = [
     ['Station 01', [[0, 45, 'Unit Alpha, collective', 'on']]], ['Station 02', [[10, 35, 'Marksmanship, individual', ''], [55, 40, 'Unit Bravo', '']]],
     ['Station 03', [[50, 45, 'Unit Charlie, judgemental', '']]], ['Station 04', [[0, 95, 'Full day, Unit Delta', 'full']]],
@@ -211,16 +213,16 @@ function DashScreen() {
     </Win>
   );
 }
-function AvailScreen() {
+export function AvailScreen() {
   return (
     <Win title="Operational availability" crumb="Operational availability" active="Availability">
       <Tbl head={['Month', 'Uptime', 'Downtime', 'Availability', 'Status']} rows={[
-        ['October', '49h 12m', '1h 48m', '96.5%', <Pill k="ok" key="a">Compliant</Pill>], ['September', '50h 17m', '3h 15m', '93.9%', <Pill k="bad" key="b">Non-compliant</Pill>],
-        ['August', '48h 25m', '2h 10m', '95.7%', <Pill k="ok" key="c">Compliant</Pill>], ['July', '47h 58m', '3h 31m', '93.1%', <Pill k="bad" key="d">Non-compliant</Pill>]]} />
+        ['October', '49h 12m', '1h 48m', '96.5%', <Pill k="ok" key="a">On target</Pill>], ['September', '50h 17m', '3h 15m', '93.9%', <Pill k="bad" key="b">Below target</Pill>],
+        ['August', '48h 25m', '2h 10m', '95.7%', <Pill k="ok" key="c">On target</Pill>], ['July', '47h 58m', '3h 31m', '93.1%', <Pill k="bad" key="d">Below target</Pill>]]} />
     </Win>
   );
 }
-function SiteScreen() {
+export function SiteScreen() {
   return (
     <Win title="Station 01" crumb="Site management / Station 01" active="Site management">
       <div className="lf-bar"><Chips items={['Lanes', 'Blackout dates']} on="Lanes" /><span className="lf-btn">Add lane</span></div>
@@ -230,7 +232,7 @@ function SiteScreen() {
     </Win>
   );
 }
-function HwScreen() {
+export function HwScreen() {
   return (
     <Win title="System hardware" crumb="System hardware / Overview" active="System hardware">
       <div className="lf-kpi"><span><b>18</b>Total assets</span><span className="ok"><b>12</b>Available</span><span className="info"><b>5</b>Issued</span><span className="bad"><b>1</b>Missing</span></div>
@@ -263,13 +265,13 @@ function Centre() {
 }
 
 /* ---------- 6 who and what ---------- */
-const ROLES: [string, string, string][] = [
+export const ROLES: [string, string, string][] = [
   ['ph-crown-simple', 'Admin', 'Sets up sites, users and rules'], ['ph-desktop', 'Operator', 'Creates bookings and runs sessions'],
   ['ph-chalkboard-teacher', 'Instructor', 'Follows details and results'], ['ph-wrench', 'Maintainer', 'Keeps stations and lanes available'],
   ['ph-eye', 'Supervisor', 'Oversees the day across stations'], ['ph-vault', 'Armoury', 'Issues and receives equipment'],
   ['ph-magnifying-glass', 'Auditor', 'Reviews records and activity'],
 ];
-const COVER: [string, string, string, string][] = [
+export const COVER: [string, string, string, string][] = [
   ['ph-crosshair-simple', 'Weapon simulator training', 'Most complete', 'Stations and lanes for individual and group shooting'],
   ['ph-steering-wheel', 'Vehicle simulator training', 'In build', 'Cabins with crew roles and call signs'],
   ['ph-users-four', 'Command team training', 'In build', 'Workstation clusters grouped into zones'],
@@ -289,6 +291,11 @@ function Who() {
 
 export function TrmsPageV2() {
   const { state } = useReview();
+  /* v2 review sub-versions (?tr=a|b|c); '0' is this page as it was */
+  const { tr } = useTrmsLayout();
+  if (tr === 'a') return <TrmsA />;
+  if (tr === 'b') return <TrmsB />;
+  if (tr === 'c') return <TrmsC />;
   const go = () => document.getElementById('t2-create')?.scrollIntoView({ behavior: 'smooth' });
   return (
     <>

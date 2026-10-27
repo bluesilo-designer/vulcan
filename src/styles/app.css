@@ -364,3 +364,9 @@ footer p{font-size:var(--t-sm)}
   @keyframes rise{to{opacity:1;transform:none}}
   @keyframes fadeArt{to{opacity:.45}}
 }
+
+/* v2 (27 Oct 2026): a slot whose file exists never shows its internal
+   brief to visitors, even while the file is still loading. */
+[data-v="2"] .media.is-live .media__kind,
+[data-v="2"] .media.is-live > b,
+[data-v="2"] .media.is-live .media__brief{display:none}

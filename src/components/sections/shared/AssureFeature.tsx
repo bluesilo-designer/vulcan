@@ -1,4 +1,4 @@
-import { ASSURANCE_CONTROLS } from '../../../content/assurance';
+import { ASSURANCE_CONTROLS, ASSURANCE_CONTROLS_V2 } from '../../../content/assurance';
 import { slotSrc } from '../../../lib/images';
 import { useReview } from '../../../lib/review';
 import { pad2 } from '../../../lib/html';
@@ -17,7 +17,7 @@ export function AssureFeature() {
           <h2>Secure by design,<br />from the node to the enterprise.</h2>
           <p>We build security, reliability and compliance into every layer, from fielded systems and site infrastructure to enterprise platforms and data networks.</p></div>
         <div className="v6feat__grid v6feat__grid--3 rv">
-          {(ASSURANCE_CONTROLS as string[][]).map((c, i) => (
+          {((v2 ? ASSURANCE_CONTROLS_V2 : ASSURANCE_CONTROLS) as string[][]).map((c, i) => (
             v2 ? <div className="v6fc v6fc--row" key={c[1]}><i className={'ph ' + c[0]} aria-hidden="true"></i>
               <div><h3>{c[1]}</h3><p>{c[2]}</p></div></div>
             : <div className="v6fc v6fc--box" key={c[1]}><span className="v6fc__n">{pad2(i)}</span>

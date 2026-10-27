@@ -4,7 +4,8 @@ import { Table } from '../components/ui/Table';
 import { Media } from '../components/ui/Media';
 import { Closer } from '../components/ui/Closer';
 import { PartnersSection } from '../components/sections/shared/PartnersSection';
-import { INTERFACE_CATEGORIES } from '../content/integration';
+import { INTERFACE_CATEGORIES, INTERFACE_CATEGORIES_V2 } from '../content/integration';
+import { useV } from '../lib/version';
 
 const PROVE: [string, string][] = [
   ['Simulated connections', 'Each connected system is first tested against a simulated version, so work starts before the real equipment is available.'],
@@ -14,17 +15,18 @@ const PROVE: [string, string][] = [
 ];
 
 export function Integration() {
+  const v2 = useV(2);
   return (
     <>
       <div className="shell page-head rv"><span className="label">Integration</span>
-        <h1>Interfaces are the product, not the work left at the end</h1>
-        <p className="lead">We arrive with an interface register and a simulator, not with a request for a meeting.</p>
+        <h1>{v2 ? 'Connects to the systems already on your range' : 'Interfaces are the product, not the work left at the end'}</h1>
+        <p className="lead">{v2 ? 'We test every connection in our own lab before it reaches your site, and agree each one in writing with the other supplier.' : 'We arrive with an interface register and a simulator, not with a request for a meeting.'}</p>
         <div className="btns" style={{ marginTop: 'var(--s6)' }}><Link className="btn btn--p" to="/contact">Talk to us</Link></div></div>
 
       <Band label="What we interface with" title="Built to connect to what is already on site"
         intro="Integrate the entire training and range environment, from live targets and virtual training to infrastructure, operations, security and training management.">
         <div className="ifc rv">
-          {(INTERFACE_CATEGORIES as string[][]).map((c) => (
+          {((v2 ? INTERFACE_CATEGORIES_V2 : INTERFACE_CATEGORIES) as string[][]).map((c) => (
             <div className="ifc__c" key={c[1]}><i className={'ph ' + c[0]} aria-hidden="true"></i><h3>{c[1]}</h3><p>{c[2]}</p></div>
           ))}
         </div>
@@ -40,13 +42,22 @@ export function Integration() {
       </Band>
 
       <Band>
-        <div className="split"><div className="rv"><h2>We already work across vendors, inside our own scope</h2>
+        <div className="split"><div className="rv"><h2>{v2 ? 'Already working with other suppliers’ equipment' : 'We already work across vendors, inside our own scope'}</h2>
+          {v2 ? <p style={{ marginTop: 'var(--s5)' }}>Targetry, effects, displays and public address on a range usually come from other suppliers. Our range control software already drives them, through connections that are specified, tested and version controlled.</p> : <>
           <p style={{ marginTop: 'var(--s5)' }}>Several systems in this chain are supplied by others. Targetry, effects, visualisation and public address are driven by our range control system but delivered by someone else. That boundary is specified, tested and version controlled exactly the way an interface to your systems would be.</p>
-          <p style={{ marginTop: 'var(--s4)' }}><strong>So the cross vendor discipline we are describing is not a promise about how we would behave. It is how we are already built.</strong></p></div>
+          <p style={{ marginTop: 'var(--s4)' }}><strong>So the cross vendor discipline we are describing is not a promise about how we would behave. It is how we are already built.</strong></p></>}</div>
           <div className="rv" data-d="1"><Media m={{ id: 'integration-bench', kind: 'Image', ratio: 'r-43', label: 'Integration test bench',
             brief: 'Lab bench with rack mounted equipment, patch cables and two monitors showing abstracted interface traffic. No people, no readable text. 4:3.' }} /></div></div>
       </Band>
 
+      {v2 ? <Band deep title="Three things every connected range needs" intro="They are easy to overlook, and hard to add later.">
+        <div className="brk rv"><div className="brk__n">01</div><h3>One sign-in for every system</h3>
+          <p>Everyone signs in once against your directory, with access set by role. When someone leaves, their access ends everywhere at once.</p></div>
+        <div className="brk rv" data-d="1"><div className="brk__n">02</div><h3>One clock for every system</h3>
+          <p>Video, tracking, alerts and health data carry the same time, so a debrief or an investigation can line them up exactly.</p></div>
+        <div className="brk rv" data-d="2"><div className="brk__n">03</div><h3>Audit logs you hold</h3>
+          <p>Records of weapon and ammunition handling are sent to your own log platform, not kept only in ours.</p></div>
+      </Band> : <>
       <Band deep title="Three dependencies we refuse to treat as optional" intro="All three are routinely left off integration matrices. All three are load bearing.">
         <div className="brk rv"><div className="brk__n">01</div><h3>Identity and directory</h3>
           <p>Single sign on and role based access for every subsystem, against the programme directory. One user database per subsystem is one offboarding failure per subsystem waiting to happen.</p></div>
@@ -55,6 +66,8 @@ export function Integration() {
         <div className="brk rv" data-d="2"><div className="brk__n">03</div><h3>Audit and log forwarding</h3>
           <p>Audit trails for weapon and ammunition handling belong in the programme log platform, not only in our own database where we control them.</p></div>
       </Band>
+
+      </>}
 
       <Band title="Tested before it reaches your site" intro="Every connection is proven in our own test environment before installation, so commissioning on site is faster and lower risk.">
         <div className="g g4 rv">{PROVE.map((c) => <div className="tile" key={c[0]}><h4>{c[0]}</h4><p>{c[1]}</p></div>)}</div>

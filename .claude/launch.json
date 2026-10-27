@@ -4,14 +4,31 @@
     {
       "name": "vulcan-site",
       "runtimeExecutable": "npm",
-      "runtimeArgs": ["run", "dev"],
+      "runtimeArgs": [
+        "run",
+        "dev"
+      ],
       "port": 3100
     },
     {
       "name": "vulcan-dist",
       "runtimeExecutable": "npm",
-      "runtimeArgs": ["run", "preview"],
+      "runtimeArgs": [
+        "run",
+        "preview"
+      ],
       "port": 3100
+    },
+    {
+      "name": "vulcan-site-alt",
+      "runtimeExecutable": "npx",
+      "runtimeArgs": [
+        "vite",
+        "--port",
+        "3105",
+        "--strictPort"
+      ],
+      "port": 3105
     }
   ]
 }

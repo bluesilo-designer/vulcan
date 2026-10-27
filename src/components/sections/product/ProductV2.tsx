@@ -1,6 +1,6 @@
 import { useRef, useState, type CSSProperties, type KeyboardEvent, type MouseEvent } from 'react';
 import { Link } from 'react-router-dom';
-import { PRODUCT_DETAIL, PRODUCT_DETAIL_V2, brandOf } from '../../../content/products';
+import { PRODUCT_DETAIL, PRODUCT_DETAIL_V2, brandOf, whereOf } from '../../../content/products';
 import { EXPLORER_IMAGES } from '../../../content/home';
 import { Table } from '../../ui/Table';
 import { Closer } from '../../ui/Closer';
@@ -80,7 +80,7 @@ export function ProductV2({ id }: { id: string }) {
         <dl>
           <div><dt><Icon name="ph-target" />Role</dt><dd>{p.role}</dd></div>
           <div><dt><Icon name="ph-users-three" />Used by</dt><dd>{p.users.slice(0, 4).join(', ')}</dd></div>
-          <div><dt><Icon name="ph-map-pin-area" />Deployed at</dt><dd>{p.where}</dd></div>
+          <div><dt><Icon name="ph-map-pin-area" />Deployed at</dt><dd>{whereOf(p, true)}</dd></div>
         </dl>
       </div></section>
 

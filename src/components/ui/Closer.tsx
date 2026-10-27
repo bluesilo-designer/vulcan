@@ -4,7 +4,7 @@ import { CtaBand } from './CtaBand';
 
 export function Closer({ label = 'Send an enquiry', line, title }: { label?: string; line?: string; title?: string }) {
   /* v2: every closer is the shared image CTA band */
-  if (useV(2)) return <CtaBand title={title || 'Talk to the people who build it'} line={line} />;
+  if (useV(2)) return <CtaBand title={title || 'Talk to us'} line={line} />;
   return (
     <section className="close">
       <div className="shell rv">

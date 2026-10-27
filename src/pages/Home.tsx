@@ -29,7 +29,8 @@ export function Home() {
       {!v2 && <Measures />}
       <IntegrationIntro />
       <Simulate />
-      <PartnersSection />
+      {/* v2: shown on Integration only, it repeated there (27 Oct 2026) */}
+      {!v2 && <PartnersSection />}
       <AssureFeature />
       {!v2 && <CompanyFacts />}
       {!v2 && <Questions />}
