@@ -13,7 +13,7 @@ export function Contact() {
   const submit = (e: FormEvent) => { e.preventDefault(); setSent(true); };
   return (
     <>
-      <ContactBlock />
+      <ContactBlock header />
       <Band deep title="Five fields, each with a reason">
         <form className="form rv" onSubmit={submit}>
           <div className="fr"><div className="field"><label htmlFor="org">Organisation</label>

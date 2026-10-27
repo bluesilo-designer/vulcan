@@ -6,13 +6,16 @@ import { Topo } from '../../ui/Topo';
 import { useV } from '../../../lib/version';
 import { slotSrc } from '../../../lib/images';
 import { useReview } from '../../../lib/review';
+import { CtaBand } from '../../ui/CtaBand';
 
 /* Contact block. Shared by the home page and the Contact page. */
-export function ContactBlock() {
+export function ContactBlock({ header = false }: { header?: boolean }) {
   /* v2: no document cards; the aerial photograph from the old
      Modernising section sits behind the block instead */
   const v2 = useV(2);
   const { state } = useReview();
+  /* v2: the shared CTA band everywhere except the Contact page's own header */
+  if (v2 && !header) return <CtaBand title="Start a conversation with Blue Silo" line="For defence organisations, prime contractors, system integrators and technology partners." />;
   return (
     <section className={'v6close' + (v2 ? ' v6close--bed' : '')}>
       {v2 ? <div className="v6close__bed" aria-hidden="true"><img src={slotSrc('aerial', state.look)} alt="" loading="lazy" decoding="async" /></div>
