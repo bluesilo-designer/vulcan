@@ -1,7 +1,8 @@
 import { Band } from '../components/ui/Band';
 import { Table } from '../components/ui/Table';
 import { Media } from '../components/ui/Media';
-import { useV } from '../lib/version';
+import { useCompanyLayout, useV } from '../lib/version';
+import { CompanyA, CompanyB, CompanyC } from '../components/sections/company/CompanyLayouts';
 import { CtaBand } from '../components/ui/CtaBand';
 import { Closer } from '../components/ui/Closer';
 import { mediaUrl } from '../lib/media';
@@ -29,6 +30,11 @@ export function Company() {
      "Where we operate" section, so it follows the review panel's look. */
   const { state } = useReview();
   const v2 = useV(2);
+  /* v2 only: review sub-versions of the whole page (?co=a|b|c) */
+  const { co } = useCompanyLayout();
+  if (v2 && co === 'a') return <CompanyA />;
+  if (v2 && co === 'b') return <CompanyB />;
+  if (v2 && co === 'c') return <CompanyC />;
   return (
     <>
       <section className="pv-hero pv-hero--short">

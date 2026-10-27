@@ -25,3 +25,35 @@ export function VersionProvider({ children }: { children: ReactNode }) {
 export const useVersion = () => useContext(Ctx);
 /* true when the current version is at least n */
 export const useV = (n: SiteVersion) => useContext(Ctx).v >= n;
+
+/* Page layout sub-versions inside v2, for comparing designs of one page.
+   Open the page with ?co=a|b|c (Company) to switch; the choice is kept
+   for that browser tab. Without a choice the page shows COMPANY_DEFAULT
+   (B, chosen 27 Oct 2026). '0' keeps the earlier v2 layout reachable.
+   Review only: nothing links to these. */
+export const COMPANY_LAYOUTS = [
+  { id: '0', k: 'Earlier', d: 'Version 2 before the A/B/C rewrite' },
+  { id: 'a', k: 'A', d: 'Simple statement' },
+  { id: 'b', k: 'B', d: 'Proof led, sells harder (default)' },
+  { id: 'c', k: 'C', d: 'Four chapters' },
+] as const;
+export type CompanyLayout = (typeof COMPANY_LAYOUTS)[number]['id'];
+export const COMPANY_DEFAULT: CompanyLayout = 'b';
+const CO_KEY = 'bs-company';
+const isCo = (s: string | null): s is CompanyLayout => COMPANY_LAYOUTS.some((l) => l.id === s);
+
+function initialCo(): CompanyLayout {
+  const q = new URLSearchParams(location.search).get('co');
+  if (isCo(q)) { try { sessionStorage.setItem(CO_KEY, q); } catch { /* ignore */ } return q; }
+  try { const s = sessionStorage.getItem(CO_KEY); if (isCo(s)) return s; } catch { /* ignore */ }
+  return COMPANY_DEFAULT;
+}
+
+const CoCtx = createContext<{ co: CompanyLayout; setCo: (c: CompanyLayout) => void }>({ co: COMPANY_DEFAULT, setCo: () => {} });
+
+export function CompanyLayoutProvider({ children }: { children: ReactNode }) {
+  const [co, setState] = useState<CompanyLayout>(initialCo);
+  const setCo = (c: CompanyLayout) => { try { sessionStorage.setItem(CO_KEY, c); } catch { /* ignore */ } setState(c); };
+  return <CoCtx.Provider value={{ co, setCo }}>{children}</CoCtx.Provider>;
+}
+export const useCompanyLayout = () => useContext(CoCtx);

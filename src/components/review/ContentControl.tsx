@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { HERO_CUTS, LOOKS, PRODUCT_IMAGE_SETS } from '../../content/media';
 import { isReady } from '../../lib/media';
 import { DEFAULTS, useReview } from '../../lib/review';
-import { useVersion } from '../../lib/version';
+import { COMPANY_DEFAULT, COMPANY_LAYOUTS, useCompanyLayout, useVersion } from '../../lib/version';
 
 type Look = { id: string; k: string; d: string; sw: string[] };
 type Cut = { id: string; k: string; d: string };
@@ -13,6 +13,7 @@ type PSet = { id: string; k: string; d: string };
 export function ContentControl() {
   const { state, set, reset } = useReview();
   const { v, setV } = useVersion();
+  const { co, setCo } = useCompanyLayout();
   const [open, setOpen] = useState(false);
   const [copied, setCopied] = useState(false);
   const fab = useRef<HTMLButtonElement>(null);
@@ -28,6 +29,7 @@ export function ContentControl() {
     const u = new URL(location.href);
     u.searchParams.set('look', state.look);
     u.searchParams.set('pset', state.pset);
+    if (co !== COMPANY_DEFAULT) u.searchParams.set('co', co); else u.searchParams.delete('co');
     if (state.hero) u.searchParams.set('hero', state.hero); else u.searchParams.delete('hero');
     const t = u.toString();
     (navigator.clipboard ? navigator.clipboard.writeText(t) : Promise.reject())
@@ -51,6 +53,14 @@ export function ContentControl() {
             ))}
           </div>
         </fieldset>
+        {v === 2 && <fieldset>
+          <legend>Company layout (v2)</legend>
+          <div className="v6ctl__cuts">
+            {COMPANY_LAYOUTS.map((l) => (
+              <button key={l.id} type="button" className={co === l.id ? 'is-on' : ''} title={l.d} onClick={() => setCo(l.id)}>{l.k}</button>
+            ))}
+          </div>
+        </fieldset>}
         <fieldset>
           <legend>Image set</legend>
           {(LOOKS as Look[]).map((l) => (
