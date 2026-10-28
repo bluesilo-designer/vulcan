@@ -1,7 +1,7 @@
 import { createContext, useContext, useEffect, useState, type ReactNode } from 'react';
 import { useVersion } from './version';
 import { setMediaSwap } from './media';
-import { fieldSwap } from '../content/media';
+import { PHOTO_SWAPS } from '../content/media';
 
 /* Review-only state behind the Content panel: image look, product image
    set and hero cut. The public site always shows DEFAULTS. The panel, the
@@ -10,7 +10,9 @@ import { fieldSwap } from '../content/media';
 export type ReviewState = { look: string; pset: string; hero?: string; photo?: string };
 const KEY = 'v6ctl';
 const DEMO_KEY = 'v6demo';
-/* photo: 'field' is the 28 Oct photography set in v2/v3, 'prev' the earlier one */
+/* photo (v2/v3 only): 'gd' Golden Dusk (29 Oct, draft), 'field' the 28 Oct
+   set, 'prev' the earlier photography, which then follows the image set (look).
+   Production stays on 'field' until the Golden Dusk images are approved. */
 export const DEFAULTS: ReviewState = { look: 'golden2', pset: 'steel', hero: 'hero-e', photo: 'field' };
 
 function initialDemo(): boolean {
@@ -38,7 +40,7 @@ export function ReviewProvider({ children }: { children: ReactNode }) {
   const state = demo ? chosen : DEFAULTS;
   /* Set before children render, so every mediaUrl call this pass agrees */
   const { v } = useVersion();
-  setMediaSwap(v >= 2 && state.photo !== 'prev' ? fieldSwap : null);
+  setMediaSwap(v >= 2 ? PHOTO_SWAPS[state.photo || ''] || null : null);
   const enableDemo = () => {
     try { sessionStorage.setItem(DEMO_KEY, '1'); } catch { /* ignore */ }
     setDemo(true);

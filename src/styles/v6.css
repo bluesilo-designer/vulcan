@@ -964,6 +964,12 @@ body > .v6sw{display:none}
 .v6ctl__cuts button.is-on{border-color:var(--brand);color:var(--ink);background:var(--brand-wash)}
 .v6ctl__cuts button:disabled{opacity:.35;cursor:not-allowed}
 .v6ctl__foot{display:flex;gap:6px;padding-top:12px;border-top:1px solid var(--line-2)}
+.v6ctl__sub{display:block;margin:12px 0 4px;font:500 10px 'IBM Plex Mono',monospace;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3)}
+.v6ctl__row{display:grid;grid-template-columns:72px 1fr;gap:8px;align-items:center;padding:4px 0}
+.v6ctl__row>span{font-size:12px;color:var(--ink-2)}
+.v6ctl__more{margin:0 0 14px;border-top:1px solid var(--line-2);padding-top:10px}
+.v6ctl__more summary{cursor:pointer;font:500 11px 'IBM Plex Mono',monospace;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-2);padding:4px 0;margin-bottom:8px}
+.v6ctl__more summary:focus-visible{outline:2px solid var(--brand);outline-offset:2px}
 
 /* ============ visual product page (pv-) ============ */
 .pv-par{position:absolute;inset:-12% 0;overflow:hidden}

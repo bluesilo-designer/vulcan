@@ -95,7 +95,7 @@ export function Company() {
       </Band>
       )}
 
-      {v2 ? <CtaBand label="Where we are" title="Headquartered in Singapore, delivering across Southeast Asia and APAC" />
+      {v2 ? <CtaBand label="Where we are" title="Headquartered in Singapore, delivering across Southeast Asia and APAC" img="c/where.jpg" />
       : <section className="pv-flow">
         <div className="pv-flow__bed pv-par"><img src={mediaUrl('c/region.jpg')} alt="" loading="lazy" decoding="async" /></div><div className="pv-flow__veil"></div>
         <div className="shell pv-flow__in"><span className="label">Where we are</span>

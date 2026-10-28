@@ -201,3 +201,50 @@ export const fieldSwap = (file: string) => {
   for (const [re, to] of FIELD_SWAP) if (re.test(file)) return file.replace(re, to);
   return file;
 };
+
+/* Golden Dusk set (29 Oct 2026): one shoot in the Golden 2.0 colour with
+   the Dusk concept, everyone in army uniform, every row of cards from the
+   same set. Pending the client's final image review. Shot list, job ids and
+   rejects: docs/field-image-set.md. */
+export const GD_SWAP: [RegExp, string][] = [
+  [/^(s-brief|c\/floor|sim-command-4k|p\/trms-hero-[a-z0-9]+)\.jpg$/, 'gd/trms.jpg'],
+  [/^s-firingline\.jpg$/, 'gd/rms.jpg'],
+  [/^(hums|vms|ewms)\.jpg$/, 'gd/$1.jpg'],
+  [/^as\.jpg$/, 'gd/ewms.jpg'],
+  /* range day: four steps reuse the product frame for the same moment */
+  [/^chain-04\.jpg$/, 'gd/ewms.jpg'],
+  [/^chain-05\.jpg$/, 'gd/rms.jpg'],
+  [/^chain-07\.jpg$/, 'gd/vms.jpg'],
+  [/^chain-10\.jpg$/, 'gd/hums.jpg'],
+  [/^chain-(\d\d)\.jpg$/, 'gd/chain-$1.jpg'],
+  [/^(look\/command-[a-z0-9]+|integration-bench|c\/integration)\.jpg$/, 'gd/lab.jpg'],
+  [/^(look\/assurance-[a-z0-9]+|a\/hero)\.jpg$/, 'gd/server.jpg'],
+  [/^(look\/aerial-[a-z0-9]+|s-aerial)\.jpg$/, 'gd/aerial.jpg'],
+  [/^look\/partners-[a-z0-9]+\.jpg$/, 'gd/partners.jpg'],
+  [/^a\/estop\.jpg$/, 'gd/estop.jpg'],
+  /* the six assurance controls, in the v2 order */
+  [/^a\/c1\.jpg$/, 'gd/a-licence.jpg'],
+  [/^a\/c2\.jpg$/, 'gd/a-hardening.jpg'],
+  [/^a\/c3\.jpg$/, 'gd/a-tamper.jpg'],
+  [/^a\/c6\.jpg$/, 'gd/a-iso.jpg'],
+  [/^a\/c5\.jpg$/, 'gd/a-zones.jpg'],
+  [/^a\/c7\.jpg$/, 'gd/a-update.jpg'],
+  /* closing CTA band; the Company "Where we are" band keeps its city view */
+  [/^(c\/region|look\/ops-[a-z0-9]+)\.jpg$/, 'gd/cta.jpg'],
+  /* v3 home: the three document cards in the v1 closing block */
+  [/^rel-capability\.jpg$/, 'gd/chain-06.jpg'],
+  [/^rel-assurance\.jpg$/, 'gd/a-iso.jpg'],
+  [/^rel-interface\.jpg$/, 'gd/a-zones.jpg'],
+];
+export const gdSwap = (file: string) => {
+  for (const [re, to] of GD_SWAP) if (re.test(file)) return file.replace(re, to);
+  return file;
+};
+
+/* Photography sets shown in v2/v3, newest first. Choosing an image set
+   (LOOKS) instead turns these off, which is the earlier photography. */
+export const PHOTO_SETS = [
+  { id: 'gd', k: 'Golden Dusk', d: '29 Oct: Golden 2.0 colour, Dusk concept, army throughout. Draft, images in revision', sw: ['#1B2A33', '#C9953F', '#E3A94B'] },
+  { id: 'field', k: 'Field', d: '28 Oct: bright daylight documentary set', sw: ['#5B6B4A', '#C9B48A', '#8FB3D0'] },
+];
+export const PHOTO_SWAPS: Record<string, (file: string) => string> = { gd: gdSwap, field: fieldSwap };

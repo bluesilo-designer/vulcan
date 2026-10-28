@@ -15,8 +15,9 @@ export function ContactBlock({ header = false }: { header?: boolean }) {
   const v2 = useV(2);
   const back = useV1Back();
   const { state } = useReview();
-  /* v2: the shared CTA band everywhere except the Contact page's own header */
-  if (v2 && !header) return <CtaBand title="Talk to us about your programme" line="Whether you need one system or several working together, we will help you find the right approach." />;
+  /* v2: the shared CTA band everywhere except the Contact page's own header;
+     v3 keeps the v1 closing block with its document cards */
+  if (v2 && !header && !back) return <CtaBand title="Talk to us about your programme" line="Whether you need one system or several working together, we will help you find the right approach." />;
   return (
     <section className={'v6close' + (v2 ? ' v6close--bed' : '')}>
       {v2 ? <div className="v6close__bed" aria-hidden="true"><img src={slotSrc('aerial', state.look)} alt="" loading="lazy" decoding="async" /></div>

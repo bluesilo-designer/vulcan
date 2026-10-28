@@ -55,7 +55,7 @@ export function CompanyA() {
         </ol>
       </div></section>
 
-      <CtaBand label="Where we are" title={CO_WHERE} line={CO_CTA_LINE} />
+      <CtaBand label="Where we are" title={CO_WHERE} line={CO_CTA_LINE} img="c/where.jpg" />
     </>
   );
 }
@@ -107,7 +107,7 @@ export function CompanyB() {
         <ol className="co2b-life rv">{CO_LIFECYCLE.map((s, i) => (<li key={s}><span>{Pad(i)}</span>{s}</li>))}</ol>
       </div></section>
 
-      <CtaBand label="Where we are" title={CO_WHERE} line={CO_CTA_LINE} />
+      <CtaBand label="Where we are" title={CO_WHERE} line={CO_CTA_LINE} img="c/where.jpg" />
     </>
   );
 }
@@ -148,7 +148,7 @@ export function CompanyC() {
         </div></section>
       ))}
 
-      <CtaBand label="Where we are" title={CO_WHERE} line={CO_CTA_LINE} />
+      <CtaBand label="Where we are" title={CO_WHERE} line={CO_CTA_LINE} img="c/where.jpg" />
     </>
   );
 }

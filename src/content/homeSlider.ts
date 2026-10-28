@@ -15,7 +15,7 @@ export const HS_SLIDES: Slide[] = [
     h: 'Many suppliers. One working system.',
     line: 'We connect targetry, simulators, video and facility systems, so your teams work from one picture.',
     cta: ['See how we integrate', '/integration'] },
-  { k: 'Monitoring and intelligence', icon: 'ph-eye', img: 'look/command-dusk.jpg',
+  { k: 'Monitoring and intelligence', icon: 'ph-eye', img: 'vms.jpg',
     h: 'See what is happening, as it happens',
     line: 'Live video, vision AI and equipment health, so operators act on alerts instead of watching screens.',
     cta: ['Explore monitoring', '/products/vms'] },
