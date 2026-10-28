@@ -367,6 +367,6 @@ footer p{font-size:var(--t-sm)}
 
 /* v2 (27 Oct 2026): a slot whose file exists never shows its internal
    brief to visitors, even while the file is still loading. */
-[data-v="2"] .media.is-live .media__kind,
-[data-v="2"] .media.is-live > b,
-[data-v="2"] .media.is-live .media__brief{display:none}
+:is([data-v="2"],[data-v="3"]) .media.is-live .media__kind,
+:is([data-v="2"],[data-v="3"]) .media.is-live > b,
+:is([data-v="2"],[data-v="3"]) .media.is-live .media__brief{display:none}

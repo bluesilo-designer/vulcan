@@ -19,10 +19,10 @@ const DISCIPLINES: [string, string, string, string][] = [
 const ACRA = <em className="dim">To confirm from the ACRA record</em>;
 
 const HOW: [string, string, string, string][] = [
-  ['Start from the range day', 'We map how your range actually runs, who books, who issues and who signs off, before we propose anything.', 'control', 'ph-path'],
-  ['Agree every interface first', 'Each connection to another system is written down and agreed with its owner before we build against it.', 'integration', 'ph-plugs-connected'],
-  ['Show working software early', 'Your team reviews running software at each stage, so surprises surface while they are cheap to fix.', 'vision', 'ph-monitor-play'],
-  ['Stay after handover', 'Documentation a third party can use, source code escrow and long-term support are part of the plan from day one.', 'security', 'ph-lifebuoy'],
+  ['Start from how you work', 'We learn how your operation runs today, and who does what, before we propose anything.', 'control', 'ph-path'],
+  ['Agree every interface first', 'Every connection to another system is agreed in writing with its owner before we build it.', 'integration', 'ph-plugs-connected'],
+  ['Show working software early', 'You review running software at every stage, so issues are found early, while they are cheap to fix.', 'vision', 'ph-monitor-play'],
+  ['Support after handover', 'Clear documentation and long-term support are part of the plan from day one.', 'security', 'ph-lifebuoy'],
 ];
 
 export function Company() {
@@ -41,21 +41,29 @@ export function Company() {
         <div className="pv-hero__bed pv-par"><img src={slotSrc('ops', state.look)} alt="" decoding="async" /></div><div className="pv-hero__veil"></div>
         <div className="shell pv-hero__in"><span className="label">Company</span>
           <h1>Blue Silo</h1>
-          <p className="pv-hero__lead">We build the software that runs range training complexes. That is the whole of what we do.</p></div>
+          <p className="pv-hero__lead">{v2
+            ? 'We design, develop and integrate defence systems. Based in Singapore, with military training as our deepest specialism.'
+            : 'We build the software that runs range training complexes. That is the whole of what we do.'}</p></div>
       </section>
 
       <Band>
-        <div className="split"><div className="rv"><h2>What we build, and why we build only this</h2>
+        <div className="split"><div className="rv"><h2>{v2 ? 'What we do' : 'What we build, and why we build only this'}</h2>
           <div className="prose" style={{ marginTop: 'var(--s5)' }}>
-            <p>Range training complexes are run by many systems from many suppliers, and the gaps between those systems are where accountability goes. Someone signs a form. Someone remembers a number. Someone reconciles at the end of a long day. It works, until the day it is questioned.</p>
-            <p>We build the subsystems that close those gaps, and we treat the interfaces between them, including the ones to systems we do not own, as the product rather than as integration work to be scheduled later.</p>
-            <p><strong>Range training is our only focus.</strong> We do not divide our attention across unrelated markets, so our engineering effort stays on your programme.</p></div></div>
+            {v2 ? <>
+              <p>Blue Silo is a Singapore-based technology company specialising in military training systems, simulated firing range operations and the integration of complex defence systems.</p>
+              <p>Defence facilities run on many systems from many suppliers. When those systems do not share information, records end up on paper and are checked by hand. We build software that connects them, so your teams work from one accurate picture.</p>
+              <p><strong>Four areas of focus.</strong> Training systems, system integration, monitoring and intelligence, and enterprise management. Training is where we go deepest.</p>
+            </> : <>
+              <p>Range training complexes are run by many systems from many suppliers, and the gaps between those systems are where accountability goes. Someone signs a form. Someone remembers a number. Someone reconciles at the end of a long day. It works, until the day it is questioned.</p>
+              <p>We build the subsystems that close those gaps, and we treat the interfaces between them, including the ones to systems we do not own, as the product rather than as integration work to be scheduled later.</p>
+              <p><strong>Range training is our only focus.</strong> We do not divide our attention across unrelated markets, so our engineering effort stays on your programme.</p>
+            </>}</div></div>
           <div className="rv" data-d="1"><figure className="pv-ctl__img co-img"><div className="pv-par"><img src={mediaUrl('c/floor.jpg')} alt="Blue Silo engineers at work" loading="lazy" decoding="async" /></div></figure></div></div>
       </Band>
 
 {/* v2: how an engagement runs, added at the client's request (Oct 2026) */}
       {v2 && <section className="band band--deep"><div className="shell">
-        <div className="head"><h2>How we work with you</h2><p>Four habits we keep on every programme, from the first workshop to the years after handover.</p></div>
+        <div className="head"><h2>How we work with you</h2><p>Four commitments we keep on every programme, from the first workshop to long-term support.</p></div>
         <ol className="co-how">{HOW.map((h, i) => (
           <li className="pv-up" key={h[0]}>
             <figure><img src={mediaUrl(`c/${h[2]}.jpg`)} alt="" loading="lazy" decoding="async" /></figure>

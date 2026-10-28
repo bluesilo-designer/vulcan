@@ -24,7 +24,7 @@ import '../../../styles/trms-layouts.css';
 const Pad = (n: number) => String(n + 1).padStart(2, '0');
 
 const BENEFITS: [string, string, string][] = [
-  ['ph-calendar-check', 'Clashes caught as you book', 'Station availability is checked the moment you book, against the rules you set.'],
+  ['ph-calendar-check', 'Clashes caught as you book', 'Availability is checked the moment you book, against the rules you set.'],
   ['ph-scan', 'Every item accounted for', 'Tagged equipment is scanned out and back in, and anything missing is flagged.'],
   ['ph-chart-bar', 'Results as they happen', 'Instructors and trainees see scores during the session.'],
   ['ph-squares-four', 'The whole centre at a glance', 'Bookings, availability and equipment on one dashboard.'],
@@ -89,7 +89,7 @@ export function TrmsA() {
       <Benefits />
       <section className="band" id="tra-day"><div className="shell">
         <div className="t2-h"><h2>A training day in four steps</h2>
-          <p>The same four steps your team runs today, each on one screen.</p></div>
+          <p>The four steps your team already runs, each on one screen.</p></div>
         <div className="t2-tabs" role="tablist">{DAY.map((d, i) => (
           <button key={d[0]} type="button" role="tab" aria-selected={t === i} onClick={() => setT(i)}>{d[0]}</button>))}</div>
         <p className="t2-cap">{DAY[t][1]}</p>
@@ -129,14 +129,14 @@ export function TrmsB() {
       </div></section>
       <section className="band band--deep"><div className="shell">
         <div className="t2-h"><h2>Results on screen, while the session runs</h2>
-          <p>Instructors follow every station as it happens, and a wall screen shows the centre where everyone stands.</p></div>
+          <p>Instructors follow every station live, and a wall screen shows the whole centre where everyone stands.</p></div>
         <div className="t2-wide"><TrmsScoreboard /></div>
       </div></section>
       <TrmsLeaderboard bare />
       <section className="band band--deep"><div className="shell co2b-split">
         <div className="rv">
           <h2>Working software, ready to show you</h2>
-          <p className="co2b-intro">TRMS is built, and we can show it to you on working software. In a demonstration you will see:</p>
+          <p className="co2b-intro">Weapon simulator training in TRMS is ready to demonstrate on working software. In a demonstration you will see:</p>
           <ul className="tr-demo">{DEMO.map((d) => <li key={d}><Icon name="ph-check" />{d}</li>)}</ul></div>
         <figure className="tr-fig rv" data-d="1"><DashScreen /></figure>
       </div></section>
@@ -152,7 +152,7 @@ export function TrmsC() {
   const chapters = [
     { t: 'Plan', body: <>
       <p className="co2c-big">Book a session in five steps: group, training, date, lanes and trainees.</p>
-      <p>Station availability is checked as you book, against the booking rules your centre sets.</p>
+      <p>Availability is checked as you book, against the booking rules your centre sets.</p>
       <figure className="tr-fig"><CreateScreen s={4} /></figure></> },
     { t: 'Train', body: <>
       <p className="co2c-big">Trainees check in with a scan, and results appear as they train.</p>
@@ -185,7 +185,7 @@ export function TrmsC() {
         </div></section>
       ))}
       <Cover />
-      <Closer title="See TRMS running" line="We will show you each chapter live, on working software." />
+      <Closer title="See TRMS running" line="We will show you each chapter on working software." />
     </>
   );
 }

@@ -1,6 +1,6 @@
 import { useRef, useState, type CSSProperties, type KeyboardEvent, type MouseEvent } from 'react';
 import { Link } from 'react-router-dom';
-import { PRODUCT_DETAIL, PRODUCT_DETAIL_V2, brandOf, whereOf } from '../../../content/products';
+import { PRODUCT_DETAIL, PRODUCT_DETAIL_V2, brandOf, whereOf, roleOf, depOf } from '../../../content/products';
 import { EXPLORER_IMAGES } from '../../../content/home';
 import { Table } from '../../ui/Table';
 import { Closer } from '../../ui/Closer';
@@ -8,8 +8,14 @@ import { Icon } from '../../ui/Icon';
 import { Media } from '../../ui/Media';
 import { pad2 } from '../../../lib/html';
 import { mediaUrl } from '../../../lib/media';
-import { DEFAULT_DEP, productRec, v6acr } from './util';
+import { productRec, v6acr } from './util';
 import { WorksWith } from './WorksWith';
+
+/* v2 public copy says armoury, not the local term armskote (client feedback, Oct 2026). */
+const pub = (t: string) => v6acr(t).replace(/armskote/g, 'armoury').replace(/Armskote/g, 'Armoury')
+  .replace(/\bthe serial\b/g, 'the session');
+/* 28 Oct 2026: plain fallback when a product has no dependency text of its own. */
+const DEFAULT_DEP_V2 = 'Before go-live, we agree with you which system holds the master list of personnel and who owns the range calendar.';
 
 type Detail = {
   lead: string; problem: string[]; mods: { k: string; i: string; m: string[] }[];
@@ -78,7 +84,7 @@ export function ProductV2({ id }: { id: string }) {
       {/* 2 facts strip */}
       <section className="p2-facts"><div className="shell">
         <dl>
-          <div><dt><Icon name="ph-target" />Role</dt><dd>{p.role}</dd></div>
+          <div><dt><Icon name="ph-target" />Role</dt><dd>{roleOf(p, true)}</dd></div>
           <div><dt><Icon name="ph-users-three" />Used by</dt><dd>{p.users.slice(0, 4).join(', ')}</dd></div>
           <div><dt><Icon name="ph-map-pin-area" />Deployed at</dt><dd>{whereOf(p, true)}</dd></div>
         </dl>
@@ -141,23 +147,23 @@ export function ProductV2({ id }: { id: string }) {
 
       {/* 8 reference detail */}
       <section className={'band' + (c.arch ? '' : ' band--deep')}><div className="shell">
-        <div className="head"><h2>The detail, when you need it</h2></div>
+        <div className="head"><h2>More detail</h2></div>
         <Acc icon="ph-seal-check" title="Standards we design to">
-          <p className="pv-acc__note">Stated as alignment. Blue Silo does not claim certification against these.</p>
+          <p className="pv-acc__note">We design in line with these standards. We do not claim certification against them.</p>
           <Table head={['Reference', 'What it governs here']} rows={c.std} />
         </Acc>
-        <Acc icon="ph-plugs-connected" title="What it talks to">
-          <p className="pv-acc__note">Counterpart classes, not vendor product names.</p>
-          <Table head={['Counterpart class', 'Direction', 'Trigger']}
-            rows={p.ifc.map((r) => [v6acr(r[0]), <span className="arrow">{r[1]}</span>, v6acr(r[2])])} />
+        <Acc icon="ph-plugs-connected" title="What it connects to">
+          <p className="pv-acc__note">Types of system, not specific vendor products.</p>
+          <Table head={['Connected system', 'Direction', 'When']}
+            rows={p.ifc.map((r) => [pub(r[0]), <span className="arrow">{r[1]}</span>, pub(r[2])])} />
         </Acc>
-        <Acc icon="ph-info" title="Dependencies and assumptions">
-          <p className="pv-acc__note">{v6acr(p.dep || DEFAULT_DEP)}</p>
+        <Acc icon="ph-info" title="What it depends on">
+          <p className="pv-acc__note">{pub(depOf(p, true) || DEFAULT_DEP_V2)}</p>
         </Acc>
       </div></section>
 
       <WorksWith rel={p.rel} />
-      <Closer label="Request a demonstration" line={`See ${b.brand || b.acr} running on a working range scenario.`} />
+      <Closer label="Request a demonstration" line={`We will show you ${b.brand || b.acr} at work on a range scenario.`} />
     </>
   );
 }

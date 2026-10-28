@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
-import { PRODUCTS as ALL, brandOf, whereOf, decidesOf } from '../content/products';
-import { useV } from '../lib/version';
+import { PRODUCTS as ALL, brandOf, whereOf, decidesOf, roleOf } from '../content/products';
+import { useV, useV1Back } from '../lib/version';
 import { isVisible } from '../config/site';
 import { WORDS } from '../content/home';
 
@@ -15,25 +15,26 @@ import { Closer } from '../components/ui/Closer';
 /* legacy pProducts, with the v6 h1 override. */
 export function Products() {
   const v2 = useV(2);
+  const back = useV1Back();
   return (
     <>
       <div className="shell page-head rv">
         <span className="label">Products</span>
         <h1>{Word(OURS)} systems{HAS_ACCEL ? ', plus ACCEL' : ''}</h1>
-        <p className="lead">{v2 ? 'Use one system on its own, or connect them all. Each page explains what the system does, who uses it and where it runs.' : 'Take one, or take all of them. Every product page states what it decides, where it is deployed, and what has to exist for it to mean anything.'}</p>
+        <p className="lead">{v2 ? 'Use one system on its own or connect them all. Each page shows what the system does, who uses it and where it runs.' : 'Take one, or take all of them. Every product page states what it decides, where it is deployed, and what has to exist for it to mean anything.'}</p>
       </div>
       <Band tight>
         <div className="reg rv">
           {PRODUCTS.map((p) => (
             <Link key={p.id} to={`/products/${p.id}`}>
               <span className="reg__a">{p.acr}</span><span className="reg__n">{p.name}</span>
-              <span className="reg__r">{p.role}</span><span className="reg__g">{v2 && brandOf(p.id)?.partner ? `${brandOf(p.id)!.brand}, partner product` : p.group}</span>
+              <span className="reg__r">{roleOf(p, v2)}</span><span className="reg__g">{v2 && brandOf(p.id)?.partner ? `${brandOf(p.id)!.brand}, partner product` : p.group}</span>
             </Link>
           ))}
         </div>
       </Band>
       <Band deep title={v2 ? 'What each system does' : 'What each one actually decides'}
-        intro={v2 ? 'Who uses it, and the question it answers for them.' : 'Not a feature comparison. The question each subsystem exists to answer, and the person who has to answer it.'}>
+        intro={v2 ? 'Who uses each system, and the question it answers for them.' : 'Not a feature comparison. The question each subsystem exists to answer, and the person who has to answer it.'}>
         <Table head={v2 ? ['System', 'Used by', 'What it helps you decide'] : ['Subsystem', 'Primary users', 'The decision it supports']}
           rows={PRODUCTS.map((p) => [
             <>{p.acr} <em className="dim" style={{ display: 'block', marginTop: 3 }}>{p.name}</em></>,
@@ -44,7 +45,7 @@ export function Products() {
         <Table head={v2 ? ['System', 'Used in'] : ['Subsystem', 'Deployed at']} rows={PRODUCTS.map((p) => [p.acr, whereOf(p, v2)])} />
       </Band>
       {/* v2: hidden, internal note about counterpart acronyms (27 Oct 2026) */}
-      {!v2 && <Band deep title="Acronyms that look alike"
+      {(!v2 || back) && <Band deep title="Acronyms that look alike"
         intro="Four systems share a naming pattern and two handle video. Confusing them in a specification is expensive later.">
         <div className="g g4 rv">
           <div className="tile"><h4>Ours</h4><p><strong>EWMS</strong> weapons as serialised assets, held and issued under control.</p></div>

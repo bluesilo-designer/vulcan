@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { HERO_CUTS, LOOKS, PRODUCT_IMAGE_SETS } from '../../content/media';
 import { isReady } from '../../lib/media';
 import { DEFAULTS, useReview } from '../../lib/review';
-import { COMPANY_DEFAULT, COMPANY_LAYOUTS, TRMS_DEFAULT, TRMS_LAYOUTS, useCompanyLayout, useTrmsLayout, useVersion } from '../../lib/version';
+import { VERSIONS, COMPANY_DEFAULT, COMPANY_LAYOUTS, HOME_DEFAULT, HOME_LAYOUTS, TRMS_DEFAULT, TRMS_LAYOUTS, useCompanyLayout, useHomeLayout, useTrmsLayout, useVersion } from '../../lib/version';
 
 type Look = { id: string; k: string; d: string; sw: string[] };
 type Cut = { id: string; k: string; d: string };
@@ -15,6 +15,7 @@ export function ContentControl() {
   const { v, setV } = useVersion();
   const { co, setCo } = useCompanyLayout();
   const { tr, setTr } = useTrmsLayout();
+  const { hm, setHm } = useHomeLayout();
   const [open, setOpen] = useState(false);
   const [copied, setCopied] = useState(false);
   const fab = useRef<HTMLButtonElement>(null);
@@ -30,7 +31,9 @@ export function ContentControl() {
     const u = new URL(location.href);
     u.searchParams.set('look', state.look);
     u.searchParams.set('pset', state.pset);
+    if (state.photo && state.photo !== 'field') u.searchParams.set('photo', state.photo); else u.searchParams.delete('photo');
     if (co !== COMPANY_DEFAULT) u.searchParams.set('co', co); else u.searchParams.delete('co');
+    if (hm !== HOME_DEFAULT) u.searchParams.set('hm', hm); else u.searchParams.delete('hm');
     if (tr !== TRMS_DEFAULT) u.searchParams.set('tr', tr); else u.searchParams.delete('tr');
     if (state.hero) u.searchParams.set('hero', state.hero); else u.searchParams.delete('hero');
     const t = u.toString();
@@ -50,12 +53,20 @@ export function ContentControl() {
         <fieldset>
           <legend>Site version</legend>
           <div className="v6ctl__cuts">
-            {([1, 2] as const).map((n) => (
+            {VERSIONS.map((n) => (
               <button key={n} type="button" className={v === n ? 'is-on' : ''} onClick={() => setV(n)}>Version {n}</button>
             ))}
           </div>
         </fieldset>
-        {v === 2 && <fieldset>
+        {v >= 2 && <fieldset>
+          <legend>Home layout (v2)</legend>
+          <div className="v6ctl__cuts">
+            {HOME_LAYOUTS.map((l) => (
+              <button key={l.id} type="button" className={hm === l.id ? 'is-on' : ''} title={l.d} onClick={() => setHm(l.id)}>{l.k}</button>
+            ))}
+          </div>
+        </fieldset>}
+        {v >= 2 && <fieldset>
           <legend>Company layout (v2)</legend>
           <div className="v6ctl__cuts">
             {COMPANY_LAYOUTS.map((l) => (
@@ -63,11 +74,19 @@ export function ContentControl() {
             ))}
           </div>
         </fieldset>}
-        {v === 2 && <fieldset>
+        {v >= 2 && <fieldset>
           <legend>TRMS page layout (v2)</legend>
           <div className="v6ctl__cuts">
             {TRMS_LAYOUTS.map((l) => (
               <button key={l.id} type="button" className={tr === l.id ? 'is-on' : ''} title={l.d} onClick={() => setTr(l.id)}>{l.k}</button>
+            ))}
+          </div>
+        </fieldset>}
+        {v >= 2 && <fieldset>
+          <legend>Photography (v2, v3)</legend>
+          <div className="v6ctl__cuts">
+            {([['field', 'Field (28 Oct)'], ['prev', 'Previous']] as const).map(([id, k]) => (
+              <button key={id} type="button" className={(state.photo || 'field') === id ? 'is-on' : ''} onClick={() => set({ photo: id })}>{k}</button>
             ))}
           </div>
         </fieldset>}

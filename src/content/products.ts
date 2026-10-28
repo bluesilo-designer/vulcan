@@ -2049,16 +2049,19 @@ export const productOf = (id: string): Product | undefined => PRODUCTS.find((p) 
 
 /* v2 product content, rewritten from the technical architecture work
    (Oct 2026). Generic by design: no programme, zone, vendor or retention
-   figures. Missing fields fall back to PRODUCT_DETAIL. */
+   figures. Missing fields fall back to PRODUCT_DETAIL.
+   28 Oct 2026 copy pass: plain words for a non-technical reader ("trainee
+   list" not "roll", "weapon" not "serial", no "details" as a scheduling
+   unit), multi-factor sign-in dropped to match Assurance. Facts unchanged. */
 export const PRODUCT_DETAIL_V2: Record<string, {
   lead: string; problem: string[]; mods: { k: string; i: string; m: string[] }[];
   flow: string[][]; out: string[]; arch?: string[][];
 }> = {
   rcs: {
-    lead: 'Run your whole range from one place. RMS takes a session from booking to debrief: it checks the range is ready, runs targetry and effects to your plan, and keeps a full record of what happened.',
+    lead: 'Run your whole range from one place. RMS takes each session from booking to debrief: it checks the range is ready, runs targets and effects to your plan, and keeps a full record of what happened.',
     problem: [
-      'A lane goes hot before anyone has confirmed the range is ready',
-      'The roll says one thing, the firing line says another',
+      'Live firing starts before anyone has confirmed the range is ready',
+      'The trainee list says one thing, the firing line says another',
       'Targets, effects and cameras are checked by hand before every session',
       'Instructor feedback stays on paper and never reaches the record',
       'Debriefs rely on memory, not on what was recorded',
@@ -2066,61 +2069,61 @@ export const PRODUCT_DETAIL_V2: Record<string, {
     ],
     mods: [
       { k: 'Plan', i: 'ph-calendar-check', m: [
-        'Book ranges, lanes and details as resources',
-        'Build the roll from confirmed attendance',
+        'Book ranges, lanes and time slots',
+        'Build the trainee list from confirmed attendance',
         'Prepare exercises and scenarios ahead of the day',
         'Give each user the role and access they need' ] },
       { k: 'Prepare', i: 'ph-list-checks', m: [
-        'Self-test of network, services and databases at start-up',
-        'One checklist for equipment, targetry and cameras',
-        'Re-run any failed check before the range goes hot',
+        'Automatic start-up check of network, services and databases',
+        'One checklist for equipment, targets and cameras',
+        'Re-run any failed check before live firing',
         'Load the planned exercise in one step' ] },
       { k: 'Conduct', i: 'ph-crosshair', m: [
-        'Control targetry and effects live, to the scenario',
-        'Range hot and cold held as a system state',
+        'Control targets and effects live, to the scenario',
+        'Live and safe range states controlled by the system',
         'Console in the control room, tablet for instructors on the range',
         'Physical emergency stop that works without the software',
-        '2.5D range view with locations and camera feeds' ] },
+        '2.5D range map with locations and camera feeds' ] },
       { k: 'Review', i: 'ph-film-reel', m: [
         'Results, feedback and timeline in one record',
         'Replay the session beside the recorded video',
         'Assess against the course standard',
         'Arrange reshoots straight from the debrief' ] },
       { k: 'Records', i: 'ph-database', m: [
-        'Reports and analytics across sessions',
+        'Reports and analysis across sessions',
         'Import and export your data',
-        'Append-only log of user actions and key changes',
+        'A log of user actions and key changes that cannot be edited',
         'Equipment health shared with HUMS' ] },
     ],
     flow: [
-      ['Book', 'Allocate ranges, lanes and the roll to the session.'],
-      ['Confirm', 'Match the roll to the people in the briefing room.'],
-      ['Ready', 'Self-test and checklist pass, then the exercise loads.'],
-      ['Conduct', 'Targetry and effects run to plan while instructors log feedback.'],
-      ['Stop', 'The hard-wired emergency stop halts the range. RMS records it.'],
+      ['Book', 'Assign ranges, lanes and trainees to the session.'],
+      ['Confirm', 'Check the trainee list against the people in the briefing room.'],
+      ['Ready', 'Checks pass, then the exercise loads.'],
+      ['Conduct', 'Targets and effects run to plan while instructors log feedback.'],
+      ['Stop', 'The hard-wired emergency stop halts the range, and RMS records it.'],
       ['Debrief', 'Replay results, timeline and video together.'],
     ],
     out: [
-      'The range cannot go hot until its checks pass.',
+      'Live firing cannot start until every check has passed.',
       'Feedback is captured at the firing point, not rewritten later.',
       'Debriefs replay what actually happened, with results and video on one clock.',
       'If the video link drops, training carries on.',
     ],
     arch: [
-      ['ph-door', 'One secured entry', 'Every request and live event passes one encrypted, token-checked gateway.'],
-      ['ph-fingerprint', 'Your directory, your roles', 'Multi-factor sign-in against your directory, with role-based access.'],
+      ['ph-door', 'One secure entry point', 'Every request and live event passes through one encrypted gateway that checks who is asking.'],
+      ['ph-fingerprint', 'Your directory, your roles', 'Staff sign in with their existing accounts, and each role sees only what it needs.'],
       ['ph-stack', 'Independent services', 'Booking, control, equipment, records and reporting run as separate services.'],
-      ['ph-plugs-connected', 'Connects through adapters', 'Other systems connect only through integration adapters and an event bus.'],
+      ['ph-plugs-connected', 'Connects through adapters', 'Other systems connect only through dedicated adapters and a shared message channel.'],
     ],
   },
   hums: {
     lead: 'Know the health of every system on your range before a fault stops training. HUMS collects health, usage and fault data from each system, shows real availability, and turns trends into maintenance you can plan.',
     problem: [
       'A fault is found in the middle of a session',
-      'Every system has its own health console, so nobody sees the whole range',
+      'Every system has its own health screen, so nobody sees the whole range',
       'Availability is argued over instead of measured',
       'Maintenance follows the calendar, not the condition of the equipment',
-      'Spares and obsolescence are noticed too late',
+      'Spares and obsolete parts are noticed too late',
       'A system that has gone silent looks the same as a healthy one',
     ],
     mods: [
@@ -2129,39 +2132,39 @@ export const PRODUCT_DETAIL_V2: Record<string, {
         'Range health at a glance',
         'Status shared with the operations centre' ] },
       { k: 'Monitor', i: 'ph-heartbeat', m: [
-        'Utilisation, bandwidth and self-test results',
+        'Usage, network load and self-test results',
         'Battery, temperature, activations and operating hours',
-        'Heartbeats, so a silent system is flagged' ] },
+        'Regular check-ins, so a silent system is flagged' ] },
       { k: 'Events', i: 'ph-list-magnifying-glass', m: [
         'Time-stamped start, stop and fault events',
         'Recovery time after every fault',
-        'Detection of abnormal traffic' ] },
+        'Detection of unusual network traffic' ] },
       { k: 'Predict', i: 'ph-chart-line-up', m: [
         'Failure prediction from trends',
         'Preventive maintenance scheduling',
-        'Obsolescence tracking and spares forecast' ] },
+        'Obsolete part tracking and spares forecast' ] },
       { k: 'Report', i: 'ph-export', m: [
         'Reports and data export',
         'Log of user actions and data errors',
         'Long-term history for reliability trends' ] },
     ],
     flow: [
-      ['Collect', 'Each system reports health and usage over standard protocols.'],
+      ['Collect', 'Each system reports its health and usage over standard protocols.'],
       ['Watch', 'Availability and status update live.'],
-      ['Trend', 'History shows the faults that are developing.'],
+      ['Trend', 'History reveals faults while they are still developing.'],
       ['Plan', 'Schedule maintenance and spares between sessions.'],
       ['Report', 'Availability and reliability come straight from logged events.'],
     ],
     out: [
-      'One health picture for the whole range, not one console per system.',
-      'Availability comes from logged events, so you and the owner see the same number.',
+      'One health picture for the whole range, not one screen per system.',
+      'Availability comes from logged events, so you and your supplier see the same number.',
       'Developing faults show up early enough to fix between sessions.',
-      'Years of history support reliability and refresh decisions.',
+      'Years of history support reliability and replacement decisions.',
     ],
     arch: [
-      ['ph-download-simple', 'Connects to every source', 'REST, MQTT and syslog inputs, with retry and tracking for each system.'],
-      ['ph-fingerprint', 'Your directory, your roles', 'Multi-factor sign-in with access by role for maintainers, operators and instructors.'],
-      ['ph-database', 'Its own data store', 'Health, events and audit logs in separate encrypted stores, with live status cached.'],
+      ['ph-download-simple', 'Connects to every source', 'Takes data over common industry protocols, retrying and tracking each system.'],
+      ['ph-fingerprint', 'Your directory, your roles', 'Staff sign in with their existing accounts, with access set by role for maintainers, operators and instructors.'],
+      ['ph-database', 'Its own data store', 'Health, events and audit logs are kept in separate encrypted stores.'],
       ['ph-clock', 'One clock', 'Time is synchronised with the other range systems, so events line up.'],
     ],
   },
@@ -2171,35 +2174,35 @@ export const PRODUCT_DETAIL_V2: Record<string, {
       'Footage is missing for the minutes that matter',
       'Clips from different cameras are lined up by hand',
       'An unsafe act is found on the recording after the session, not during it',
-      'The key moment is overwritten before anyone saves it',
+      'The key moment is recorded over before anyone saves it',
     ],
     mods: [
       { k: 'Live', i: 'ph-video-camera', m: [
-        'Multi-camera live view with alerts',
+        'Live view of many cameras at once, with alerts',
         'Standby and training modes that follow the session',
-        'Camera control and PTZ presets',
-        'Markers added from range events' ] },
+        'Camera control with pan, tilt and zoom presets',
+        'Markers added automatically from range events' ] },
       { k: 'Record', i: 'ph-record', m: [
-        'Continuous recording, in higher quality during training and motion',
+        'Continuous recording, in higher quality during training and when there is movement',
         'Time and location on every recording',
-        'Failover recording',
-        'Starred clips that are never overwritten' ] },
+        'Backup recording if a recorder fails',
+        'Starred clips that are never recorded over' ] },
       { k: 'Review', i: 'ph-play', m: [
         'Playback synchronised across cameras',
         'Image enhancement for review',
         'Playback in the debrief room and on external screens',
-        'Exports with a logged handling record' ] },
+        'Every export logged, with who handled it' ] },
       { k: 'Analytics', i: 'ph-scan', m: [
         'Muzzle discipline monitoring',
-        'Person detected in the butt area',
+        'Person detected in the target area',
         'Unattended weapon',
-        'Fire and smoke in the butt area',
-        'Operator alert with a short evidence clip' ] },
+        'Fire and smoke in the target area',
+        'Operator alert with a short video clip as evidence' ] },
     ],
     flow: [
       ['Standby', 'Cameras record continuously at standby quality.'],
       ['Train', 'The session starts and recording switches to training quality.'],
-      ['Alert', 'Analytics alert the operator with a short evidence clip.'],
+      ['Alert', 'Analytics alert the operator with a short video clip as evidence.'],
       ['Review', 'Play back every camera along the range timeline.'],
     ],
     out: [
@@ -2209,60 +2212,82 @@ export const PRODUCT_DETAIL_V2: Record<string, {
       'Video keeps running if the operations centre link goes down.',
     ],
     arch: [
-      ['ph-lock', 'Closed network', 'A closed wired network, with every stream encrypted end to end.'],
-      ['ph-brain', 'Detection that learns', 'Zones and rules are managed centrally, and operator feedback retrains the models.'],
-      ['ph-plugs', 'Open camera standards', 'Cameras connect over standard streaming and device protocols.'],
-      ['ph-heartbeat', 'Health reported', 'Camera, server and storage status goes to HUMS.'],
+      ['ph-lock', 'Closed network', 'A closed, wired network, with every video stream encrypted end to end.'],
+      ['ph-brain', 'Detection that learns', 'Zones and rules are managed centrally, and operator feedback is used to retrain the models.'],
+      ['ph-plugs', 'Open camera standards', 'Cameras connect over standard video and device protocols.'],
+      ['ph-heartbeat', 'Health reported', 'Camera, server and storage status is reported to HUMS.'],
     ],
   },
   ewms: {
-    lead: 'Know who holds every weapon, at every moment. SENTRAX decides who may take which weapon and when, records every issue and return against a named person, and keeps a defective weapon locked away.',
+    lead: 'Know who holds every weapon, at every moment. SENTRAX decides who may take which weapon and when, records every issue and return against a named person, and keeps a faulty weapon locked away.',
     problem: [
       'A missing weapon is only noticed at the end-of-day count',
       'The armoury is opened out of hours or by the wrong person',
       'Keys are shared or copied',
-      'A weapon reported defective is issued again',
-      'A stocktake is signed off but never actually done',
+      'A weapon reported faulty is issued again',
+      'A stock check is signed off but never actually done',
       'Nobody can say who held a weapon at the moment that mattered',
     ],
     mods: [
       { k: 'Access', i: 'ph-fingerprint', m: [
         'Sign in by card, PIN and optional biometrics',
         'Permissions by person, weapon type and time window',
-        'Two-person rule, set per action' ] },
+        'Two-person approval, set per action' ] },
       { k: 'Custody', i: 'ph-arrows-left-right', m: [
         'Issue and return against a named person and session',
         'Handover between duty staff',
         'Alarm on any unauthorised removal',
-        'Overdue alert at the due time' ] },
+        'Alert the moment a weapon is overdue' ] },
       { k: 'Accounting', i: 'ph-clipboard-text', m: [
-        'Instant serial count by RFID',
+        'Instant RFID count of every weapon',
         'Storage and issue records',
-        'Append-only, exportable audit trail' ] },
+        'Exportable audit trail that cannot be edited' ] },
       { k: 'Serviceability', i: 'ph-wrench', m: [
-        'Defect reporting with quarantine lockout',
-        'Maintenance and repair history per serial',
-        'Fit-for-firing check before reissue',
+        'Fault reporting that locks the weapon away',
+        'Maintenance and repair history for each weapon',
+        'Fit-to-fire check before it is issued again',
         'Equipment recovery and spares' ] },
     ],
     flow: [
-      ['Authorise', 'The firer is checked against the roll and their permissions.'],
-      ['Issue', 'The locker opens for one serial only, and custody is recorded.'],
-      ['Bind', 'The weapon is linked to the person for tracking.'],
-      ['Return', 'The serial is read back in and its condition is captured.'],
-      ['Count', 'A full serial count completes before anyone is released.'],
+      ['Authorise', 'The trainee is checked against the trainee list and their permissions.'],
+      ['Issue', 'The locker opens for one weapon only, and the handover is recorded.'],
+      ['Link', 'The weapon is linked to the person for tracking.'],
+      ['Return', 'The weapon is scanned back in and its condition is recorded.'],
+      ['Count', 'Every weapon is counted back in before anyone leaves.'],
     ],
     out: [
       'Every issue and return is recorded with who, what and when, with no paperwork.',
       'The locker itself enforces who may take which weapon, and when.',
-      'An unreturned weapon raises an alarm at its due time, not at the end of the day.',
-      'A defective weapon cannot be issued until it is cleared.',
+      'An unreturned weapon raises an alarm when it is due, not at the end of the day.',
+      'A faulty weapon cannot be issued until it is cleared.',
     ],
   },
 };
 
+/* v2 (28 Oct 2026): "Dependencies" in plain words. Same facts as the
+   engineering text in PRODUCTS[].dep, which v1 still shows. */
+const DEP_V2: Record<string, string> = {
+  rcs: 'RMS controls equipment supplied by others, such as targets, effects, displays and public address, and reads building systems it does not own. It runs over the site network, wired or wireless. How much it can control in each system depends on the connection agreed for it, so we settle every connection before delivery, not during it.',
+  hums: 'HUMS can only report on equipment that shares its data. Each system has to provide health and usage data, and that has to be agreed with its supplier, so coverage is a buying decision as much as an engineering one.',
+  vms: 'Analytics need cameras placed for the purpose. A camera set up for general security will not reliably follow weapons or muzzle direction, so camera coverage is designed as part of the system. A detection always prompts a person to act. The system does not decide on its own.',
+  ewms: 'Issue and return can only be trusted if the locker itself takes part and reports what was actually removed. The manual override is just as deliberate: an authorised person can open it if the system fails, so the armoury is never locked at the worst possible moment.',
+};
+export const depOf = (p: { id: string; dep?: string }, v2: boolean) => (v2 && DEP_V2[p.id]) || p.dep;
+
+/* v2 (28 Oct 2026): a plain one-line role, instead of the short slogans
+   ("Sees and remembers") that v1 shows. */
+const ROLE_V2: Record<string, string> = {
+  trms: 'Books and runs simulator training',
+  rcs: 'Controls live-fire training on the range',
+  vms: 'Records and reviews range video',
+  ewms: 'Controls who takes which weapon',
+  hums: 'Tracks equipment health and availability',
+};
+export const roleOf = (p: { id: string; role: string }, v2: boolean) => (v2 && ROLE_V2[p.id]) || p.role;
+
 /* v2 (27 Oct 2026): "Deployed at" in plain, location-neutral terms. */
 const WHERE_V2: Record<string, string> = {
+  trms: 'The training office and the booking desk',
   rcs: 'The range control room, a tablet on the range, and the briefing and debrief rooms',
   vms: 'The operations centre and the range control room',
   ewms: 'The armoury, weapon lockers and the issue point',
@@ -2274,7 +2299,7 @@ export const whereOf = (p: { id: string; where: string }, v2: boolean) => (v2 &&
 const DECIDES_V2: Record<string, string> = {
   trms: 'What is booked, who is coming, and whether the centre has the stations and equipment to run it.',
   rcs: 'Whether the range is ready, when a session can start, and when it must stop.',
-  vms: 'What actually happened on a lane, found on the session timeline instead of from memory.',
+  vms: 'What actually happened on a lane, found on the session timeline rather than from memory.',
   ewms: 'Whether this weapon can go to this person now, and whether every weapon is back at the end of the day.',
   hums: 'What is wearing out, how fast, and whether it will last until the next session.',
 };

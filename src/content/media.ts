@@ -174,3 +174,30 @@ export const PRODUCT_IMAGE_ALIASES = {
     "assets": "res"
   }
 };
+
+/* Field set (28 Oct 2026): natural-light documentary photographs of a
+   training day, shown in v2 and v3 only. Old path -> new file; patterns
+   cover every look and product image set of the same slot. Shot list and
+   art direction: docs/field-image-set.md. */
+export const FIELD_SWAP: [RegExp, string][] = [
+  [/^(s-brief|c\/floor|p\/trms-hero-[a-z0-9]+)\.jpg$/, 'f/trms.jpg'],
+  [/^s-firingline\.jpg$/, 'f/rms.jpg'],
+  [/^hums\.jpg$/, 'f/hums.jpg'],
+  [/^vms\.jpg$/, 'f/vms.jpg'],
+  [/^ewms\.jpg$/, 'f/ewms.jpg'],
+  /* range day: four steps reuse the product frame for the same moment */
+  [/^chain-04\.jpg$/, 'f/ewms.jpg'],
+  [/^chain-05\.jpg$/, 'f/rms.jpg'],
+  [/^chain-07\.jpg$/, 'f/vms.jpg'],
+  [/^chain-10\.jpg$/, 'f/hums.jpg'],
+  [/^chain-(\d\d)\.jpg$/, 'f/chain-$1.jpg'],
+  [/^(look\/command-[a-z0-9]+|integration-bench|c\/integration)\.jpg$/, 'f/lab.jpg'],
+  [/^(look\/assurance-[a-z0-9]+|a\/hero)\.jpg$/, 'f/server.jpg'],
+  [/^look\/aerial-[a-z0-9]+\.jpg$/, 'f/aerial.jpg'],
+  [/^look\/partners-[a-z0-9]+\.jpg$/, 'f/partners.jpg'],
+  [/^a\/estop\.jpg$/, 'f/estop.jpg'],
+];
+export const fieldSwap = (file: string) => {
+  for (const [re, to] of FIELD_SWAP) if (re.test(file)) return file.replace(re, to);
+  return file;
+};

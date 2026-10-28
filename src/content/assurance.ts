@@ -205,10 +205,27 @@ export const LICENSING_CONTROLS = [
 ];
 
 /* v2 (27 Oct 2026): claims brought back to what we can evidence.
-   "Tamper-proof" and "built to meet" overstated; we state alignment. */
-export const ASSURANCE_CONTROLS_V2 = ASSURANCE_CONTROLS.map((c) =>
-  c[1] === 'Tamper-proof architecture'
-    ? [c[0], 'Tamper-resistant architecture', 'Critical components are integrity checked, and subsystems are separated by function so a fault stays local.']
-    : c[1] === 'Standards alignment and compliance'
-      ? [c[0], 'Standards alignment', 'Designed in line with relevant defence and government standards. The assurance summary sets out how.']
-      : c);
+   "Tamper-proof" and "built to meet" overstated; we state alignment.
+   Later on 27 Oct: multi-factor authentication taken out at the client's
+   request and replaced by ISO/IEC 27001, stated as alignment, not as a
+   certificate. The sixth control now covers offline updates and yearly
+   security testing, taken from the 27 Oct technical proposal. */
+export const ASSURANCE_CONTROLS_V2 = [
+  ['ph-lock-key', 'Licence control that works offline', 'Each licence is tied to the hardware it was delivered for and checked offline, with no outside connection during operations.'],
+  ['ph-shield-chevron', 'System hardening', 'Each component runs only the services it needs, from a documented and secure baseline.'],
+  ['ph-tree-structure', 'Tamper-resistant architecture', 'Critical components are checked for tampering, and systems are separated by function so a fault stays contained.'],
+  ['ph-seal-check', 'Aligned with ISO/IEC 27001', 'We manage information security in line with ISO/IEC 27001, the international standard covering access control, encryption and incident response. Certification is planned.'],
+  ['ph-shield-warning', 'Separated, monitored networks', 'Networks are split into zones and monitored continuously, with audit logs and a defined way to patch every system, on site and in the office.'],
+  ['ph-hard-drives', 'Offline updates, tested every year', 'No remote access. Updates arrive on encrypted media and are tested before they go live, and every system is security tested each year.'],
+];
+export const ASSURANCE_IMAGES_V2 = ['c1', 'c2', 'c3', 'c6', 'c5', 'c7'];
+
+/* v2: how the platform protects itself, layer by layer. Mechanisms only,
+   no product names, from the 27 Oct technical proposal (section 4). */
+export const ASSURANCE_LAYERS_V2: [string, string, string][] = [
+  ['ph-identification-card', 'One sign-in, checked centrally', 'Staff sign in against your directory. Each role sees only the functions and data it needs, and every request carries a short-lived, signed pass.'],
+  ['ph-lock', 'Encrypted in transit and at rest', 'Data is encrypted as it moves between systems and wherever it is stored. Personal details are masked on screen and kept in a separate encrypted store.'],
+  ['ph-scroll', 'A record that cannot be edited', 'Every user action and system change is written to an audit log that can only be added to, never changed, and is copied to your security monitoring.'],
+  ['ph-squares-four', 'Separated by function', 'Training, administration and shared services sit in separate network zones. Traffic between zones passes a firewall, and links to outside systems pass through one gateway.'],
+  ['ph-stack', 'No single failure stops training', 'Each system runs as copies spread across three servers, with the database duplicated too, so losing one server does not stop a session.'],
+];

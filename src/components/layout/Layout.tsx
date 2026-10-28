@@ -4,6 +4,7 @@ import { Header } from './Header';
 import { Footer } from './Footer';
 import { Seo } from './Seo';
 import { useReveal } from '../../hooks/useReveal';
+import { useV3Copy } from '../../lib/v3copy';
 import { SITE } from '../../config/site';
 import { useReview } from '../../lib/review';
 import { ContentControl } from '../review/ContentControl';
@@ -13,6 +14,7 @@ export function Layout() {
   const main = useRef<HTMLElement>(null);
   const { demo } = useReview();
   useReveal();
+  useV3Copy();
 
   /* New route: top of page (or the anchor), and the short entrance fade. */
   useEffect(() => {

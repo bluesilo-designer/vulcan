@@ -27,8 +27,10 @@ export function Chain() {
   return (
     <Band id="chain" bleed deep>
       <div className="shell"><div className="head rv">
-        <h2>From the gate to the closing account, on one range day</h2>
-        <p>Where the systems meet, nothing is carried by hand. Select a step to see what happens, what data crosses, and which system holds it.</p></div></div>
+        <h2>{v2 ? 'One range day, from the gate to the final count' : 'From the gate to the closing account, on one range day'}</h2>
+        <p>{v2
+          ? 'Each step hands its data to the next, so nothing is carried on paper. Select a step to see what happens and which system handles it.'
+          : 'Where the systems meet, nothing is carried by hand. Select a step to see what happens, what data crosses, and which system holds it.'}</p></div></div>
       <div className="chain">
         <div className="chain__rail" id="rail" role="tablist" aria-label="The training day" onKeyDown={onKey}>
           {CHAIN.map((s, i) => (

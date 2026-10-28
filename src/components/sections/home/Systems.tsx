@@ -7,7 +7,7 @@ import { brandOf, productOf } from '../../../content/products';
 import { mediaUrl } from '../../../lib/media';
 import { chipLabel, chipTitle } from './shared';
 import { isVisible, shown } from '../../../config/site';
-import { useV } from '../../../lib/version';
+import { useV, useV1Back } from '../../../lib/version';
 import { WORDS } from '../../../content/home';
 
 type Tile = [string, string, string];
@@ -64,6 +64,7 @@ function TileLink({ t }: { t: Tile }) {
 function ExplorerPanel({ id }: { id: string }) {
   const t = tiles.find((x) => x[1] === id), p = productOf(id), b = brandOf(id);
   const v2 = useV(2); /* v2: bigger picture, one line, no facts table */
+  const back = useV1Back();
   if (!t || !p || !b) return null;
   return (
     <>
@@ -75,7 +76,7 @@ function ExplorerPanel({ id }: { id: string }) {
           {b.partner && <span className="v6x__partner">Partner, {b.partner}</span>}
         </div>
         <p className="v6x__desc">{t[2]}</p>
-        {!v2 && <dl className="v6x__facts">
+        {(!v2 || back) && <dl className="v6x__facts">
           <div><dt>Used by</dt><dd>{p.users.slice(0, 4).join(', ')}</dd></div>
           <div><dt>Deployed at</dt><dd>{p.where}</dd></div>
           <div><dt>The decision it supports</dt><dd>{p.decides.split(/(?<=\.)\s/)[0]}</dd></div>
@@ -132,7 +133,7 @@ function Explorer() {
           {GOV.length > 0 && <div className="v6xd__stem" aria-hidden="true"></div>}
           {GOV.map((t) => <div className="v6xd__row" key={t[0]}>{node(t[0], t[1])}</div>)}
         </div>
-        {!useV(2) && <span className="v6x__hint">Select a system to see its detail</span>}
+        {(!useV(2) || useV1Back()) && <span className="v6x__hint">Select a system to see its detail</span>}
       </nav>
       <div className="v6x__panel" id="v6x-panel" role="tabpanel" aria-live="polite" aria-labelledby={`v6x-t-${sel}`} ref={panelRef}>
         <ExplorerPanel id={sel} />
@@ -144,17 +145,18 @@ function Explorer() {
 export function Systems() {
   /* v2: no diagram above the explorer, no hint line, no compare button */
   const v2 = useV(2);
+  const back = useV1Back(); /* v3: diagram and compare button come back */
   return (
     <Band id="systems" label="Systems" title={v2 ? `${Word(OURS)} systems, each available on its own` : `One line, ${word(FUNCTIONS)} functions, each system available on its own`}
       intro={v2 ? `${Word(OURS)} systems from Blue Silo, plus ACCEL from our partner SigmaWave for video and vision AI. Use one on its own, or connect them all.` : `${Word(OURS)} systems from Blue Silo, plus ACCEL from our partner SigmaWave for video and vision AI. Take one, or take the line.`}>
-      {!v2 && <Diagram />}
+      {(!v2 || back) && <Diagram />}
       {shown('home.tiles') && <>
       <div className="v6tiles rv">{tiles.map((t) => <TileLink t={t} key={t[1]} />)}</div>
       <div className="v6x__intro rv"><span className="label">Alternative layout</span>
         <p>The same {word(OURS)} systems and ACCEL, with the hierarchy as navigation and the detail beside it.</p></div>
       </>}
       <Explorer />
-      {!v2 && <div className="btns" style={{ marginTop: 'var(--s7)' }}>
+      {(!v2 || back) && <div className="btns" style={{ marginTop: 'var(--s7)' }}>
         <Link className="btn btn--g" to="/products">Compare every system</Link></div>}
     </Band>
   );

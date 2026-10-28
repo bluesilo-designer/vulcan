@@ -1189,21 +1189,21 @@ body > .v6sw{display:none}
 
 /* ===================== v2 ===================== */
 /* explorer: picture led, less text */
-[data-v="2"] .v6x__img{aspect-ratio:16/9;height:auto}
-@media (min-width:980px){[data-v="2"] .v6x{grid-template-columns:minmax(0,4fr) minmax(0,8fr)}
-  [data-v="2"] .v6x__img{aspect-ratio:auto;height:clamp(260px,34vw,420px)}}
-[data-v="2"] .v6x__desc{font-size:var(--t-lg,19px);margin-bottom:var(--s5)}
+:is([data-v="2"],[data-v="3"]) .v6x__img{aspect-ratio:16/9;height:auto}
+@media (min-width:980px){:is([data-v="2"],[data-v="3"]) .v6x{grid-template-columns:minmax(0,4fr) minmax(0,8fr)}
+  :is([data-v="2"],[data-v="3"]) .v6x__img{aspect-ratio:auto;height:clamp(260px,34vw,420px)}}
+:is([data-v="2"],[data-v="3"]) .v6x__desc{font-size:var(--t-lg,19px);margin-bottom:var(--s5)}
 
 /* systems diagram: every connector carries a continuous moving flow */
-[data-v="2"] .v6dg .v6f{background-color:var(--line-3)}
+:is([data-v="2"],[data-v="3"]) .v6dg .v6f{background-color:var(--line-3)}
 @media (prefers-reduced-motion:no-preference){
-  [data-v="2"] .v6dg .v6f--y{background-image:repeating-linear-gradient(to bottom,var(--brand) 0 6px,transparent 6px 14px);
+  :is([data-v="2"],[data-v="3"]) .v6dg .v6f--y{background-image:repeating-linear-gradient(to bottom,var(--brand) 0 6px,transparent 6px 14px);
     background-size:1px 14px;animation:v2flowY .9s linear infinite}
-  [data-v="2"] .v6dg .v6f--l{background-image:repeating-linear-gradient(to right,var(--brand) 0 6px,transparent 6px 14px);
+  :is([data-v="2"],[data-v="3"]) .v6dg .v6f--l{background-image:repeating-linear-gradient(to right,var(--brand) 0 6px,transparent 6px 14px);
     background-size:14px 1px;animation:v2flowX .9s linear infinite}
-  [data-v="2"] .v6dg .v6f--r{background-image:repeating-linear-gradient(to left,var(--brand) 0 6px,transparent 6px 14px);
+  :is([data-v="2"],[data-v="3"]) .v6dg .v6f--r{background-image:repeating-linear-gradient(to left,var(--brand) 0 6px,transparent 6px 14px);
     background-size:14px 1px;animation:v2flowXr .9s linear infinite}
-  [data-v="2"] .v6xd__stem{background-image:repeating-linear-gradient(to bottom,var(--brand) 0 6px,transparent 6px 14px);
+  :is([data-v="2"],[data-v="3"]) .v6xd__stem{background-image:repeating-linear-gradient(to bottom,var(--brand) 0 6px,transparent 6px 14px);
     background-size:1px 14px;animation:v2flowY .9s linear infinite}
 }
 @keyframes v2flowY{to{background-position:0 14px}}
@@ -1220,8 +1220,8 @@ body > .v6sw{display:none}
 .v6close--bed{padding-block:clamp(96px,14vw,180px)}
 
 /* v2 chain: icon per step, calmer panel */
-[data-v="2"] .step__i{display:block;font-size:22px;color:var(--ink-3);margin:10px 0 2px;transition:color .3s var(--ease)}
-[data-v="2"] .step[aria-selected="true"] .step__i,[data-v="2"] .step:hover .step__i{color:var(--brand)}
+:is([data-v="2"],[data-v="3"]) .step__i{display:block;font-size:22px;color:var(--ink-3);margin:10px 0 2px;transition:color .3s var(--ease)}
+:is([data-v="2"],[data-v="3"]) .step[aria-selected="true"] .step__i,:is([data-v="2"],[data-v="3"]) .step:hover .step__i{color:var(--brand)}
 .v6cp--v2.panel__in.v6cp{align-items:center}
 @media (min-width:900px){.v6cp--v2.panel__in.v6cp{grid-template-columns:minmax(0,7fr) minmax(0,5fr);gap:var(--s7)}}
 .v6cp--v2 .v6cp__img{aspect-ratio:3/2}
@@ -1329,8 +1329,8 @@ body > .v6sw{display:none}
 }
 
 /* v2 hero: content on the page grid, heading clear of the nav */
-[data-v="2"] .pv-hero__in{width:100%;padding-top:calc(var(--nav-h) + 48px)}
-[data-v="2"] .pv-hero h1{font-size:clamp(36px,5.2vw,76px);max-width:16ch}
+:is([data-v="2"],[data-v="3"]) .pv-hero__in{width:100%;padding-top:calc(var(--nav-h) + 48px)}
+:is([data-v="2"],[data-v="3"]) .pv-hero h1{font-size:clamp(36px,5.2vw,76px);max-width:16ch}
 
 /* v2 company: how we work */
 .co-how{list-style:none;padding:0;margin:0;display:grid;grid-template-columns:repeat(4,1fr);gap:var(--s6)}
@@ -1571,3 +1571,11 @@ body > .v6sw{display:none}
    its frame instead of widening the whole page. */
 @media (max-width:900px){.lb-wrap>*{min-width:0}.lb-tv{overflow-x:auto;-webkit-overflow-scrolling:touch}.lb{min-width:560px}}
 .t2-wide{overflow-x:auto;-webkit-overflow-scrolling:touch}
+
+/* v2 Assurance: platform protection layers (27 Oct 2026) */
+.as-layers{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:1fr;gap:0 var(--s7);border-top:1px solid var(--line-2)}
+@media (min-width:900px){.as-layers{grid-template-columns:1fr 1fr}}
+.as-layers li{display:flex;gap:var(--s4);align-items:flex-start;padding:var(--s5) 0;border-bottom:1px solid var(--line)}
+.as-layers .ph{font-size:22px;color:var(--brand);flex:none;margin-top:3px}
+.as-layers h3{font-size:var(--t-md);color:var(--ink);margin-bottom:4px}
+.as-layers p{font-size:var(--t-sm);line-height:1.65;color:var(--ink-2)}

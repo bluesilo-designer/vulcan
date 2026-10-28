@@ -45,7 +45,7 @@ export const Chips = ({ items, on }: { items: string[]; on: string }) => (
 const NAMES = ['R. Tan', 'M. Hakim', 'J. Lim', 'A. Kumar', 'D. Ong', 'S. Wong'];
 
 /* ---------- 1 create booking, five steps ---------- */
-const STEPS = ['Booking details', 'Schedule', 'Lane configuration', 'Nominal roll', 'Review'];
+const STEPS = ['Booking details', 'Schedule', 'Lane set-up', 'Trainee list', 'Review'];
 export function CreateScreen({ s }: { s: number }) {
   const body = [
     <div className="lf-form" key="0">
@@ -73,7 +73,7 @@ export function CreateScreen({ s }: { s: number }) {
         <Field l="Training" v="Group, collective, dry run" /><Field l="Unit" v="Unit Alpha" /><Field l="Instructor" v="L. Ng" /></div>
       <div className="lf-card"><b>Courseware 1</b>
         <Field l="When" v="Thu 12 Nov, AM session" /><Field l="Where" v="Station 01, lanes 1-3, 5" />
-        <div className="lf-ok"><Icon name="ph-check-circle" />Lanes assigned, roll complete</div></div>
+        <div className="lf-ok"><Icon name="ph-check-circle" />Lanes assigned, trainee list complete</div></div>
     </div>,
   ][s];
   return (
@@ -87,11 +87,11 @@ export function CreateScreen({ s }: { s: number }) {
 function Create() {
   const [s, setS] = useState(0);
   const say = [
-    'Choose the unit, training mode and courseware.',
+    'Choose the unit, the type of training and the course.',
     'Pick a date and session. Availability is checked instantly, so stations are never double booked.',
-    'Set up the lanes the session needs.',
-    'Add trainees by import or by hand.',
-    'Check the summary and confirm. The stations are reserved.',
+    'Set up the lanes and equipment the session needs.',
+    'Import the trainee list, or add names by hand.',
+    'Check the summary and confirm. Your stations are now reserved.',
   ];
   return (
     <section className="band" id="t2-create"><div className="shell">
@@ -128,11 +128,11 @@ function Life() {
   return (
     <section className="band band--deep"><div className="shell">
       <div className="t2-h"><h2>Always know where every booking stands</h2>
-        <p>Each booking shows its status at a glance, from scheduled to completed.</p></div>
+        <p>See the status of every booking at a glance, from the day it is made to the day it closes.</p></div>
       <ol className="t2-life">{STATES.map((x) => (
         <li key={x[1]}><span className="t2-life__ic"><Icon name={x[0]} /></span><b>{x[1]}</b><p>{x[2]}</p></li>
       ))}</ol>
-      <div className="t2-branch"><span className="t2-branch__k">And it flags what needs attention</span>
+      <div className="t2-branch"><span className="t2-branch__k">It also flags what needs your attention</span>
         <ul>{BRANCH.map((x) => <li key={x[1]}><Icon name={x[0]} /><span><b>{x[1]}</b>{x[2]}</span></li>)}</ul></div>
     </div></section>
   );
@@ -153,7 +153,7 @@ function Day() {
   return (
     <section className="band"><div className="shell">
       <div className="t2-h"><h2>Training day, without the paperwork</h2>
-        <p>Check trainees in with a scan, run the session from one screen and see results as they come in.</p></div>
+        <p>Check trainees in with a scan, run the session from one screen, and see results as they come in.</p></div>
       <div className="t2-tabs" role="tablist">{tabs.map((x, i) => (
         <button key={x} type="button" role="tab" aria-selected={t === i} onClick={() => setT(i)}>{x}</button>))}</div>
       <div className="t2-day">
@@ -191,7 +191,7 @@ function After() {
   return (
     <section className="band band--deep"><div className="shell">
       <div className="t2-h"><h2>Finish with nothing left behind</h2>
-        <p>Scan equipment back in and get every trainee’s result in one place.</p></div>
+        <p>Scan equipment back in, and find every trainee’s result in one place.</p></div>
       <div className="t2-two"><figure><ReturnScreen /><figcaption>Know instantly what has come back.</figcaption></figure>
         <figure><ResultScreen /><figcaption>Results for every trainee, ready to share.</figcaption></figure></div>
     </div></section>
@@ -267,7 +267,7 @@ function Centre() {
 /* ---------- 6 who and what ---------- */
 export const ROLES: [string, string, string][] = [
   ['ph-crown-simple', 'Admin', 'Sets up sites, users and rules'], ['ph-desktop', 'Operator', 'Creates bookings and runs sessions'],
-  ['ph-chalkboard-teacher', 'Instructor', 'Follows details and results'], ['ph-wrench', 'Maintainer', 'Keeps stations and lanes available'],
+  ['ph-chalkboard-teacher', 'Instructor', 'Follows sessions and results'], ['ph-wrench', 'Maintainer', 'Keeps stations and lanes available'],
   ['ph-eye', 'Supervisor', 'Oversees the day across stations'], ['ph-vault', 'Armoury', 'Issues and receives equipment'],
   ['ph-magnifying-glass', 'Auditor', 'Reviews records and activity'],
 ];
@@ -302,7 +302,7 @@ export function TrmsPageV2() {
       <section className="pv-hero">
         <div className="pv-hero__bed pv-par"><img src={productImg('trms', 'hero', state.pset)} alt="" decoding="async" /></div><div className="pv-hero__veil"></div>
         <div className="shell pv-hero__in">
-          <div className="v6pbrand"><span className="v6pbrand__s">TRMS</span><span className="pv-status"><Icon name="ph-monitor-play" />Available for demonstration</span></div>
+          <div className="v6pbrand"><span className="v6pbrand__s">TRMS</span><span className="pv-status"><Icon name="ph-monitor-play" />Ready to demonstrate</span></div>
           <h1>Training Resource Management System</h1>
           <p className="pv-hero__lead">Book stations, issue equipment, run sessions and capture results. One system for your whole simulator training centre.</p>
           <div className="pv-cta"><Link className="btn btn--p" to="/contact">Request a demonstration</Link>
@@ -316,7 +316,7 @@ export function TrmsPageV2() {
       <After />
       <Centre />
       <Who />
-      <Closer title="See TRMS running" label="Request a demonstration" line="We will walk you through a full training day in TRMS." />
+      <Closer title="See TRMS running" label="Request a demonstration" line="We will walk you through a full training day in TRMS, from booking to results." />
     </>
   );
 }

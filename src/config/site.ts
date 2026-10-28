@@ -33,5 +33,7 @@ export const HIDDEN_SECTIONS = [
   'company.leadership',    // portrait placeholders (23 Oct 2026)
   'company.disciplines',   // "Disciplines, not headcount" (23 Oct 2026)
   'company.corporate',     // registration table and office photo (23 Oct 2026)
+  'homeSlider.products',   // slider home product grid, not ticked in the merged reference (28 Oct 2026)
+  'homeSlider.proof',      // slider home figures band, not ticked in the merged reference (28 Oct 2026)
 ];
 export const shown = (key: string) => !HIDDEN_SECTIONS.includes(key);

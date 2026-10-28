@@ -294,6 +294,31 @@ export const FAQ = [
   ]
 ];
 
+/* v2 FAQ (28 Oct 2026): plainer answers, the four capability areas, and no
+   source-code escrow claim until the user confirms it. v1 keeps FAQ above. */
+export const FAQ_V2 = [
+  [
+    "Can we buy one system on its own?",
+    "Yes. Every system can be deployed on its own, with its own software and interfaces. When you are ready, it connects to other Blue Silo systems or to the systems you already run."
+  ],
+  [
+    "Is Blue Silo only a range company?",
+    "No. We design, develop and integrate defence systems in four areas: training systems, system integration, monitoring and intelligence, and enterprise management. Training ranges are where we go deepest, but our systems also serve defence sites and other secure environments."
+  ],
+  [
+    "Can you work with our current suppliers and systems?",
+    "Yes. We work alongside prime contractors, integrators and technology partners. Our systems use documented interfaces and common industry protocols, so they connect to the hardware and software you already have."
+  ],
+  [
+    "Do the systems work without an internet connection?",
+    "Yes. They run on isolated, secure networks. Activation, licensing and updates are handled offline, so no internet connection is needed during operations."
+  ],
+  [
+    "What if another team needs to take over support one day?",
+    "We document our systems so a competent third party can take over support if needed, and we agree ownership and support terms in the contract. We also offer long-term support and maintenance."
+  ]
+];
+
 export const TRUST = {
   "title": "Trusted in mission-critical environments",
   "line": "Supporting defence, government and homeland security organisations across Singapore and APAC.",

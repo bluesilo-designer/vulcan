@@ -13,27 +13,32 @@ import { Questions } from '../components/sections/home/Questions';
 import { PartnersSection } from '../components/sections/shared/PartnersSection';
 import { AssureFeature } from '../components/sections/shared/AssureFeature';
 import { ContactBlock } from '../components/sections/shared/ContactBlock';
-import { useV } from '../lib/version';
+import { useHomeLayout, useV, useV1Back } from '../lib/version';
+import { HomeSlider } from '../components/sections/home/HomeSlider';
 
 export function Home() {
   /* v2 drops Modernising, Measures and CompanyFacts, and moves the questions to /faq */
   const v2 = useV(2);
+  const back = useV1Back(); /* v3: v2 plus the v1 sections it dropped */
+  const { hm } = useHomeLayout();
+  /* v2 only: the image slider home (?hm=s), 28 Oct 2026 */
+  if (v2 && hm === 's') return <HomeSlider />;
   return (
     <>
       <Hero />
       <Trust />
-      {!v2 && <Modernising />}
+      {(!v2 || back) && <Modernising />}
       <Systems />
       {shown('home.whereWeOperate') && <WhereWeOperate />}
       <Chain />
-      {!v2 && <Measures />}
+      {(!v2 || back) && <Measures />}
       <IntegrationIntro />
       <Simulate />
       {/* v2: shown on Integration only, it repeated there (27 Oct 2026) */}
-      {!v2 && <PartnersSection />}
+      {(!v2 || back) && <PartnersSection />}
       <AssureFeature />
-      {!v2 && <CompanyFacts />}
-      {!v2 && <Questions />}
+      {(!v2 || back) && <CompanyFacts />}
+      {(!v2 || back) && <Questions />}
       <ContactBlock />
     </>
   );
