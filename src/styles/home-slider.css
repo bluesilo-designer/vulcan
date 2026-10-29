@@ -150,6 +150,52 @@
 @keyframes hsProgY{from{transform:scaleY(0)}to{transform:scaleY(1)}}
 .hs--s4 .hs__ctl{flex-direction:column}
 
+/* s5: filmstrip, a thumbnail of every slide at the bottom right */
+.hs--s5 .hs__in{padding-bottom:calc(var(--s7) + 150px)}
+.hs__strip{position:absolute;left:0;right:0;bottom:var(--s6);z-index:3}
+.hs__strip-in{display:flex;align-items:flex-end;justify-content:flex-end;gap:var(--s4)}
+.hs__films{flex:none;display:flex;gap:var(--s3)}
+.hs__film{position:relative;width:168px;padding:0;border:0;background:none;cursor:pointer;text-align:left;color:var(--ink-3);font:inherit}
+.hs__film-img{display:block;aspect-ratio:16/9;overflow:hidden;border:1px solid var(--line-3);opacity:.5;transition:opacity .3s var(--ease),border-color .3s var(--ease)}
+.hs__film-img img{width:100%;height:100%;object-fit:cover;display:block}
+.hs__film:hover .hs__film-img{opacity:.85}
+.hs__film[aria-selected="true"] .hs__film-img{opacity:1;border-color:var(--brand)}
+.hs__film-t{display:flex;gap:var(--s2);align-items:baseline;margin-top:var(--s2);min-width:0}
+.hs__film-n{font-family:var(--mono);font-size:var(--t-2xs);letter-spacing:.2em}
+.hs__film-k{font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.hs__film[aria-selected="true"]{color:var(--ink)}
+.hs__film[aria-selected="true"] .hs__film-n{color:var(--brand)}
+.hs__film .hs__prog{top:-5px}
+.hs__film[aria-selected="true"] .hs__prog{transform:scaleX(1)}
+.hs.is-running .hs__film[aria-selected="true"] .hs__prog{animation:hsProg linear both}
+
+/* s6: next up, a progress ring on the play button and a preview card */
+.hs--s6 .hs__in{padding-bottom:calc(var(--s7) + 120px)}
+.hs__next{position:absolute;left:0;right:0;bottom:var(--s6);z-index:3}
+.hs__next-in{display:flex;align-items:flex-end;justify-content:space-between;gap:var(--s5)}
+.hs__ring-wrap{display:flex;align-items:center;gap:var(--s4)}
+.hs__ring{position:relative;width:56px;height:56px;border:0;border-radius:50%;background:rgba(8,9,11,.5);color:var(--ink);cursor:pointer;display:grid;place-items:center}
+.hs__ring:disabled{cursor:default}
+.hs__ring svg{position:absolute;inset:0;width:100%;height:100%;transform:rotate(-90deg)}
+.hs__ring circle{fill:none;stroke-width:2}
+.hs__ring-bg{stroke:rgba(232,235,230,.22)}
+.hs__ring-fg{stroke:var(--brand);stroke-dasharray:138.2;stroke-dashoffset:0}
+.hs.is-running .hs__ring-fg{animation:hsRing linear both}
+@keyframes hsRing{from{stroke-dashoffset:138.2}to{stroke-dashoffset:0}}
+.hs__ring .ph{position:relative;font-size:18px}
+.hs__ring:hover{color:var(--brand)}
+.hs__peek{display:flex;align-items:center;gap:var(--s4);padding:var(--s2) var(--s5) var(--s2) var(--s2);border:1px solid var(--line-3);
+  background:rgba(8,9,11,.6);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);color:var(--ink);cursor:pointer;text-align:left;font:inherit;
+  transition:border-color .3s var(--ease)}
+.hs__peek:hover{border-color:var(--brand)}
+.hs__peek-img{display:block;width:132px;aspect-ratio:16/9;overflow:hidden}
+.hs__peek-img img{width:100%;height:100%;object-fit:cover;display:block}
+.hs__peek-t{display:flex;flex-direction:column;gap:4px}
+.hs__peek-l{font-family:var(--mono);font-size:var(--t-2xs);letter-spacing:.2em;text-transform:uppercase;color:var(--brand)}
+.hs__peek-k{font-family:var(--display);font-size:16px}
+.hs__peek>.ph{color:var(--ink-2)}
+@media (prefers-reduced-motion:reduce){.hs__ring-fg{animation:none}}
+
 @media (max-width:960px){
   .hs--s3{--split:100%}
   .hs--s3 .hs__bed,.hs--s3 .hs__veil{left:0;bottom:auto;height:30vh}
@@ -174,6 +220,16 @@
   .hs--s4 .hs__in,.hs--s2 .hs__in{padding-bottom:calc(var(--s8) + 64px)}
   .hs__segbar{bottom:var(--s5)}
   .hs__count{display:none}
+  .hs__film{width:64px}
+  .hs__film-t{display:none}
+  .hs--s5 .hs__in{padding-bottom:calc(var(--s6) + 80px)}
+  .hs__strip{bottom:var(--s5)}
+  .hs__strip-in{justify-content:space-between}
+  .hs--s6 .hs__in{padding-bottom:calc(var(--s6) + 80px)}
+  .hs__next{bottom:var(--s5)}
+  .hs__peek-img{display:none}
+  .hs__peek{padding:var(--s2) var(--s4)}
+  .hs__peek-k{font-size:14px}
 }
 
 /* ---------- shared bits ---------- */

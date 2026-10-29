@@ -13,7 +13,7 @@ import { pad2 } from '../../../lib/html';
 const DWELL = 7000; /* ms per slide */
 const Word = (n: number) => { const w = (WORDS as string[])[n] || String(n); return w.charAt(0).toUpperCase() + w.slice(1); };
 
-export type SliderVariant = 's' | 's2' | 's3' | 's4';
+export type SliderVariant = 's' | 's2' | 's3' | 's4' | 's5' | 's6';
 
 /* Hero carousel. Auto-advances, pauses on hover, focus, a hidden tab, or the
    pause button, and never moves on its own under prefers-reduced-motion.
@@ -22,7 +22,9 @@ export type SliderVariant = 's' | 's2' | 's3' | 's4';
    s2  loading bars only, no content strip
    s3  split: text and index on a solid panel, the photo beside it, so
        the photo never sits under the text
-   s4  full-bleed photo in a viewfinder frame, vertical rail on the right */
+   s4  full-bleed photo in a viewfinder frame, vertical rail on the right
+   s5  filmstrip: a thumbnail of every slide, bottom right
+   s6  next up: a progress ring on the play button, a preview of the next slide */
 function Slider({ variant }: { variant: SliderVariant }) {
   const n = HS_SLIDES.length;
   const [cur, setCur] = useState(0);
@@ -113,6 +115,32 @@ function Slider({ variant }: { variant: SliderVariant }) {
           {ctl}
         </div>
       </>}
+
+      {variant === 's5' && <div className="hs__strip"><div className="shell hs__strip-in">
+        {list('hs__film', (i) => <>
+          <span className="hs__film-img"><img src={mediaUrl(HS_SLIDES[i].img)} alt="" decoding="async" /></span>
+          <span className="hs__film-t"><span className="hs__film-n">{pad2(i)}</span><span className="hs__film-k">{HS_SLIDES[i].k}</span></span>
+        </>, 'hs__films')}
+        {ctl}
+      </div></div>}
+
+      {variant === 's6' && <div className="hs__next"><div className="shell hs__next-in">
+        <div className="hs__ring-wrap">
+          <button type="button" className="hs__ring" aria-label={paused ? 'Play slides' : 'Pause slides'} aria-pressed={paused}
+            onClick={() => setPaused((p) => !p)} disabled={reduce.current}>
+            <svg viewBox="0 0 48 48" aria-hidden="true"><circle className="hs__ring-bg" cx="24" cy="24" r="22" />
+              <circle className="hs__ring-fg" cx="24" cy="24" r="22" style={{ animationDuration: `${DWELL}ms` }} key={`r-${cur}`} /></svg>
+            <Icon name={paused || reduce.current ? 'ph-play' : 'ph-pause'} />
+          </button>
+          {count}
+          <button type="button" className="hs__btn" aria-label="Previous slide" onClick={() => go(cur - 1)}><Icon name="ph-caret-left" /></button>
+        </div>
+        <button type="button" className="hs__peek" onClick={() => go(cur + 1)} aria-label={`Next: ${HS_SLIDES[(cur + 1) % n].k}`}>
+          <span className="hs__peek-img"><img src={mediaUrl(HS_SLIDES[(cur + 1) % n].img)} alt="" decoding="async" /></span>
+          <span className="hs__peek-t"><span className="hs__peek-l">Next</span><span className="hs__peek-k">{HS_SLIDES[(cur + 1) % n].k}</span></span>
+          <Icon name="ph-arrow-right" />
+        </button>
+      </div></div>}
     </section>
   );
 }
@@ -125,7 +153,7 @@ export function HomeSlider({ variant = 's' }: { variant?: string }) {
   const prods = VISIBLE_PRODUCTS.map((id) => ({ id, p: productOf(id), b: brandOf(id) })).filter((x) => x.p && x.b);
   return (
     <>
-      <Slider variant={(['s', 's2', 's3', 's4'].includes(variant) ? variant : 's') as SliderVariant} />
+      <Slider variant={(['s', 's2', 's3', 's4', 's5', 's6'].includes(variant) ? variant : 's') as SliderVariant} />
       <Trust />
 
       <section className="band hs-caps"><div className="shell">

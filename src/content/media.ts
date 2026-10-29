@@ -113,6 +113,11 @@ export const LOOKS = [
   }
 ];
 
+/* Image sets offered in the review panel (29 Oct 2026: the client dropped
+   all but Golden 2.0). The other looks stay in LOOKS and their files stay in
+   media/look/, so a set comes back by adding its id here. */
+export const LOOKS_SHOWN = ['golden2'];
+
 export const SLOTS = {
   "ops": {
     "k": "Where we operate, bed",

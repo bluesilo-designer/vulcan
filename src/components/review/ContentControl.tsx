@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { HERO_CUTS, LOOKS, PHOTO_SETS, PRODUCT_IMAGE_SETS } from '../../content/media';
+import { HERO_CUTS, LOOKS, LOOKS_SHOWN, PHOTO_SETS, PRODUCT_IMAGE_SETS } from '../../content/media';
 import { isReady } from '../../lib/media';
 import { DEFAULTS, useReview } from '../../lib/review';
 import { VERSIONS, COMPANY_DEFAULT, COMPANY_LAYOUTS, HOME_DEFAULT, HOME_LAYOUTS, TRMS_DEFAULT, TRMS_LAYOUTS, useCompanyLayout, useHomeLayout, useTrmsLayout, useVersion } from '../../lib/version';
@@ -87,7 +87,7 @@ export function ContentControl() {
             </label>
           ))}
           {v >= 2 && <span className="v6ctl__sub">Earlier sets</span>}
-          {(LOOKS as Look[]).map((l) => (
+          {(LOOKS as Look[]).filter((l) => LOOKS_SHOWN.includes(l.id)).map((l) => (
             <label className="v6ctl__opt" key={l.id}>
               <input type="radio" name="v6look" checked={!photoOn && state.look === l.id} onChange={() => set(v >= 2 ? { look: l.id, photo: 'prev' } : { look: l.id })} />
               <span className="v6ctl__sw">{l.sw.map((c) => <i key={c} style={{ background: c }} />)}</span>
