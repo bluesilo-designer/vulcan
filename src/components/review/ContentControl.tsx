@@ -46,7 +46,9 @@ export function ContentControl() {
   /* v2/v3: a photography set, when chosen, overrides the image set below it */
   const photoOn = v >= 2 && (state.photo || DEFAULTS.photo) !== 'prev';
   const layouts = [
-    { k: 'Home', items: HOME_LAYOUTS, cur: hm, pick: (id: string) => setHm(id as typeof hm) },
+    /* Home: Current or Slider; which slider is chosen in its own group below */
+    { k: 'Home', items: [{ id: '0', k: 'Current', d: HOME_LAYOUTS[0].d }, { id: 's', k: 'Slider', d: 'Image slider home' }],
+      cur: hm === '0' ? '0' : 's', pick: (id: string) => setHm((id === 's' && hm !== '0' ? hm : id) as typeof hm) },
     { k: 'Company', items: COMPANY_LAYOUTS, cur: co, pick: (id: string) => setCo(id as typeof co) },
     { k: 'TRMS page', items: TRMS_LAYOUTS, cur: tr, pick: (id: string) => setTr(id as typeof tr) },
   ];
@@ -66,6 +68,15 @@ export function ContentControl() {
             ))}
           </div>
         </fieldset>
+        {v >= 2 && <fieldset>
+          <legend>Slider style (home)</legend>
+          {HOME_LAYOUTS.filter((l) => l.id !== '0').map((l) => (
+            <label className="v6ctl__opt" key={l.id}>
+              <input type="radio" name="v6slider" checked={hm === l.id} onChange={() => setHm(l.id)} />
+              <span><b>{l.k}</b><em>{l.d}</em></span>
+            </label>
+          ))}
+        </fieldset>}
         <fieldset>
           <legend>Image set</legend>
           {v >= 2 && (PHOTO_SETS as Look[]).map((l) => (
