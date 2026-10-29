@@ -103,9 +103,14 @@ export const useTrmsLayout = () => useContext(TrCtx);
    Company and TRMS layouts. 's' is the image slider home built from the
    client's reference (28 Oct 2026): capability-led, four areas. '0' is the
    v2 home as it was and stays the default until the client picks. */
+/* s2 to s4 (29 Oct 2026): the same slider home with a different hero
+   carousel; see Slider in HomeSlider.tsx. */
 export const HOME_LAYOUTS = [
   { id: '0', k: 'Current', d: 'Version 2 home as it is' },
-  { id: 's', k: 'Slider', d: 'Image slider, four capabilities, products, proof' },
+  { id: 's', k: 'Slider A', d: 'Slider with capability tabs under the hero' },
+  { id: 's2', k: 'Slider B', d: 'Slider with loading bars only, no content strip' },
+  { id: 's3', k: 'Slider C', d: 'Split: text and index on a solid panel, photo beside it' },
+  { id: 's4', k: 'Slider D', d: 'Full-bleed photo, viewfinder frame and a vertical rail' },
 ] as const;
 export type HomeLayout = (typeof HOME_LAYOUTS)[number]['id'];
 export const HOME_DEFAULT: HomeLayout = '0';

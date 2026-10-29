@@ -21,8 +21,8 @@ export function Home() {
   const v2 = useV(2);
   const back = useV1Back(); /* v3: v2 plus the v1 sections it dropped */
   const { hm } = useHomeLayout();
-  /* v2 only: the image slider home (?hm=s), 28 Oct 2026 */
-  if (v2 && hm === 's') return <HomeSlider />;
+  /* v2 only: the image slider home (?hm=s, s2, s3, s4), 28 and 29 Oct 2026 */
+  if (v2 && hm !== '0') return <HomeSlider variant={hm} />;
   return (
     <>
       <Hero />

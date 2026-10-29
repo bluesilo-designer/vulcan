@@ -5,21 +5,23 @@
 
 export type Slide = { k: string; icon: string; h: string; line: string; img: string; cta: [string, string] };
 
-/* One slide per capability area. Images are already in /public/media. */
+/* One slide per capability area. Photos (29 Oct 2026) in media/hs/, shot for
+   this slider: subject in the right half, the left half dark for the text.
+   They do not change with the photography set. */
 export const HS_SLIDES: Slide[] = [
-  { k: 'Training systems', icon: 'ph-crosshair', img: 'sim-command-4k.jpg',
+  { k: 'Training systems', icon: 'ph-crosshair', img: 'hs/training.jpg',
     h: 'Plan, run and close every training day in one system',
     line: 'Bookings, trainees, lanes and equipment in one place, from the first request to the final result.',
     cta: ['Explore training systems', '/products/trms'] },
-  { k: 'System integration', icon: 'ph-plugs-connected', img: 'integration-bench.jpg',
+  { k: 'System integration', icon: 'ph-plugs-connected', img: 'hs/integration.jpg',
     h: 'Many suppliers. One working system.',
     line: 'We connect targetry, simulators, video and facility systems, so your teams work from one picture.',
     cta: ['See how we integrate', '/integration'] },
-  { k: 'Monitoring and intelligence', icon: 'ph-eye', img: 'vms.jpg',
+  { k: 'Monitoring and intelligence', icon: 'ph-eye', img: 'hs/monitoring.jpg',
     h: 'See what is happening, as it happens',
     line: 'Live video, vision AI and equipment health, so operators act on alerts instead of watching screens.',
     cta: ['Explore monitoring', '/products/vms'] },
-  { k: 'Enterprise management', icon: 'ph-stack', img: 'ewms.jpg',
+  { k: 'Enterprise management', icon: 'ph-stack', img: 'hs/enterprise.jpg',
     h: 'Know where every asset is, and who holds it',
     line: 'Weapon custody, administration and resource planning, with a clear record behind every decision.',
     cta: ['Explore enterprise systems', '/products/ewms'] },

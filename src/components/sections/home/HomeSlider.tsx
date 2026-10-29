@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState, type KeyboardEvent } from 'react';
+import { useCallback, useEffect, useRef, useState, type KeyboardEvent, type ReactNode } from 'react';
 import { Link } from 'react-router-dom';
 import { Trust } from './Trust';
 import { CtaBand } from '../../ui/CtaBand';
@@ -13,9 +13,17 @@ import { pad2 } from '../../../lib/html';
 const DWELL = 7000; /* ms per slide */
 const Word = (n: number) => { const w = (WORDS as string[])[n] || String(n); return w.charAt(0).toUpperCase() + w.slice(1); };
 
+export type SliderVariant = 's' | 's2' | 's3' | 's4';
+
 /* Hero carousel. Auto-advances, pauses on hover, focus, a hidden tab, or the
-   pause button, and never moves on its own under prefers-reduced-motion. */
-function Slider() {
+   pause button, and never moves on its own under prefers-reduced-motion.
+   One state machine, four ways to show it (29 Oct 2026):
+   s   tabs under the hero, naming every capability
+   s2  loading bars only, no content strip
+   s3  split: text and index on a solid panel, the photo beside it, so
+       the photo never sits under the text
+   s4  full-bleed photo in a viewfinder frame, vertical rail on the right */
+function Slider({ variant }: { variant: SliderVariant }) {
   const n = HS_SLIDES.length;
   const [cur, setCur] = useState(0);
   const [paused, setPaused] = useState(false);
@@ -32,21 +40,45 @@ function Slider() {
   }, [cur, running, go]);
 
   const onKey = (e: KeyboardEvent) => {
-    const d = e.key === 'ArrowRight' ? 1 : e.key === 'ArrowLeft' ? -1 : 0;
+    const d = e.key === 'ArrowRight' || e.key === 'ArrowDown' ? 1 : e.key === 'ArrowLeft' || e.key === 'ArrowUp' ? -1 : 0;
     if (!d) return;
     e.preventDefault(); const i = ((cur + d) % n + n) % n; go(i); tabs.current[i]?.focus();
   };
+  /* one tab per slide; the markup inside differs by variant */
+  const tab = (i: number, cls: string, body: ReactNode) => (
+    <button key={HS_SLIDES[i].k} ref={(el) => { tabs.current[i] = el; }} type="button" role="tab" className={cls + (i < cur ? ' is-done' : '')}
+      aria-selected={i === cur} aria-controls={`hs-slide-${i}`} aria-label={HS_SLIDES[i].k} tabIndex={i === cur ? 0 : -1} onClick={() => go(i)}>
+      {body}
+      <i className="hs__prog" aria-hidden="true" style={{ animationDuration: `${DWELL}ms` }} key={i === cur ? `on-${cur}` : 'off'}></i>
+    </button>
+  );
+  const ctl = (
+    <div className="hs__ctl">
+      <button type="button" className="hs__btn" aria-label="Previous slide" onClick={() => go(cur - 1)}><Icon name="ph-caret-left" /></button>
+      <button type="button" className="hs__btn" aria-label={paused ? 'Play slides' : 'Pause slides'} aria-pressed={paused}
+        onClick={() => setPaused((p) => !p)} hidden={reduce.current}><Icon name={paused ? 'ph-play' : 'ph-pause'} /></button>
+      <button type="button" className="hs__btn" aria-label="Next slide" onClick={() => go(cur + 1)}><Icon name="ph-caret-right" /></button>
+    </div>
+  );
+  const list = (cls: string, inner: (i: number) => ReactNode, extra = '') => (
+    <div className={'hs__tabs ' + extra} role="tablist" aria-label="Choose a capability" onKeyDown={onKey}>
+      {HS_SLIDES.map((_, i) => tab(i, cls, inner(i)))}
+    </div>
+  );
+  const count = <span className="hs__count" aria-hidden="true"><b>{pad2(cur)}</b> / {pad2(n - 1)}</span>;
 
   return (
-    <section className={'hs' + (running ? ' is-running' : '')} aria-roledescription="carousel" aria-label="Blue Silo capabilities"
+    <section className={'hs hs--' + variant + (running ? ' is-running' : '')} aria-roledescription="carousel" aria-label="Blue Silo capabilities"
       onMouseEnter={() => setHold(true)} onMouseLeave={() => setHold(false)}
       onFocus={() => setHold(true)} onBlur={(e) => { if (!e.currentTarget.contains(e.relatedTarget as Node)) setHold(false); }}>
+      {variant === 's4' && <div className="hs__frame" aria-hidden="true"><i></i><i></i><i></i><i></i></div>}
       {HS_SLIDES.map((s, i) => (
         <div className={'hs__slide' + (i === cur ? ' is-on' : '')} key={s.k} role="group" aria-roledescription="slide"
           aria-label={`${i + 1} of ${n}: ${s.k}`} aria-hidden={i !== cur} id={`hs-slide-${i}`}>
-          <div className="hs__bed"><img src={mediaUrl(s.img)} alt="" decoding="async" loading={i === 0 ? 'eager' : 'lazy'} /></div>
+          <div className="hs__bed"><img src={mediaUrl(s.img)} alt="" decoding="async" loading={i === cur || i === (cur + 1) % n ? 'eager' : 'lazy'} /></div>
           <div className="hs__veil"></div>
           <div className="shell hs__in">
+            {variant === 's3' && <span className="hs__big" aria-hidden="true">{pad2(i)}</span>}
             <span className="label hs__k"><Icon name={s.icon} />{s.k}</span>
             <h1 className="hs__h">{s.h}</h1>
             <p className="lead hs__line">{s.line}</p>
@@ -57,23 +89,30 @@ function Slider() {
           </div>
         </div>
       ))}
-      <div className="hs__bar"><div className="shell hs__bar-in">
-        <div className="hs__tabs" role="tablist" aria-label="Choose a capability" onKeyDown={onKey}>
-          {HS_SLIDES.map((s, i) => (
-            <button key={s.k} ref={(el) => { tabs.current[i] = el; }} type="button" role="tab" className="hs__tab"
-              aria-selected={i === cur} aria-controls={`hs-slide-${i}`} tabIndex={i === cur ? 0 : -1} onClick={() => go(i)}>
-              <span className="hs__tab-n">{pad2(i)}</span><span className="hs__tab-k">{s.k}</span>
-              <i className="hs__prog" aria-hidden="true" style={{ animationDuration: `${DWELL}ms` }} key={i === cur ? `on-${cur}` : 'off'}></i>
-            </button>
-          ))}
+
+      {variant === 's' && <div className="hs__bar"><div className="shell hs__bar-in">
+        {list('hs__tab', (i) => <><span className="hs__tab-n">{pad2(i)}</span><span className="hs__tab-k">{HS_SLIDES[i].k}</span></>)}
+        {ctl}
+      </div></div>}
+
+      {variant === 's2' && <div className="hs__segbar"><div className="shell hs__segbar-in">
+        {count}
+        {list('hs__seg', () => null, 'hs__segs')}
+        {ctl}
+      </div></div>}
+
+      {variant === 's3' && <div className="hs__side"><div className="hs__side-in">
+        {list('hs__ix', (i) => <><span className="hs__ix-n">{pad2(i)}</span><span className="hs__ix-k">{HS_SLIDES[i].k}</span></>, 'hs__index')}
+        {ctl}
+      </div></div>}
+
+      {variant === 's4' && <>
+        <div className="hs__read" aria-hidden="true"><span>{pad2(cur)}</span><span>{HS_SLIDES[cur].k}</span></div>
+        <div className="hs__rail">
+          {list('hs__tick', (i) => <span className="hs__tick-n">{pad2(i)}</span>, 'hs__ticks')}
+          {ctl}
         </div>
-        <div className="hs__ctl">
-          <button type="button" className="hs__btn" aria-label="Previous slide" onClick={() => go(cur - 1)}><Icon name="ph-caret-left" /></button>
-          <button type="button" className="hs__btn" aria-label={paused ? 'Play slides' : 'Pause slides'} aria-pressed={paused}
-            onClick={() => setPaused((p) => !p)} hidden={reduce.current}><Icon name={paused ? 'ph-play' : 'ph-pause'} /></button>
-          <button type="button" className="hs__btn" aria-label="Next slide" onClick={() => go(cur + 1)}><Icon name="ph-caret-right" /></button>
-        </div>
-      </div></div>
+      </>}
     </section>
   );
 }
@@ -82,11 +121,11 @@ function Slider() {
    2026), keeping only the ticked sections: hero, trust, featured work, CTA and
    footer from the first; capabilities and why us from the second. Products and
    proof were not ticked and are hidden through HIDDEN_SECTIONS. */
-export function HomeSlider() {
+export function HomeSlider({ variant = 's' }: { variant?: string }) {
   const prods = VISIBLE_PRODUCTS.map((id) => ({ id, p: productOf(id), b: brandOf(id) })).filter((x) => x.p && x.b);
   return (
     <>
-      <Slider />
+      <Slider variant={(['s', 's2', 's3', 's4'].includes(variant) ? variant : 's') as SliderVariant} />
       <Trust />
 
       <section className="band hs-caps"><div className="shell">
