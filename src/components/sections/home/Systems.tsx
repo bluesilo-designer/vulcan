@@ -7,7 +7,7 @@ import { brandOf, productOf } from '../../../content/products';
 import { mediaUrl } from '../../../lib/media';
 import { chipLabel, chipTitle } from './shared';
 import { isVisible, shown } from '../../../config/site';
-import { useV, useV1Back } from '../../../lib/version';
+import { useSystemLayout, useV, useV1Back, useVersion } from '../../../lib/version';
 import { WORDS } from '../../../content/home';
 
 type Tile = [string, string, string];
@@ -20,6 +20,19 @@ const FUNCTIONS = TOP.length + MON.length + GOV.length;
 const OURS = tiles.filter((t) => brandOf(t[1])?.brand !== 'ACCEL').length;
 const word = (n: number) => (WORDS as string[])[n] || String(n);
 const Word = (n: number) => word(n).charAt(0).toUpperCase() + word(n).slice(1);
+
+/* Public portfolio language: explain each system by the decision it supports,
+   without implying that all five are one mandatory product bundle. */
+const V3_SYSTEMS = [
+  { id: 'trms', moment: 'Plan', role: 'Prepare the training day', detail: 'Bookings, people, resources and results.' },
+  { id: 'rcs', moment: 'Run', role: 'Control the live range', detail: 'Readiness, targetry, session control and debrief.' },
+  { id: 'ewms', moment: 'Account', role: 'Control weapon custody', detail: 'Authorised issue, return and weapon status.' },
+  { id: 'hums', moment: 'Sustain', role: 'Keep equipment ready', detail: 'Health, faults, usage and maintenance.' },
+  { id: 'vms', moment: 'See', role: 'Make video actionable', detail: 'Live views, recordings and vision AI alerts.' },
+] as const;
+
+// Keep original photography available; these scenes distinguish each product's role.
+const systemImage = (id: string) => `home-v3-western/system-${id}${['trms', 'rcs', 'vms'].includes(id) ? '-v2' : ''}.jpg`;
 
 function Diagram() {
   const chip = (id: string) => {
@@ -65,14 +78,16 @@ function ExplorerPanel({ id }: { id: string }) {
   const t = tiles.find((x) => x[1] === id), p = productOf(id), b = brandOf(id);
   const v2 = useV(2); /* v2: bigger picture, one line, no facts table */
   const back = useV1Back();
+  const v3 = useVersion().v === 3;
   if (!t || !p || !b) return null;
+  const image = v3 ? systemImage(id) : (EXPLORER_IMAGES as Record<string, string>)[id] + '.jpg';
   return (
     <>
-      <figure className="v6x__img"><img src={mediaUrl((EXPLORER_IMAGES as Record<string, string>)[id] + '.jpg')} alt="" decoding="async" />
+      <figure className="v6x__img"><img src={mediaUrl(image)} alt="" decoding="async" />
         <span className="v6x__fnb">{t[0]}</span></figure>
       <div className="v6x__body">
         <div className="v6x__head"><Icon name={p.icon} />
-          <div><h3>{b.brand || b.acr}</h3><span className="v6x__sys">{b.sys}</span></div>
+          <div><h3>{v3 ? (id === 'vms' ? 'ACCEL' : b.acr) : (b.brand || b.acr)}</h3><span className="v6x__sys">{b.sys}</span></div>
           {b.partner && <span className="v6x__partner">Partner, {b.partner}</span>}
         </div>
         <p className="v6x__desc">{t[2]}</p>
@@ -90,13 +105,15 @@ function ExplorerPanel({ id }: { id: string }) {
 const ORDER = ['trms', 'rcs', 'ewms', 'eams', 'pwats', 'hums', 'vms', 'as'].filter(isVisible);
 
 function Explorer() {
+  const v3 = useVersion().v === 3;
+  const { sys } = useSystemLayout();
   const [sel, setSel] = useState(tiles[0][1]);
   const refs = useRef<Record<string, HTMLButtonElement | null>>({});
   const panelRef = useRef<HTMLDivElement>(null);
   const select = (id: string, focus: boolean) => {
     setSel(id);
     if (focus) refs.current[id]?.focus();
-    else if (window.innerWidth < 980) {
+    else if (window.innerWidth < (v3 ? 760 : 980)) {
       const pnl = panelRef.current;
       if (pnl && pnl.getBoundingClientRect().top > window.innerHeight * 0.6)
         pnl.scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'start' });
@@ -122,9 +139,36 @@ function Explorer() {
   const node = (k: string, ids: string[]) => (
     <div className="v6xd__n" key={k}><span className="v6xd__k">{k}</span><span className="v6xd__l">{ids.map(tab)}</span></div>
   );
+  const v3Tab = (id: string) => {
+    const item = V3_SYSTEMS.find((s) => s.id === id)!;
+    const b = brandOf(id)!;
+    const on = id === sel;
+    return <button type="button" className="v6x3__card" role="tab" id={`v6x-t-${id}`} key={id}
+      ref={(el) => { refs.current[id] = el; }} aria-controls="v6x-panel" aria-selected={on}
+      tabIndex={on ? 0 : -1} onClick={() => select(id, false)}>
+      <span className="v6x3__top"><span>{item.moment}</span><span aria-hidden="true">{on ? 'Selected' : 'Explore ↗'}</span></span>
+      <strong>{id === 'vms' ? 'ACCEL' : b.acr}</strong>
+      <span className="v6x3__name">{b.sys}</span>
+      <span className="v6x3__role">{item.role}</span>
+      <span className="v6x3__detail">{item.detail}</span>
+      {id === 'vms' && <span className="v6x3__partner">By SigmaWave AI</span>}
+    </button>;
+  };
   return (
-    <div className="v6x rv">
-      <nav className="v6x__tree v6x__tree--dg" aria-label="Blue Silo systems by function">
+    <div className={'v6x rv' + (v3 ? ` v6x--v3 v6x--sys-${sys}` : '')}>
+      {v3 ? <nav className="v6x3" aria-label="Explore Blue Silo systems">
+        <div className="v6x3__heading"><span className="label">Select a system</span><p>Each works on its own and can connect with the others.</p></div>
+        <div role="tablist" aria-label="Systems" onKeyDown={onKey}>
+          <div className="v6x3__group"><span className="v6x3__group-label">Plan and run</span>
+          <div className="v6x3__grid v6x3__grid--core">
+            {['trms', 'rcs'].filter(isVisible).map(v3Tab)}
+          </div></div>
+        <div className="v6x3__group"><span className="v6x3__group-label">Connected capabilities</span>
+          <div className="v6x3__grid v6x3__grid--support">
+            {['ewms', 'hums', 'vms'].filter(isVisible).map(v3Tab)}
+          </div></div>
+        </div>
+      </nav> : <nav className="v6x__tree v6x__tree--dg" aria-label="Blue Silo systems by function">
         <span className="v6x__root">Blue Silo systems</span>
         <div className="v6x__list" role="tablist" aria-orientation="vertical" onKeyDown={onKey}>
           <div className="v6xd__row v6xd__row--3">{TOP.map((t) => node(t[0], t[1]))}</div>
@@ -134,7 +178,7 @@ function Explorer() {
           {GOV.map((t) => <div className="v6xd__row" key={t[0]}>{node(t[0], t[1])}</div>)}
         </div>
         {(!useV(2) || useV1Back()) && <span className="v6x__hint">Select a system to see its detail</span>}
-      </nav>
+      </nav>}
       <div className="v6x__panel" id="v6x-panel" role="tabpanel" aria-live="polite" aria-labelledby={`v6x-t-${sel}`} ref={panelRef}>
         <ExplorerPanel id={sel} />
       </div>
@@ -146,10 +190,32 @@ export function Systems() {
   /* v2: no diagram above the explorer, no hint line, no compare button */
   const v2 = useV(2);
   const back = useV1Back(); /* v3: diagram and compare button come back */
+  const v3 = useVersion().v === 3;
+  if (v3) return <Band id="systems" label="Systems" title="Systems that run your whole operation"
+    intro="Each system covers one part of your operation and runs on its own. Together, they give every team the same live picture.">
+    <div className="v3-system-grid">
+      {V3_SYSTEMS.filter((item) => isVisible(item.id)).map((item) => {
+        const b = brandOf(item.id)!;
+        const p = productOf(item.id)!;
+        return <Link className="v3-system-card rv" to={`/products/${item.id}`} key={item.id}>
+          <span className="v3-system-card__image"><img src={mediaUrl(systemImage(item.id))} alt="" loading="lazy" decoding="async" /></span>
+          <span className="v3-system-card__body">
+            <span className="v3-system-card__top"><span className="v3-system-card__icon"><Icon name={p.icon} /></span><span>{item.moment}</span></span>
+            <strong>{item.id === 'vms' ? 'ACCEL' : b.acr}</strong>
+            <span className="v3-system-card__name">{b.sys}</span>
+            <span className="v3-system-card__detail">{item.detail}</span>
+            <span className="v3-system-card__link">Explore system <Icon name="ph-arrow-right" /></span>
+          </span>
+        </Link>;
+      })}
+    </div>
+    <Link className="v3-system-grid__all" to="/products">View all systems <Icon name="ph-arrow-right" /></Link>
+  </Band>;
   return (
-    <Band id="systems" label="Systems" title={v2 ? `${Word(OURS)} systems, each available on its own` : `One line, ${word(FUNCTIONS)} functions, each system available on its own`}
-      intro={v2 ? `${Word(OURS)} systems from Blue Silo, plus ACCEL from our partner SigmaWave for video and vision AI. Use one on its own, or connect them all.` : `${Word(OURS)} systems from Blue Silo, plus ACCEL from our partner SigmaWave for video and vision AI. Take one, or take the line.`}>
-      {(!v2 || back) && <Diagram />}
+    <Band id="systems" label="Systems" title={v3 ? 'From training plan to range operation' : v2 ? `${Word(OURS)} systems, each available on its own` : `One line, ${word(FUNCTIONS)} functions, each system available on its own`}
+      intro={v3 ? 'TRMS plans the training day. RMS runs the live range. EWMS accounts for weapons, while HUMS tracks equipment health and ACCEL adds video and vision AI. Select a system to see its role.' : v2 ? `${Word(OURS)} systems from Blue Silo, plus ACCEL from our partner SigmaWave for video and vision AI. Use one on its own, or connect them all.` : `${Word(OURS)} systems from Blue Silo, plus ACCEL from our partner SigmaWave for video and vision AI. Take one, or take the line.`}>
+      {v3 && <div className="v6x3__backdrop" aria-hidden="true"><img src={mediaUrl('home-v3-western/featured.jpg')} alt="" decoding="async" /></div>}
+      {!v2 && <Diagram />}
       {shown('home.tiles') && <>
       <div className="v6tiles rv">{tiles.map((t) => <TileLink t={t} key={t[1]} />)}</div>
       <div className="v6x__intro rv"><span className="label">Alternative layout</span>

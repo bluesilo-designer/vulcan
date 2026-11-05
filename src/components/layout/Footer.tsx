@@ -33,7 +33,7 @@ export function Footer() {
         </nav>
         <nav className="ft2__col" aria-label="Company">
           <h4>Company</h4>
-          <Link to="/company">About Blue Silo</Link>
+          <Link to="/company">About Us</Link>
           <Link to="/faq">FAQ</Link>
           <Link to="/contact">Contact</Link>
         </nav>
@@ -75,7 +75,7 @@ export function Footer() {
           <Link to="/products">Systems</Link>
           <Link to="/integration">Integration</Link>
           <Link to="/assurance">Assurance</Link>
-          <Link to="/company">About Blue Silo</Link>
+          <Link to="/company">About Us</Link>
           <Link to="/faq">FAQ</Link>
           <Link to="/contact">Contact</Link>
         </nav>

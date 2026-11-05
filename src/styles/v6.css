@@ -946,10 +946,16 @@ body > .v6sw{display:none}
 .v6ctl__fab{display:flex;align-items:center;gap:8px;height:40px;padding:0 14px;border:1px solid var(--line-3);background:rgba(12,14,17,.92);color:var(--ink);font:500 12px/1 'IBM Plex Mono',monospace;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;backdrop-filter:blur(8px)}
 .v6ctl__fab i{font-size:16px;color:var(--brand)}
 .v6ctl__fab:focus-visible,.v6ctl button:focus-visible,.v6ctl__opt:focus-within{outline:2px solid var(--brand);outline-offset:2px}
-.v6ctl__body{width:300px;max-width:calc(100vw - 40px);max-height:calc(100vh - 100px);overflow:auto;background:rgba(12,14,17,.97);border:1px solid var(--line-3);padding:16px}
+.v6ctl__body{width:360px;max-width:calc(100vw - 40px);max-height:calc(100vh - 100px);overflow:auto;background:rgba(12,14,17,.97);border:1px solid var(--line-3);padding:16px}
 .v6ctl__h{display:flex;justify-content:space-between;align-items:baseline;padding-bottom:12px;border-bottom:1px solid var(--line-2);margin-bottom:12px}
 .v6ctl__h b{font-weight:500;color:var(--ink)}
 .v6ctl__h span,.v6ctl legend{font:500 11px 'IBM Plex Mono',monospace;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3)}
+.v6ctl__tabs{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:2px;margin:0 0 14px;border-bottom:1px solid var(--line-2)}
+.v6ctl__tabs button{position:relative;min-height:39px;padding:5px 2px;border:0;background:transparent;color:var(--ink-3);font:500 11px 'IBM Plex Mono',monospace;cursor:pointer}
+.v6ctl__tabs button:hover,.v6ctl__tabs button.is-on{color:var(--ink)}
+.v6ctl__tabs button.is-on::after{content:"";position:absolute;left:7px;right:7px;bottom:-1px;height:2px;background:var(--brand)}
+.v6ctl__panel{min-height:130px}
+.v6ctl__hint{margin:0 0 15px;color:var(--ink-3);font-size:12px;line-height:1.45}
 .v6ctl fieldset{border:0;margin:0 0 14px;padding:0}
 .v6ctl legend{padding:0;margin-bottom:8px}
 .v6ctl__opt{display:flex;align-items:center;gap:10px;padding:8px;cursor:pointer;border:1px solid transparent}
@@ -1585,3 +1591,24 @@ body > .v6sw{display:none}
 .as-layers .ph{font-size:22px;color:var(--brand);flex:none;margin-top:3px}
 .as-layers h3{font-size:var(--t-md);color:var(--ink);margin-bottom:4px}
 .as-layers p{font-size:var(--t-sm);line-height:1.65;color:var(--ink-2)}
+/* v3: no "Singapore" in the location strips (client, 4 Nov 2026) */
+[data-v="3"] .v6geo span:first-child,[data-v="3"] .v6foot__geo span:first-child{display:none}
+/* v3 home Integration: partners photograph as the background */
+.ifc-bg{position:relative;isolation:isolate;overflow:hidden}
+.ifc-bg__bed{position:absolute;inset:0;z-index:-2}
+.ifc-bg__bed img{width:100%;height:100%;object-fit:cover;object-position:70% 40%;display:block}
+.ifc-bg__veil{position:absolute;inset:0;z-index:-1;background:linear-gradient(90deg,rgba(8,9,11,.94) 0%,rgba(8,9,11,.78) 45%,rgba(8,9,11,.55) 100%),linear-gradient(180deg,rgba(8,9,11,.6) 0%,rgba(8,9,11,.35) 40%,rgba(8,9,11,.92) 100%)}
+.ifc-bg .band{background:transparent}
+
+/* home chain (v2, v3): descriptor on each step, "The N stages" lead, panel title */
+.chain__lead{display:block;margin-bottom:var(--s4)}
+.step__d{display:block;font-family:var(--sans,inherit);font-size:12px;line-height:1.4;color:var(--ink-3);margin-top:var(--s2)}
+.step[aria-selected="true"] .step__d{color:var(--ink-2)}
+.chain__ptitle{margin:0;padding-top:var(--s6);max-width:30ch;font-size:clamp(22px,2.2vw,30px);font-weight:300;line-height:1.15}
+
+/* Home chain panel: supporting features per step (5 Nov 2026), replaces the data chips */
+.v6cp__feat{margin-top:var(--s5);padding-top:var(--s5);border-top:1px solid var(--line-2)}
+.v6cp__feat ul{list-style:none;margin:var(--s3) 0 0;padding:0;display:grid;gap:var(--s2)}
+.v6cp__feat li{position:relative;padding-left:var(--s5);font-size:var(--t-sm);line-height:1.45;color:var(--ink-2)}
+.v6cp__feat li::before{content:"";position:absolute;left:0;top:.62em;width:10px;height:1px;background:var(--brand)}
+.v6cp__meta:empty{display:none}

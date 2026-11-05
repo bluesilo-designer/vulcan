@@ -1,14 +1,15 @@
 import { Band } from '../components/ui/Band';
 import { Table } from '../components/ui/Table';
 import { Media } from '../components/ui/Media';
-import { useCompanyLayout, useV } from '../lib/version';
-import { CompanyA, CompanyB, CompanyC } from '../components/sections/company/CompanyLayouts';
-import { CtaBand } from '../components/ui/CtaBand';
+import { useCompanyLayout, useV, useVersion } from '../lib/version';
+import { CompanyA, CompanyB, CompanyC, CompanyText } from '../components/sections/company/CompanyLayouts';
+import { CompanyClose } from '../components/sections/company/CompanyClose';
 import { Closer } from '../components/ui/Closer';
 import { mediaUrl } from '../lib/media';
 import { shown } from '../config/site';
 import { slotSrc } from '../lib/images';
 import { useReview } from '../lib/review';
+import { companyImage } from '../content/company';
 
 const DISCIPLINES: [string, string, string, string][] = [
   ['Control systems', 'Real time equipment control, safety interlocks, and degraded mode behaviour.', 'control', 'ph-sliders-horizontal'],
@@ -30,15 +31,17 @@ export function Company() {
      "Where we operate" section, so it follows the review panel's look. */
   const { state } = useReview();
   const v2 = useV(2);
+  const v3 = useVersion().v === 3;
   /* v2 only: review sub-versions of the whole page (?co=a|b|c) */
   const { co } = useCompanyLayout();
   if (v2 && co === 'a') return <CompanyA />;
+  if (v2 && co === 't') return <CompanyText />;
   if (v2 && co === 'b') return <CompanyB />;
   if (v2 && co === 'c') return <CompanyC />;
   return (
     <>
       <section className="pv-hero pv-hero--short">
-        <div className="pv-hero__bed pv-par"><img src={slotSrc('ops', state.look)} alt="" decoding="async" /></div><div className="pv-hero__veil"></div>
+        <div className="pv-hero__bed pv-par"><img src={v3 ? mediaUrl(companyImage('hero', true)) : slotSrc('ops', state.look)} alt="" decoding="async" /></div><div className="pv-hero__veil"></div>
         <div className="shell pv-hero__in"><span className="label">Company</span>
           <h1>Blue Silo</h1>
           <p className="pv-hero__lead">{v2
@@ -58,7 +61,7 @@ export function Company() {
               <p>We build the subsystems that close those gaps, and we treat the interfaces between them, including the ones to systems we do not own, as the product rather than as integration work to be scheduled later.</p>
               <p><strong>Range training is our only focus.</strong> We do not divide our attention across unrelated markets, so our engineering effort stays on your programme.</p>
             </>}</div></div>
-          <div className="rv" data-d="1"><figure className="pv-ctl__img co-img"><div className="pv-par"><img src={mediaUrl('c/floor.jpg')} alt="Blue Silo engineers at work" loading="lazy" decoding="async" /></div></figure></div></div>
+          <div className="rv" data-d="1"><figure className="pv-ctl__img co-img"><div className="pv-par"><img src={mediaUrl(companyImage('floor', v3))} alt="Training range instructor planning a training day" loading="lazy" decoding="async" /></div></figure></div></div>
       </Band>
 
 {/* v2: how an engagement runs, added at the client's request (Oct 2026) */}
@@ -66,7 +69,7 @@ export function Company() {
         <div className="head"><h2>How we work with you</h2><p>Four commitments we keep on every programme, from the first workshop to long-term support.</p></div>
         <ol className="co-how">{HOW.map((h, i) => (
           <li className="pv-up" key={h[0]}>
-            <figure><img src={mediaUrl(`c/${h[2]}.jpg`)} alt="" loading="lazy" decoding="async" /></figure>
+            <figure><img src={mediaUrl(companyImage(h[2], v3))} alt="" loading="lazy" decoding="async" /></figure>
             <span className="co-how__n">{String(i + 1).padStart(2, '0')}</span>
             <h3><i className={'ph ' + h[3]} aria-hidden="true"></i>{h[0]}</h3><p>{h[1]}</p></li>))}
         </ol>
@@ -89,15 +92,15 @@ export function Company() {
       <Band title="Disciplines, not headcount">
         <div className="pv-ctl pv-ctl--4">{DISCIPLINES.map((c) => (
           <article className="pv-ctl__i pv-up" key={c[0]}>
-            <figure className="pv-ctl__img"><div className="pv-par"><img src={mediaUrl(`c/${c[2]}.jpg`)} alt="" loading="lazy" decoding="async" /></div></figure>
+            <figure className="pv-ctl__img"><div className="pv-par"><img src={mediaUrl(companyImage(c[2], v3))} alt="" loading="lazy" decoding="async" /></div></figure>
             <h3><i className={'ph ' + c[3]} aria-hidden="true"></i>{c[0]}</h3><p>{c[1]}</p></article>))}
         </div>
       </Band>
       )}
 
-      {v2 ? <CtaBand label="Where we are" title="Headquartered in Singapore, delivering across Southeast Asia and APAC" img="c/where.jpg" />
+      {v2 ? <CompanyClose v3={v3} />
       : <section className="pv-flow">
-        <div className="pv-flow__bed pv-par"><img src={mediaUrl('c/region.jpg')} alt="" loading="lazy" decoding="async" /></div><div className="pv-flow__veil"></div>
+        <div className="pv-flow__bed pv-par"><img src={mediaUrl(companyImage('region', v3))} alt="" loading="lazy" decoding="async" /></div><div className="pv-flow__veil"></div>
         <div className="shell pv-flow__in"><span className="label">Where we are</span>
           <h2>Headquartered in Singapore, delivering across Southeast Asia and APAC</h2></div>
       </section>}
@@ -107,7 +110,7 @@ export function Company() {
         <div className="split"><div className="rv">
           <Table head={['Field', 'Detail']} rows={[
             ['Registered entity', 'Blue Silo Pte. Ltd.'], ['UEN', ACRA], ['Registered address', ACRA], ['Incorporated', ACRA]]} /></div>
-          <div className="rv" data-d="1"><figure className="pv-ctl__img co-img"><div className="pv-par"><img src={mediaUrl('c/office.jpg')} alt="" loading="lazy" decoding="async" /></div></figure></div></div>
+          <div className="rv" data-d="1"><figure className="pv-ctl__img co-img"><div className="pv-par"><img src={mediaUrl(companyImage('office', v3))} alt="" loading="lazy" decoding="async" /></div></figure></div></div>
       </Band>
       )}
       {/* v2: the where-we-are band carries the CTA, so no closer */}

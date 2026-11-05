@@ -13,33 +13,37 @@ import { Questions } from '../components/sections/home/Questions';
 import { PartnersSection } from '../components/sections/shared/PartnersSection';
 import { AssureFeature } from '../components/sections/shared/AssureFeature';
 import { ContactBlock } from '../components/sections/shared/ContactBlock';
-import { useHomeLayout, useV, useV1Back } from '../lib/version';
+import { useHomeLayout, usePartnersShown, useV, useV1Back } from '../lib/version';
 import { HomeSlider } from '../components/sections/home/HomeSlider';
 
 export function Home() {
   /* v2 drops Modernising, Measures and CompanyFacts, and moves the questions to /faq */
   const v2 = useV(2);
-  const back = useV1Back(); /* v3: v2 plus the v1 sections it dropped */
+  const back = useV1Back(); /* v3: slider plus selected v1 sections */
   const { hm } = useHomeLayout();
-  /* v2 only: the image slider home (?hm=s, s2, s3, s4), 28 and 29 Oct 2026 */
-  if (v2 && hm !== '0') return <HomeSlider variant={hm} />;
+  const { partners } = usePartnersShown(); /* v3: Partners hidden unless shown from the review panel */
+  /* Keep the v1/v2 home sections together. v3 adds selected sections after
+     the slider hero; company proof and FAQ remain off this homepage. */
+  const mergedSections = <>
+    {!v2 && <Modernising />}
+    <Systems />
+    {shown('home.whereWeOperate') && <WhereWeOperate />}
+    <Chain />
+    {!v2 && <Measures />}
+    <IntegrationIntro />
+    <Simulate />
+    {(!v2 || (back && partners)) && <PartnersSection homeV3={back} />}
+    {!back && <AssureFeature />}
+    {!v2 && <CompanyFacts />}
+    {!v2 && <Questions />}
+    {!back && <ContactBlock />}
+  </>;
+  if (v2 && hm !== '0') return <HomeSlider variant={hm} mergedSections={back ? mergedSections : undefined} />;
   return (
     <>
       <Hero />
       <Trust />
-      {(!v2 || back) && <Modernising />}
-      <Systems />
-      {shown('home.whereWeOperate') && <WhereWeOperate />}
-      <Chain />
-      {(!v2 || back) && <Measures />}
-      <IntegrationIntro />
-      <Simulate />
-      {/* v2: shown on Integration only, it repeated there (27 Oct 2026) */}
-      {(!v2 || back) && <PartnersSection />}
-      <AssureFeature />
-      {(!v2 || back) && <CompanyFacts />}
-      {(!v2 || back) && <Questions />}
-      <ContactBlock />
+      {mergedSections}
     </>
   );
 }

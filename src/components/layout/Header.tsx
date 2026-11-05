@@ -2,10 +2,16 @@ import { useEffect, useRef, useState } from 'react';
 import { Link, NavLink, useLocation } from 'react-router-dom';
 import { brandOf, productOf } from '../../content/products';
 import { isVisible } from '../../config/site';
+import { useVersion } from '../../lib/version';
 
 const MENU_ORDER = ['trms', 'rcs', 'ewms', 'eams', 'pwats', 'hums', 'vms', 'eva', 'as'].filter(isVisible);
+/* v3 menu (client, 4 Nov 2026): Administrative System added, and the range
+   system named RCS, Range Control System. */
+const MENU_ORDER_V3 = ['trms', 'as', 'rcs', 'ewms', 'hums', 'vms'];
+const MENU_NAME_V3: Record<string, [string, string]> = { as: ['AS', 'Administrative System'], rcs: ['RCS', 'Range Control System'] };
 
 export function Header() {
+  const v3 = useVersion().v === 3;
   const [open, setOpen] = useState(false);
   const [stuck, setStuck] = useState(false);
   const btn = useRef<HTMLButtonElement>(null);
@@ -50,22 +56,26 @@ export function Header() {
             </div>
             <NavLink to="/integration">Integration</NavLink>
             <NavLink to="/assurance">Assurance</NavLink>
-            <NavLink to="/company">Company</NavLink>
+            <NavLink to="/company">About Us</NavLink>
           </nav>
           <Link className="cta" to="/contact">Talk to us</Link>
         </div>
       </header>
       <div className="menu" id="mPanel" hidden={!open}>
         <div className="shell">
-          {MENU_ORDER.map((id) => {
+          {(v3 ? MENU_ORDER_V3 : MENU_ORDER).map((id) => {
             const p = productOf(id); const b = brandOf(id);
             if (!p) return null;
-            return (
-              <Link key={id} to={`/products/${id}`}>
-                <b>{b?.brand ? <>{b.brand} <em>{b.acr}</em></> : (b?.acr ?? p.acr)}</b>
-                <span>{b ? b.sys : p.name}</span>
-              </Link>
+            const nm = v3 ? MENU_NAME_V3[id] : undefined;
+            const acr = nm ? nm[0] : b?.acr;
+            const label = <><b>{b?.brand ? <>{b.brand} <em>{acr}</em></> : (acr ?? p.acr)}</b>
+                <span>{nm ? nm[1] : b ? b.sys : p.name}</span></>;
+            /* v3: only TRMS is live; the others show Coming soon and do not link (client, 4 Nov 2026) */
+            if (v3 && id !== 'trms') return (
+              <div key={id} className="menu__soon" aria-disabled="true"><b>{b?.brand ? <>{b.brand} <em>{acr}</em></> : (acr ?? p.acr)}<i className="menu__badge">Coming soon</i></b>
+                <span>{nm ? nm[1] : b ? b.sys : p.name}</span></div>
             );
+            return <Link key={id} to={`/products/${id}`}>{label}</Link>;
           })}
         </div>
       </div>
