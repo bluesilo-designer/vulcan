@@ -641,3 +641,5 @@ footer.ft2 .ft2__grid{display:grid;grid-template-columns:1fr;gap:var(--s6);paddi
 .ft2__legal nav{display:flex;flex-wrap:wrap;gap:var(--s5)}
 .ft2__legal a{color:var(--ink-3);text-decoration:none}
 .ft2__legal a:hover{color:var(--ink)}
+/* home: more air between the assurance section and the closing band (client, 5 Nov 2026) */
+.cta-home{margin-top:clamp(72px,9vw,160px)}

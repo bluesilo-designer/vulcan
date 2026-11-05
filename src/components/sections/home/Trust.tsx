@@ -10,15 +10,19 @@ type Logo = { n: string; f: string; m?: string };
    same area, measured from its trimmed bounding box and ink density, so wide
    wordmarks (NCS, ST Engineering) shrink and airy marks (DSTA) grow. Keyed by
    file; heights in px include each file's own whitespace. */
+/* Vertical centring: where each file's visible ink sits in its own box, as a
+   fraction of its height (measured 5 Nov 2026; positive = ink sits low). The
+   logo is shifted back by that much so every mark is centred in its tile. */
+const INK_DROP: Record<string, number> = { 'sj-m.svg': 0.142, 'mindef-t.png': -0.028, 'mindef-m.png': -0.028 };
 const OPTICAL: Record<string, number> = {
-  'mindef-t.png': 36, 'mindef-m.png': 36, 'dsta.svg': 52, 'certis.svg': 24, 'sj.svg': 23, 'sj-m.svg': 42, 'ncs.png': 17, 'ste.svg': 25,
+  'mindef-t.png': 46, 'mindef-m.png': 46, 'dsta.svg': 62, 'certis.svg': 24, 'sj.svg': 23, 'sj-m.svg': 42, 'ncs.png': 17, 'ste.svg': 25,
 };
 
 export function Trust() {
   const [mode, setMode] = useState<'mono' | 'colour'>('mono');
   const v2 = useV(2); /* v2: logos only, no treatment toggle */
   const v3 = useVersion().v === 3;
-  const sz = (f: string) => (v3 && OPTICAL[f] ? { height: OPTICAL[f], maxHeight: 'none', maxWidth: 'none' } : undefined);
+  const sz = (f: string) => (v3 && OPTICAL[f] ? { height: OPTICAL[f], maxHeight: 'none', maxWidth: 'none', transform: INK_DROP[f] ? `translateY(${(-INK_DROP[f] * OPTICAL[f]).toFixed(1)}px)` : undefined } : undefined);
   return (
     <section className="v6trust"><div className="shell">
       <div className="v6trust__t"><span className="label">{TRUST.title}</span><p>{TRUST.line}</p></div>

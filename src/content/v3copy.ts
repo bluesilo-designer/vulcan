@@ -10,6 +10,15 @@ export const V3_COPY: Record<string, string> = {
   'Built in Singapore. Designed for the realities of defence operations.': 'Designed for the realities of defence operations.',
   'Singapore based': 'Defence focused',
   'Based in Singapore': 'On site when it matters',
+  /* ---------- About Us positioning: integration and enhancement, no product names, no "supplier" (client, 5 Nov 2026) ---------- */
+  'Software, hardware and third-party platforms connected into one working environment. We already integrate virtual targetry, simulators and command team trainers.':
+    'Software, hardware and third-party platforms connected into one working environment. We integrate and enhance the systems a facility already runs.',
+  'Our Training Resource Management System is already built. You start from software that works, configured to how you operate.':
+    'Our training management software is already built. You start from software that works, configured to how you operate.',
+  'Defence facilities are never built by one supplier. We connect to the systems you already own, and agree every interface in writing before we build it.':
+    'Defence facilities are never built by one company. We connect and enhance the systems you own, and agree every interface in writing before we build it.',
+  'Close to the facilities we serve, in your time zone, and on site when you need us.':
+    'Installation, user training and updates on site, well beyond the first deployment.',
   'Headquartered in Singapore, delivering across Southeast Asia and APAC': 'Delivering across Southeast Asia and APAC',
   'We design, develop and integrate defence systems. Based in Singapore, with military training as our deepest specialism.': 'We design, develop and integrate defence systems, with military training as our deepest specialism.',
 

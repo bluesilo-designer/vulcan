@@ -253,7 +253,7 @@ export function HomeSlider({ variant = 's', mergedSections }: { variant?: string
           </dl>
         </div></section>}
 
-      <section className="hs-feat"><div className="hs-feat__in">
+      {shown('homeSlider.feature') && <section className="hs-feat"><div className="hs-feat__in">
         <figure className="hs-feat__img"><img src={mediaUrl(v3 ? homeV3Image(HOME_V3_IMAGES.featured) : HS_FEATURE.img)} alt="" loading="lazy" decoding="async" /></figure>
         <div className="hs-feat__b rv">
           <span className="label">{HS_FEATURE.label}</span>
@@ -261,7 +261,7 @@ export function HomeSlider({ variant = 's', mergedSections }: { variant?: string
           <p>{HS_FEATURE.p}</p>
           <Link className="btn btn--g" to={HS_FEATURE.cta[1]}>{HS_FEATURE.cta[0]} <Icon name="ph-arrow-right" /></Link>
         </div>
-      </div></section>
+      </div></section>}
 
       {shown('homeSlider.why') && <section className="hs-whyband"><div className="shell">
         <h2 className="hs-why__h rv">{HS_WHY_H}</h2>
@@ -273,7 +273,7 @@ export function HomeSlider({ variant = 's', mergedSections }: { variant?: string
         </ul>
       </div></section>}
 
-      <CtaBand title={HS_CTA.title} line={HS_CTA.line} img={v3 ? CTA_TRAINING_IMAGE : undefined} />
+      <CtaBand className="cta-home" title={HS_CTA.title} line={HS_CTA.line} img={v3 ? CTA_TRAINING_IMAGE : undefined} />
     </>
   );
 }

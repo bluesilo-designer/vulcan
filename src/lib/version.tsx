@@ -46,12 +46,13 @@ export const useV1Back = () => useContext(Ctx).v === 3;
 export const COMPANY_LAYOUTS = [
   { id: '0', k: 'Earlier', d: 'Version 2 before the A/B/C rewrite' },
   { id: 'a', k: 'A', d: 'Simple statement' },
-  { id: 't', k: 'A · Text', d: 'Simple statement, text only (the v2 original)' },
-  { id: 'b', k: 'B', d: 'Proof led, sells harder (default)' },
+  { id: 't', k: 'A · Text', d: 'Simple statement, text only (default)' },
+  { id: 'b', k: 'B', d: 'Proof led, sells harder' },
   { id: 'c', k: 'C', d: 'Four chapters' },
 ] as const;
 export type CompanyLayout = (typeof COMPANY_LAYOUTS)[number]['id'];
-export const COMPANY_DEFAULT: CompanyLayout = 'b';
+/* 5 Nov 2026: A · Text became the default (client). B is the earlier default, still reachable. */
+export const COMPANY_DEFAULT: CompanyLayout = 't';
 const CO_KEY = 'bs-company';
 const isCo = (s: string | null): s is CompanyLayout => COMPANY_LAYOUTS.some((l) => l.id === s);
 

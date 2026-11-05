@@ -5,7 +5,7 @@ import { slotSrc } from '../../../lib/images';
 import { useReview } from '../../../lib/review';
 import {
   CO_CAPABILITIES, CO_INTEGRATIONS, CO_INTRO, CO_LIFECYCLE, CO_LINE, CO_PIPELINE, CO_REASONS,
-  CO_ORIGIN, CO_STORY, CO_STORY_2, CO_TRMS, companyImage,
+  CO_EXTRA_SERVICE, CO_ORIGIN, CO_ORIGIN_TEXT, CO_STORY, CO_STORY_2, CO_TRMS, companyImage,
 } from '../../../content/company';
 import { useVersion } from '../../../lib/version';
 import { CompanyV3 } from './CompanyV3';
@@ -86,24 +86,29 @@ export function CompanyText() {
   const v3 = useVersion().v === 3;
   return (
     <>
-      <section className="co2a-hero"><div className="shell">
+      <section className="co2a-hero co2a-hero--bg">
+        <div className="co2a-hero__bed" aria-hidden="true"><img src={mediaUrl(companyImage('hero', true))} alt="" decoding="async" /></div><div className="co2a-hero__veil" aria-hidden="true"></div>
+        <div className="shell">
         <span className="label">Company</span>
         <h1>{CO_LINE}</h1>
         <p className="co2a-lead">{CO_INTRO}</p>
       </div></section>
 
       <section className="band"><div className="shell co2a-split">
-        <h2 className="rv">Where our experience comes from</h2>
-        <div className="rv"><p className="co2a-big">{CO_STORY_2}</p><p className="co2a-small">{CO_STORY}</p></div>
+        <div className="rv co2a-split__h"><span className="label">Who we are</span><h2>{CO_ORIGIN_TEXT.h}</h2></div>
+        <div className="rv"><p className="co2a-big">{CO_ORIGIN_TEXT.big}</p>
+          <p className="co2a-small">{CO_ORIGIN_TEXT.p1}</p><p className="co2a-small">{CO_ORIGIN_TEXT.p2}</p>
+          <p className="co2a-big">{CO_ORIGIN_TEXT.pull}</p></div>
       </div></section>
 
       <section className="band band--deep"><div className="shell co2a-split">
-        <h2 className="rv">What we do</h2>
-        <ul className="co2a-rows">{CO_CAPABILITIES.map((c) => <li className="rv" key={c[0]}><b>{c[0]}</b><span>{c[1]}</span></li>)}</ul>
+        <div className="rv co2a-split__h"><span className="label">What we do</span><h2>Integrated defence systems for every mission.</h2>
+          <p>From purpose-built defence solutions and complex systems integration to the enhancement of existing capabilities, we design, engineer and deliver technology that connects systems, strengthens operations and evolves with mission requirements.</p></div>
+        <ul className="co2a-rows">{[...CO_CAPABILITIES, CO_EXTRA_SERVICE].map((c) => <li className="rv" key={c[0]}><b>{c[0]}</b><span>{c[1]}</span></li>)}</ul>
       </div></section>
 
       <section className="band"><div className="shell">
-        <h2 className="co2a-h rv">Why Blue Silo</h2>
+        <div className="rv co2a-head"><span className="label">How we work</span><h2 className="co2a-h">Why Blue Silo</h2></div>
         <ol className="co2a-why">{CO_REASONS.map((r, i) => <li className="rv" data-d={String(i % 2)} key={r[0]}><span>{Pad(i)}</span><b>{r[0]}</b><p>{r[1]}</p></li>)}</ol>
       </div></section>
 

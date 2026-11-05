@@ -31,6 +31,18 @@ export const CO_ORIGIN = {
   pull: 'We build technology with an understanding of the people who use it.',
 };
 
+/* Origins, written for the text-only Company layout (A · Text), 5 Nov 2026.
+   Same idea as the origins panel: first-hand military experience, real
+   operational challenges, systems designed around the people who use them.
+   General on purpose: no founder story, no location (client copy rules). */
+export const CO_ORIGIN_TEXT = {
+  h: 'Born from experience. Built to solve real challenges.',
+  big: 'Blue Silo grew out of first-hand experience in military service, training and operations, and a clear view of the realities personnel face on the ground.',
+  p1: 'That experience showed where challenges, limitations and inefficiencies hold operations back, and where technology can make a practical difference.',
+  p2: 'Blue Silo turns real operational challenges into practical, purpose-built defence systems, designed around the people who use them.',
+  pull: 'We do not just build technology for the military. We build it with an understanding of the people who use it.',
+};
+
 /* Why us. [title, line] */
 export const CO_REASONS: [string, string][] = [
   ['Working software from day one', 'Our Training Resource Management System is already built. You start from software that works, configured to how you operate.'],
@@ -50,6 +62,13 @@ export const CO_CAPABILITIES: [string, string, string, string][] = [
     'Video, vision AI and equipment health, so you see issues early.'],
   ['Enterprise management', 'Administration, asset and weapon accountability, and resource allocation, with a clear audit trail.', 'ph-buildings',
     'Administration, accountability and resources, with a clear audit trail.'],
+];
+
+/* A fifth, broader service for the text-only layout (A · Text), chosen by the client on 5 Nov 2026
+   so the offer does not read as limited to the four areas above. */
+export const CO_EXTRA_SERVICE: [string, string] = [
+  'Defence technology consulting',
+  'Advice on system architecture, interfaces and upgrade paths, so new and existing systems fit together from the start.',
 ];
 
 /* Our product across the training day. [stage, line] */

@@ -5,8 +5,9 @@ import '../../../styles/contact-v3.css';
 
 const ROUTES = [
   { key: 'Product demonstration', icon: 'ph-monitor-play', line: 'See a system in a working scenario.' },
-  { key: 'Programme requirements', icon: 'ph-map-trifold', line: 'Discuss the scope and next step.' },
+  { key: 'Your requirements', icon: 'ph-map-trifold', line: 'Share what you need and agree next steps.' },
   { key: 'System integration', icon: 'ph-plugs-connected', line: 'Map interfaces and delivery needs.' },
+  { key: 'General consultation', icon: 'ph-chats-circle', line: 'Not sure yet? Talk it through with us.' },
 ] as const;
 
 export function ContactV3() {
@@ -35,8 +36,8 @@ export function ContactV3() {
       <div className="ct3-hero__veil" />
       <div className="shell ct3-hero__inner">
         <span className="label">CONTACT / BLUE SILO</span>
-        <h1>Start with the mission.</h1>
-        <p>Tell us what your team needs to plan, operate or connect. We will help define the next useful conversation.</p>
+        <h1>Talk to our team.</h1>
+        <p>Tell us about your training, integration or support needs, and our team will reply to discuss your requirements.</p>
         <a className="btn btn--p" href="#contact-enquiry">Prepare an enquiry <Icon name="ph-arrow-down" /></a>
       </div>
       <div className="ct3-hero__foot shell"><span>TRAINING SYSTEMS</span><span>INTEGRATION</span><span>LONG-TERM SUPPORT</span></div>
@@ -58,7 +59,7 @@ export function ContactV3() {
           <div className="ct3-enquiry__guide"><span>01 <b>What is the training or operational need?</b></span><span>02 <b>Which site or system is involved?</b></span><span>03 <b>What decision comes next?</b></span></div>
         </div>
         <form className="ct3-form" onSubmit={prepare}>
-          <div className="ct3-form__top"><span>ENQUIRY BRIEF</span><span>BLUE SILO / 01</span></div>
+          <div className="ct3-form__top"><span>ENQUIRY BRIEF</span></div>
           <div className="ct3-form__pair"><label>Organisation<input required value={organisation} onChange={(e) => { setOrganisation(e.target.value); setPrepared(false); }} placeholder="Your organisation" /></label><label>Name<input required value={name} onChange={(e) => { setName(e.target.value); setPrepared(false); }} placeholder="Your name" /></label></div>
           <label>Work email<input required type="email" value={email} onChange={(e) => { setEmail(e.target.value); setPrepared(false); }} placeholder="name@organisation.com" /></label>
           <label>What would you like to discuss?<select value={route} onChange={(e) => { setRoute(e.target.value); setPrepared(false); }}>{ROUTES.map((item) => <option key={item.key}>{item.key}</option>)}<option>Other enquiry</option></select></label>

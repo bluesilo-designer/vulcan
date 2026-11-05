@@ -19,7 +19,7 @@ export type RouteMeta = { path: string; title: string; description: string; imag
    through the build, so every route ships its own static <head>. */
 export const ROUTE_META: RouteMeta[] = [
   { path: '/', title: 'Blue Silo. Defence and Security Technology',
-    description: 'Mission-critical systems for military training, range operations, asset accountability and operational readiness, built to integrate.' },
+    description: 'Blue Silo designs, develops and integrates defence systems for training, monitoring, enterprise management and the enhancement of existing capabilities.' },
   { path: '/products', title: 'Systems',
     description: 'Seven systems and a partner video platform that cover a training facility from the gate to the debrief.' },
   ...PRODUCTS.filter((p) => isVisible(p.id)).map((p) => {

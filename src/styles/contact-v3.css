@@ -12,7 +12,8 @@
 .ct3-approach__head .label{grid-column:1/-1}
 .ct3-approach h2,.ct3-enquiry h2{color:#f0f3f5;font:300 clamp(42px,4.6vw,67px)/1.07 var(--display);letter-spacing:-.045em;margin:0}
 .ct3-approach__head p{max-width:38ch;color:#aab9c4;line-height:1.65;font-size:17px;margin:0 0 5px}
-.ct3-routes{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.ct3-routes{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+@media(max-width:1100px){.ct3-routes{grid-template-columns:1fr 1fr}}
 .ct3-route{position:relative;text-align:left;display:flex;flex-direction:column;align-items:flex-start;gap:10px;min-height:250px;padding:27px 29px;border:1px solid #314253;background:#0e1924;color:#e6eef2;cursor:pointer;transition:background .3s,border-color .3s,transform .3s}
 .ct3-route:hover{background:#13283b;border-color:#679ac0;transform:translateY(-3px)}
 .ct3-route:focus-visible,.ct3-form :focus-visible{outline:2px solid var(--brand);outline-offset:3px}

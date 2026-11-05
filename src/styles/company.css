@@ -156,3 +156,9 @@
 .co2a-why-v3__grid p{max-width:28ch;margin:0;color:var(--ink-2);font-size:15px;line-height:1.55}
 @media(max-width:1050px){.co2a-what__areas,.co2a-why-v3__grid{grid-template-columns:repeat(2,minmax(0,1fr))}.co2a-why-v3__grid li{border-bottom:1px solid #314150}.co2a-why-v3__grid li:nth-child(even){border-right:0}.co2a-why-v3__grid li:nth-last-child(-n+2){border-bottom:0}.co2a-why-v3__grid li:first-child{padding-left:24px}.co2a-why-v3__grid li:last-child{padding-right:24px}}
 @media(max-width:650px){.co2a-origins__panel{border-radius:10px;padding:27px 24px}.co2a-origins__story{grid-template-columns:1fr;gap:17px}.co2a-what__areas,.co2a-why-v3__grid{grid-template-columns:1fr}.co2a-what__areas li{min-height:190px}.co2a-why-v3__head{grid-template-columns:1fr;gap:17px}.co2a-why-v3__grid li,.co2a-why-v3__grid li:first-child,.co2a-why-v3__grid li:last-child{min-height:0;padding:24px 0;border-right:0;border-bottom:1px solid #314150}.co2a-why-v3__grid li:last-child{border-bottom:0}.co2a-why-v3 h3{margin-top:28px}}
+.co2a-split .co2a-small + .co2a-big{margin-top:var(--s7)}
+/* A · Text: a mini title above each section heading (client, 5 Nov 2026) */
+.co2a-split__h>h2{font-weight:300;font-size:clamp(28px,3.4vw,44px)}
+.co2a-split__h>.label,.co2a-head>.label{display:block;margin-bottom:var(--s4)}
+.co2a-head>.co2a-h{margin-bottom:var(--s7)}
+.co2a-split__h>p{margin-top:var(--s5);max-width:44ch;color:var(--ink-2);font-size:var(--t-sm);line-height:1.6}

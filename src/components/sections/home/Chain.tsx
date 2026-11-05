@@ -37,7 +37,7 @@ export function Chain() {
         {v2 && <span className="label" style={{ display: 'block', marginBottom: 'var(--s4)' }}>The operational workflow</span>}
         <h2>{v2 ? 'From Access to Sustainment. Every Stage Connected.' : 'From the gate to the closing account, on one range day'}</h2>
         <p>{v2
-          ? 'See how our integrated systems support every stage of a range operation, from personnel access and preparation to training execution, performance review and equipment sustainment.'
+          ? 'See how our integrated systems support every stage of a training operation, from personnel access and preparation to execution, performance review and equipment sustainment.'
           : 'Where the systems meet, nothing is carried by hand. Select a step to see what happens, what data crosses, and which system holds it.'}</p></div>
         {v2 && <span className="label chain__lead">The {CHAIN.length} stages</span>}</div>
       <div className="chain">

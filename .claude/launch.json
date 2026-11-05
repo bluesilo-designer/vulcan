@@ -29,6 +29,35 @@
         "--strictPort"
       ],
       "port": 3105
+    },
+    {
+      "name": "trms-swt",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": [
+        "--prefix",
+        "/Users/chandra/BlueSiloClaude/TRMS SWT/trms-app",
+        "run",
+        "dev",
+        "--",
+        "--port",
+        "4000",
+        "--strictPort"
+      ],
+      "port": 4000
+    },
+    {
+      "name": "cmt-review",
+      "runtimeExecutable": "python3",
+      "runtimeArgs": [
+        "-m",
+        "http.server",
+        "4100",
+        "--bind",
+        "127.0.0.1",
+        "--directory",
+        "/Users/chandra/BlueSiloClaude/TRMS SWT/trms-app/docs/figma-audit"
+      ],
+      "port": 4100
     }
   ]
 }

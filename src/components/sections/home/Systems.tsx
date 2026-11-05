@@ -191,8 +191,8 @@ export function Systems() {
   const v2 = useV(2);
   const back = useV1Back(); /* v3: diagram and compare button come back */
   const v3 = useVersion().v === 3;
-  if (v3) return <Band id="systems" label="Systems" title="Systems that run your whole operation"
-    intro="Each system covers one part of your operation and runs on its own. Together, they give every team the same live picture.">
+  if (v3) return <Band id="systems" label="Systems" title="Systems that work alone or together."
+    intro="Each system stands on its own, and together they form one connected ecosystem, from resource and asset management to monitoring and oversight. Select a system to see its role.">
     <div className="v3-system-grid">
       {V3_SYSTEMS.filter((item) => isVisible(item.id)).map((item) => {
         const b = brandOf(item.id)!;
@@ -212,8 +212,8 @@ export function Systems() {
     <Link className="v3-system-grid__all" to="/products">View all systems <Icon name="ph-arrow-right" /></Link>
   </Band>;
   return (
-    <Band id="systems" label="Systems" title={v3 ? 'From training plan to range operation' : v2 ? `${Word(OURS)} systems, each available on its own` : `One line, ${word(FUNCTIONS)} functions, each system available on its own`}
-      intro={v3 ? 'TRMS plans the training day. RMS runs the live range. EWMS accounts for weapons, while HUMS tracks equipment health and ACCEL adds video and vision AI. Select a system to see its role.' : v2 ? `${Word(OURS)} systems from Blue Silo, plus ACCEL from our partner SigmaWave for video and vision AI. Use one on its own, or connect them all.` : `${Word(OURS)} systems from Blue Silo, plus ACCEL from our partner SigmaWave for video and vision AI. Take one, or take the line.`}>
+    <Band id="systems" label="Systems" title={v3 ? 'Systems that work alone or together.' : v2 ? `${Word(OURS)} systems, each available on its own` : `One line, ${word(FUNCTIONS)} functions, each system available on its own`}
+      intro={v3 ? 'Each system stands on its own, and together they form one connected ecosystem, from resource and asset management to monitoring and oversight. Select a system to see its role.' : v2 ? `${Word(OURS)} systems from Blue Silo, plus ACCEL from our partner SigmaWave for video and vision AI. Use one on its own, or connect them all.` : `${Word(OURS)} systems from Blue Silo, plus ACCEL from our partner SigmaWave for video and vision AI. Take one, or take the line.`}>
       {v3 && <div className="v6x3__backdrop" aria-hidden="true"><img src={mediaUrl('home-v3-western/featured.jpg')} alt="" decoding="async" /></div>}
       {!v2 && <Diagram />}
       {shown('home.tiles') && <>
