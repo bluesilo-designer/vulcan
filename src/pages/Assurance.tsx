@@ -2,9 +2,10 @@ import { Band } from '../components/ui/Band';
 import { Table } from '../components/ui/Table';
 import { Closer } from '../components/ui/Closer';
 import { ASSURANCE_CONTROLS, ASSURANCE_CONTROLS_V2, ASSURANCE_IMAGES, ASSURANCE_IMAGES_V2, ASSURANCE_LAYERS_V2 } from '../content/assurance';
-import { useV } from '../lib/version';
+import { useV, useV1Back } from '../lib/version';
 import { mediaUrl } from '../lib/media';
 import { pad2 } from '../lib/html';
+import '../styles/assurance-v3.css';
 
 const SAFETY: [string, string, string][] = [
   ['ph-hand-palm', 'An independent emergency stop', 'The stop path does not depend on our control software being healthy, reachable or running. It halts targetry and effects immediately.'],
@@ -33,7 +34,9 @@ const BUILT: [string, string][] = [
 
 export function Assurance() {
   const v2 = useV(2);
+  const v3 = useV1Back();
   const imgs = (v2 ? ASSURANCE_IMAGES_V2 : ASSURANCE_IMAGES) as string[];
+  if (v3) return <AssuranceV3 />;
   return (
     <>
       <section className="pv-hero pv-hero--short">
@@ -95,4 +98,60 @@ export function Assurance() {
       <Closer label="Talk to us" line="Speak with our team about security, safety and compliance for your programme." />
     </>
   );
+}
+
+function AssuranceV3() {
+  const continuity = [
+    ['01', 'Running the session', 'A session already under way keeps running from information held locally.'],
+    ['02', 'Equipment records', 'Issue and return continue locally; records catch up when the link returns.'],
+    ['03', 'Video and analytics', 'Recording continues. Analytics can pause first if resources run short.'],
+    ['04', 'Administration', 'An office-system interruption does not block an active session.'],
+  ];
+  return <div className="as3">
+    <section className="as3-hero">
+      <img className="as3-hero__image" src={mediaUrl('home-v3-western/assurance-operations.jpg')} alt="" decoding="async" />
+      <div className="as3-hero__shade" aria-hidden="true" />
+      <div className="shell as3-hero__content">
+        <span className="label">Assurance</span>
+        <h1>Secure and safe by design.</h1>
+        <p>Security, reliability and safety belong in every layer, from equipment on the range to the systems that support the organisation.</p>
+      </div>
+      <div className="shell as3-hero__index" aria-label="Assurance areas">
+        <span>01 / Security controls</span><span>02 / Range safety</span><span>03 / Resilience</span>
+      </div>
+    </section>
+
+    <section className="as3-controls" id="controls"><div className="shell">
+      <header className="as3-heading"><div><span className="label">01 / Security</span><h2>Controls built into the system.</h2></div>
+        <p>Six practical controls protect the software, the site and the route between them.</p></header>
+      <div className="as3-controls__grid">{ASSURANCE_CONTROLS_V2.map((c, i) =>
+        <article className="as3-control" key={c[1]}><span className="as3-control__number">{pad2(i)}</span>
+          <i className={'ph ' + c[0]} aria-hidden="true" /><h3>{c[1]}</h3><p>{c[2]}</p></article>
+      )}</div>
+    </div></section>
+
+    <section className="as3-safety">
+      <img src={mediaUrl('assurance-v3-western/range-safety.jpg')} alt="" loading="lazy" decoding="async" />
+      <div className="as3-safety__shade" aria-hidden="true" />
+      <div className="shell as3-safety__content"><span className="label">02 / Range safety</span>
+        <h2>Safety takes a separate path.</h2>
+        <p>Critical responses are defined before a session starts and remain clear when a system fails.</p>
+        <ol>{SAFETY_V2.map((item, i) => <li key={item[1]}><span>{pad2(i)}</span><div><h3>{item[1]}</h3><p>{item[2]}</p></div></li>)}</ol>
+      </div>
+    </section>
+
+    <section className="as3-continuity"><div className="shell">
+      <header className="as3-heading"><div><span className="label">03 / Resilience</span><h2>Keep the training day moving.</h2></div>
+        <p>Each layer has a different job when a connection or service is interrupted.</p></header>
+      <div className="as3-continuity__grid">{continuity.map((item) => <article key={item[1]}>
+        <span>{item[0]}</span><h3>{item[1]}</h3><p>{item[2]}</p></article>)}</div>
+    </div></section>
+
+    <section className="as3-practice"><div className="shell as3-practice__layout">
+      <div><span className="label">How we build</span><h2>Assurance continues after design.</h2>
+        <p>Reviews, tests and controlled releases make the intended protections repeatable.</p></div>
+      <ol>{BUILT_V2.map((item, i) => <li key={item[0]}><span>{pad2(i)}</span><div><h3>{item[0]}</h3><p>{item[1]}</p></div></li>)}</ol>
+    </div></section>
+    <Closer label="Talk to us" line="Speak with our team about security, safety and reliability for your programme." />
+  </div>;
 }

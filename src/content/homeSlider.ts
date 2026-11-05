@@ -10,7 +10,7 @@ export type Slide = { k: string; icon: string; h: string; line: string; img: str
    They do not change with the photography set. */
 export const HS_SLIDES: Slide[] = [
   { k: 'Training systems', icon: 'ph-crosshair', img: 'hs/training.jpg',
-    h: 'Plan, run and close every training day in one system',
+    h: 'One system for every training day.',
     line: 'Bookings, trainees, lanes and equipment in one place, from the first request to the final result.',
     cta: ['Explore training systems', '/products/trms'] },
   { k: 'System integration', icon: 'ph-plugs-connected', img: 'hs/integration.jpg',
@@ -26,6 +26,23 @@ export const HS_SLIDES: Slide[] = [
     line: 'Weapon custody, administration and resource planning, with a clear record behind every decision.',
     cta: ['Explore enterprise systems', '/products/ewms'] },
 ];
+
+/* v3: a first slide about the company itself, before the four service
+   slides (client request, 4 Nov 2026). Copy restates the Company page. */
+export const HS_WHO: Slide = { k: 'Who we are', icon: 'ph-shield-check', img: 'company-v3-western/hero.jpg',
+  h: 'Defence systems that work together.',
+  line: 'We design, develop and integrate defence systems, then support them for the long term.',
+  cta: ['About Us', '/company'] };
+
+/* New coherent photo set for the v3 slider homepage only. The earlier
+   photographs stay available in v1/v2 and the other pages. */
+export const HOME_V3_IMAGES = {
+  slides: ['hero-training-natural-wide.jpg', 'hero-integration.jpg', 'hero-monitoring.jpg', 'hero-enterprise.jpg'],
+  caps: ['cap-training.jpg', 'cap-integration-fixed.jpg', 'cap-monitoring.jpg', 'cap-enterprise.jpg'],
+  featured: 'featured-training-building.jpg',
+  cta: 'cta-building.jpg',
+} as const;
+export const homeV3Image = (file: string) => `home-v3-western/${file}`;
 
 export const HS_INTRO = {
   label: 'What we do',

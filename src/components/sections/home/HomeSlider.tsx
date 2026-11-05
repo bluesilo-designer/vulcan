@@ -2,13 +2,14 @@ import { useCallback, useEffect, useRef, useState, type KeyboardEvent, type Reac
 import { Link } from 'react-router-dom';
 import { Trust } from './Trust';
 import { CtaBand } from '../../ui/CtaBand';
+import { CTA_TRAINING_IMAGE, mediaUrl } from '../../../lib/media';
 import { Icon } from '../../ui/Icon';
 import { VISIBLE_PRODUCTS, shown } from '../../../config/site';
 import { brandOf, productOf } from '../../../content/products';
 import { EXPLORER_IMAGES, WORDS } from '../../../content/home';
-import { HS_CAPS, HS_CTA, HS_FEATURE, HS_INTRO, HS_PRODUCT_LINES, HS_PROOF, HS_SLIDES, HS_WHY, HS_WHY_H } from '../../../content/homeSlider';
-import { mediaUrl } from '../../../lib/media';
+import { HOME_V3_IMAGES, HS_CAPS, HS_CTA, HS_FEATURE, HS_INTRO, HS_PRODUCT_LINES, HS_PROOF, HS_SLIDES, HS_WHO, HS_WHY, HS_WHY_H, homeV3Image } from '../../../content/homeSlider';
 import { pad2 } from '../../../lib/html';
+import { useVersion } from '../../../lib/version';
 
 const DWELL = 7000; /* ms per slide */
 const Word = (n: number) => { const w = (WORDS as string[])[n] || String(n); return w.charAt(0).toUpperCase() + w.slice(1); };
@@ -26,19 +27,43 @@ export type SliderVariant = 's' | 's2' | 's3' | 's4' | 's5' | 's6';
    s5  filmstrip: a thumbnail of every slide, bottom right
    s6  next up: a progress ring on the play button, a preview of the next slide */
 function Slider({ variant }: { variant: SliderVariant }) {
-  const n = HS_SLIDES.length;
+  const v3 = useVersion().v === 3;
+  /* v3 opens with "Who we are", then the four service slides */
+  const SLIDES = v3 ? [HS_WHO, ...HS_SLIDES] : HS_SLIDES;
+  const off = v3 ? 1 : 0;
+  const slideImage = (i: number) => mediaUrl(v3 ? (i < off ? SLIDES[i].img : homeV3Image(HOME_V3_IMAGES.slides[i - off])) : HS_SLIDES[i].img);
+  const n = SLIDES.length;
   const [cur, setCur] = useState(0);
   const [paused, setPaused] = useState(false);
-  const [hold, setHold] = useState(false); /* hover or focus inside */
+  const [hold, setHold] = useState(false); /* keyboard focus inside */
+  const [hidden, setHidden] = useState(document.hidden);
+  const remaining = useRef(DWELL);
+  const started = useRef(0);
+  const active = useRef(0);
   const reduce = useRef(typeof matchMedia !== 'undefined' && matchMedia('(prefers-reduced-motion: reduce)').matches);
   const tabs = useRef<(HTMLButtonElement | null)[]>([]);
-  const go = useCallback((i: number) => setCur(((i % n) + n) % n), [n]);
-  const running = !paused && !hold && !reduce.current;
+  const go = useCallback((i: number) => {
+    const next = ((i % n) + n) % n;
+    active.current = next;
+    remaining.current = DWELL;
+    setCur(next);
+  }, [n]);
+  const running = !paused && !hold && !hidden && !reduce.current;
+
+  useEffect(() => {
+    const visibility = () => setHidden(document.hidden);
+    document.addEventListener('visibilitychange', visibility);
+    return () => document.removeEventListener('visibilitychange', visibility);
+  }, []);
 
   useEffect(() => {
     if (!running) return;
-    const t = setTimeout(() => { if (!document.hidden) go(cur + 1); }, DWELL);
-    return () => clearTimeout(t);
+    started.current = performance.now();
+    const t = setTimeout(() => go(cur + 1), remaining.current);
+    return () => {
+      clearTimeout(t);
+      if (active.current === cur) remaining.current = Math.max(0, remaining.current - (performance.now() - started.current));
+    };
   }, [cur, running, go]);
 
   const onKey = (e: KeyboardEvent) => {
@@ -48,8 +73,8 @@ function Slider({ variant }: { variant: SliderVariant }) {
   };
   /* one tab per slide; the markup inside differs by variant */
   const tab = (i: number, cls: string, body: ReactNode) => (
-    <button key={HS_SLIDES[i].k} ref={(el) => { tabs.current[i] = el; }} type="button" role="tab" className={cls + (i < cur ? ' is-done' : '')}
-      aria-selected={i === cur} aria-controls={`hs-slide-${i}`} aria-label={HS_SLIDES[i].k} tabIndex={i === cur ? 0 : -1} onClick={() => go(i)}>
+    <button key={SLIDES[i].k} ref={(el) => { tabs.current[i] = el; }} type="button" role="tab" className={cls + (i < cur ? ' is-done' : '')}
+      aria-selected={i === cur} aria-controls={`hs-slide-${i}`} aria-label={SLIDES[i].k} tabIndex={i === cur ? 0 : -1} onClick={() => go(i)}>
       {body}
       <i className="hs__prog" aria-hidden="true" style={{ animationDuration: `${DWELL}ms` }} key={i === cur ? `on-${cur}` : 'off'}></i>
     </button>
@@ -64,20 +89,23 @@ function Slider({ variant }: { variant: SliderVariant }) {
   );
   const list = (cls: string, inner: (i: number) => ReactNode, extra = '') => (
     <div className={'hs__tabs ' + extra} role="tablist" aria-label="Choose a capability" onKeyDown={onKey}>
-      {HS_SLIDES.map((_, i) => tab(i, cls, inner(i)))}
+      {SLIDES.map((_, i) => tab(i, cls, inner(i)))}
     </div>
   );
   const count = <span className="hs__count" aria-hidden="true"><b>{pad2(cur)}</b> / {pad2(n - 1)}</span>;
 
   return (
     <section className={'hs hs--' + variant + (running ? ' is-running' : '')} aria-roledescription="carousel" aria-label="Blue Silo capabilities"
-      onMouseEnter={() => setHold(true)} onMouseLeave={() => setHold(false)}
-      onFocus={() => setHold(true)} onBlur={(e) => { if (!e.currentTarget.contains(e.relatedTarget as Node)) setHold(false); }}>
+      onFocus={(e) => { if ((e.target as HTMLElement).matches(':focus-visible')) setHold(true); }}
+      onBlur={(e) => { if (!e.currentTarget.contains(e.relatedTarget as Node)) setHold(false); }}>
       {variant === 's4' && <div className="hs__frame" aria-hidden="true"><i></i><i></i><i></i><i></i></div>}
-      {HS_SLIDES.map((s, i) => (
+      {SLIDES.map((s, i) => (
         <div className={'hs__slide' + (i === cur ? ' is-on' : '')} key={s.k} role="group" aria-roledescription="slide"
           aria-label={`${i + 1} of ${n}: ${s.k}`} aria-hidden={i !== cur} id={`hs-slide-${i}`}>
-          <div className="hs__bed"><img src={mediaUrl(s.img)} alt="" decoding="async" loading={i === cur || i === (cur + 1) % n ? 'eager' : 'lazy'} /></div>
+          <div className="hs__bed">{v3 && i === off ? <picture>
+                    <source media="(max-width: 1100px)" srcSet={mediaUrl(homeV3Image('hero-training-natural-balanced.jpg'))} />
+            <img src={slideImage(i)} alt="" decoding="async" loading="eager" />
+          </picture> : <img src={slideImage(i)} alt="" decoding="async" loading="eager" />}</div>
           <div className="hs__veil"></div>
           <div className="shell hs__in">
             {variant === 's3' && <span className="hs__big" aria-hidden="true">{pad2(i)}</span>}
@@ -93,7 +121,7 @@ function Slider({ variant }: { variant: SliderVariant }) {
       ))}
 
       {variant === 's' && <div className="hs__bar"><div className="shell hs__bar-in">
-        {list('hs__tab', (i) => <><span className="hs__tab-n">{pad2(i)}</span><span className="hs__tab-k">{HS_SLIDES[i].k}</span></>)}
+        {list('hs__tab', (i) => <><span className="hs__tab-n">{pad2(i)}</span><span className="hs__tab-k">{SLIDES[i].k}</span></>)}
         {ctl}
       </div></div>}
 
@@ -104,12 +132,12 @@ function Slider({ variant }: { variant: SliderVariant }) {
       </div></div>}
 
       {variant === 's3' && <div className="hs__side"><div className="hs__side-in">
-        {list('hs__ix', (i) => <><span className="hs__ix-n">{pad2(i)}</span><span className="hs__ix-k">{HS_SLIDES[i].k}</span></>, 'hs__index')}
+        {list('hs__ix', (i) => <><span className="hs__ix-n">{pad2(i)}</span><span className="hs__ix-k">{SLIDES[i].k}</span></>, 'hs__index')}
         {ctl}
       </div></div>}
 
       {variant === 's4' && <>
-        <div className="hs__read" aria-hidden="true"><span>{pad2(cur)}</span><span>{HS_SLIDES[cur].k}</span></div>
+        <div className="hs__read" aria-hidden="true"><span>{pad2(cur)}</span><span>{SLIDES[cur].k}</span></div>
         <div className="hs__rail">
           {list('hs__tick', (i) => <span className="hs__tick-n">{pad2(i)}</span>, 'hs__ticks')}
           {ctl}
@@ -118,8 +146,8 @@ function Slider({ variant }: { variant: SliderVariant }) {
 
       {variant === 's5' && <div className="hs__strip"><div className="shell hs__strip-in">
         {list('hs__film', (i) => <>
-          <span className="hs__film-img"><img src={mediaUrl(HS_SLIDES[i].img)} alt="" decoding="async" /></span>
-          <span className="hs__film-t"><span className="hs__film-n">{pad2(i)}</span><span className="hs__film-k">{HS_SLIDES[i].k}</span></span>
+          <span className="hs__film-img"><img src={slideImage(i)} alt="" decoding="async" /></span>
+          <span className="hs__film-t"><span className="hs__film-n">{pad2(i)}</span><span className="hs__film-k">{SLIDES[i].k}</span></span>
         </>, 'hs__films')}
         {ctl}
       </div></div>}
@@ -135,9 +163,9 @@ function Slider({ variant }: { variant: SliderVariant }) {
           {count}
           <button type="button" className="hs__btn" aria-label="Previous slide" onClick={() => go(cur - 1)}><Icon name="ph-caret-left" /></button>
         </div>
-        <button type="button" className="hs__peek" onClick={() => go(cur + 1)} aria-label={`Next: ${HS_SLIDES[(cur + 1) % n].k}`}>
-          <span className="hs__peek-img"><img src={mediaUrl(HS_SLIDES[(cur + 1) % n].img)} alt="" decoding="async" /></span>
-          <span className="hs__peek-t"><span className="hs__peek-l">Next</span><span className="hs__peek-k">{HS_SLIDES[(cur + 1) % n].k}</span></span>
+        <button type="button" className="hs__peek" onClick={() => go(cur + 1)} aria-label={`Next: ${SLIDES[(cur + 1) % n].k}`}>
+          <span className="hs__peek-img"><img src={slideImage((cur + 1) % n)} alt="" decoding="async" /></span>
+          <span className="hs__peek-t"><span className="hs__peek-l">Next</span><span className="hs__peek-k">{SLIDES[(cur + 1) % n].k}</span></span>
           <Icon name="ph-arrow-right" />
         </button>
       </div></div>}
@@ -149,30 +177,46 @@ function Slider({ variant }: { variant: SliderVariant }) {
    2026), keeping only the ticked sections: hero, trust, featured work, CTA and
    footer from the first; capabilities and why us from the second. Products and
    proof were not ticked and are hidden through HIDDEN_SECTIONS. */
-export function HomeSlider({ variant = 's' }: { variant?: string }) {
+export function HomeSlider({ variant = 's', mergedSections }: { variant?: string; mergedSections?: ReactNode }) {
+  const v3 = useVersion().v === 3;
   const prods = VISIBLE_PRODUCTS.map((id) => ({ id, p: productOf(id), b: brandOf(id) })).filter((x) => x.p && x.b);
   return (
     <>
       <Slider variant={(['s', 's2', 's3', 's4', 's5', 's6'].includes(variant) ? variant : 's') as SliderVariant} />
       <Trust />
 
-      <section className="band hs-caps"><div className="shell">
+      {v3 ? <section className="hs-capabilities-v3" id="capabilities"><div className="shell hs-capabilities-v3__layout">
+        <div className="hs-capabilities-v3__intro rv">
+          <span className="label">What we do</span>
+          <h2>Integrated solutions for every mission</h2>
+          <p>From training and range operations to monitoring and enterprise management, our systems connect the work across a defence programme.</p>
+          <Link className="hs-capabilities-v3__all" to="/products">Explore all capabilities <Icon name="ph-arrow-right" /></Link>
+        </div>
+        <div className="hs-capabilities-v3__grid">
+          {HS_CAPS.map((c, i) => <Link className="hs-capabilities-v3__tile rv" data-d={String(i)} to={c[4]} key={c[1]}>
+            <img src={mediaUrl(homeV3Image(HOME_V3_IMAGES.caps[i]))} alt="" loading="lazy" decoding="async" />
+            <span className="hs-capabilities-v3__tile-copy"><Icon name={c[0]} /><strong>{c[1].slice(0, c[1].lastIndexOf(' '))}<br />{c[1].slice(c[1].lastIndexOf(' ') + 1)}</strong><Icon name="ph-arrow-up-right" className="hs-capabilities-v3__arrow" /></span>
+          </Link>)}
+        </div>
+      </div></section> : <section className="band hs-caps"><div className="shell">
         <div className="hs-caps__head rv">
           <div><span className="label">{HS_INTRO.label}</span><h2>{HS_INTRO.h}</h2></div>
           <p>{HS_INTRO.p}</p>
         </div>
         <div className="hs-caps__grid">
           {HS_CAPS.map((c, i) => (
-            <Link className="hs-cap rv" data-d={String(i)} to={c[4]} key={c[1]}>
-              <figure><img src={mediaUrl(c[3])} alt="" loading="lazy" decoding="async" /></figure>
-              <div className="hs-cap__b">
-                <div className="hs-cap__t"><span className="hs-ic"><Icon name={c[0]} /></span><h3>{c[1]}</h3></div>
-                <p>{c[2]}</p>
-                <span className="hs-go">Learn more <Icon name="ph-arrow-right" /></span></div>
-            </Link>
+              <Link className="hs-cap rv" data-d={String(i)} to={c[4]} key={c[1]}>
+                <figure><img src={mediaUrl(c[3])} alt="" loading="lazy" decoding="async" /></figure>
+                <div className="hs-cap__b">
+                  <div className="hs-cap__t"><span className="hs-ic"><Icon name={c[0]} /></span><h3>{c[1]}</h3></div>
+                  <p>{c[2]}</p>
+                  <span className="hs-go">Learn more <Icon name="ph-arrow-right" /></span></div>
+              </Link>
           ))}
         </div>
-      </div></section>
+      </div></section>}
+
+      {mergedSections}
 
       {shown('homeSlider.products') && <section className="band band--deep" id="systems"><div className="shell">
         <div className="hs-head rv">
@@ -207,7 +251,7 @@ export function HomeSlider({ variant = 's' }: { variant?: string }) {
         </div></section>}
 
       <section className="hs-feat"><div className="hs-feat__in">
-        <figure className="hs-feat__img"><img src={mediaUrl(HS_FEATURE.img)} alt="" loading="lazy" decoding="async" /></figure>
+        <figure className="hs-feat__img"><img src={mediaUrl(v3 ? homeV3Image(HOME_V3_IMAGES.featured) : HS_FEATURE.img)} alt="" loading="lazy" decoding="async" /></figure>
         <div className="hs-feat__b rv">
           <span className="label">{HS_FEATURE.label}</span>
           <h2>{HS_FEATURE.h}</h2>
@@ -226,7 +270,7 @@ export function HomeSlider({ variant = 's' }: { variant?: string }) {
         </ul>
       </div></section>
 
-      <CtaBand title={HS_CTA.title} line={HS_CTA.line} slim />
+      <CtaBand title={HS_CTA.title} line={HS_CTA.line} img={v3 ? CTA_TRAINING_IMAGE : undefined} slim />
     </>
   );
 }

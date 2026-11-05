@@ -8,4 +8,6 @@ export const asset = (p: string) => import.meta.env.BASE_URL + p.replace(/^\//, 
 let swap: ((file: string) => string) | null = null;
 export const setMediaSwap = (fn: typeof swap) => { swap = fn; };
 export const mediaUrl = (file: string) => asset('media/' + (swap ? swap(file) : file));
+export const CTA_TRAINING_IMAGE = 'shared/army-training-complex-cta.jpg';
+export const CONTACT_TRAINING_IMAGE = 'shared/army-training-contact.jpg';
 export const isReady = (id: string) => (MEDIA_READY as string[]).includes(id);

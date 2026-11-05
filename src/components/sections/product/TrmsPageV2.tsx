@@ -1,12 +1,18 @@
-import { useState, type ReactNode } from 'react';
+import { TrmsMission } from './TrmsMission';
+import { useEffect, useRef, useState, type ReactNode } from 'react';
 import { Link } from 'react-router-dom';
 import { Icon } from '../../ui/Icon';
 import { Closer } from '../../ui/Closer';
 import { productImg } from '../../../lib/images';
 import { useReview } from '../../../lib/review';
 import { TrmsScoreboard, TrmsLeaderboard } from './TrmsV2';
-import { useTrmsLayout } from '../../../lib/version';
+import { useTrmsLayout, useV1Back } from '../../../lib/version';
+import { mediaUrl } from '../../../lib/media';
 import { TrmsA, TrmsB, TrmsC } from './TrmsLayouts';
+import { TrmsD, TrmsE } from './TrmsVariants';
+import { TrmsStoryV3 } from './TrmsStoryV3';
+import { TrmsStoryV4 } from './TrmsStoryV4';
+import '../../../styles/trms-v3.css';
 
 /* v2 TRMS page. The spine is one booking, followed from the moment it is
    created to the result it produces, with the centre's operating layer
@@ -108,6 +114,94 @@ function Create() {
   );
 }
 
+/* The v3 product story demonstrates a booking being made, rather than
+   presenting five static screenshots. The values are illustrative. */
+const DEMO_STEPS = [
+  { icon: 'ph-note-pencil', title: 'Booking details', prompt: 'Set the training plan', label: 'Courseware', entry: 'Day test, component training', facts: [['Training type', 'Group'], ['Training mode', 'Collective'], ['Unit', 'Unit Alpha']], note: 'The booking starts with one clear request.' },
+  { icon: 'ph-calendar-check', title: 'Schedule', prompt: 'Find an open session', label: 'Session', entry: 'Thu 12 Nov · 08:00–12:00', facts: [['Course', 'Day test'], ['Stations needed', '3'], ['Availability', '3 stations open']], note: 'Availability is checked before the time is reserved.' },
+  { icon: 'ph-target', title: 'Lane set-up', prompt: 'Prepare the range', label: 'Lane allocation', entry: 'Station 01 · Lanes 1–3', facts: [['Station', '01'], ['Lanes', '3 assigned'], ['Equipment', 'Simulator rifles']], note: 'The right lanes and equipment follow the booking.' },
+  { icon: 'ph-users-three', title: 'Trainee list', prompt: 'Bring the team in', label: 'Trainees', entry: '6 trainees added to Unit Alpha', facts: [['Group', 'Unit Alpha'], ['Instructor', 'L. Ng'], ['List', 'Ready for check-in']], note: 'The attendance list is ready before training begins.' },
+  { icon: 'ph-check-circle', title: 'Review', prompt: 'Ready for training day', label: 'Booking status', entry: 'Booking ready to confirm', facts: [['Session', 'Thu 12 Nov · AM'], ['Location', 'Station 01'], ['Trainees', '6 on the list']], note: 'Everything is tied to the same booking record.' },
+] as const;
+
+function CreateDemoV3() {
+  const [step, setStep] = useState(0);
+  const [letters, setLetters] = useState(0);
+  const [playing, setPlaying] = useState(true);
+  const [visible, setVisible] = useState(false);
+  const [hidden, setHidden] = useState(false);
+  const [reduced, setReduced] = useState(false);
+  const [runId, setRunId] = useState(0);
+  const [manual, setManual] = useState(false);
+  const root = useRef<HTMLElement>(null);
+  const stepsRef = useRef<HTMLElement>(null);
+  const current = DEMO_STEPS[step];
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(([entry]) => setVisible(entry.isIntersecting), { threshold: .2 });
+    if (root.current) observer.observe(root.current);
+    const visibility = () => setHidden(document.hidden);
+    document.addEventListener('visibilitychange', visibility);
+    const motion = window.matchMedia('(prefers-reduced-motion: reduce)');
+    setReduced(motion.matches);
+    return () => { observer.disconnect(); document.removeEventListener('visibilitychange', visibility); };
+  }, []);
+
+  useEffect(() => {
+    if (reduced) { setLetters(current.entry.length); return; }
+    if (!playing || !visible || hidden) return;
+    const timer = window.setTimeout(() => {
+      if (letters < current.entry.length) setLetters(letters + 1);
+      else { setStep((step + 1) % DEMO_STEPS.length); setLetters(0); setManual(false); }
+    }, letters < current.entry.length ? 52 : 3100);
+    return () => window.clearTimeout(timer);
+  }, [step, letters, playing, visible, hidden, reduced, current.entry.length]);
+
+  useEffect(() => {
+    if (!visible || !window.matchMedia('(max-width: 600px)').matches) return;
+    const rail = stepsRef.current;
+    const button = rail?.querySelectorAll('button')[step];
+    if (!rail || !button) return;
+    rail.scrollTo({ left: rail.scrollLeft + button.getBoundingClientRect().left - rail.getBoundingClientRect().left - (rail.clientWidth - button.clientWidth) / 2, behavior: reduced ? 'auto' : 'smooth' });
+  }, [step, visible, reduced]);
+
+  const choose = (index: number) => { setPlaying(false); setManual(true); setStep(index); setRunId((id) => id + 1); setLetters(DEMO_STEPS[index].entry.length); };
+  const togglePlay = () => {
+    if (playing) { setPlaying(false); return; }
+    if (manual) { setStep((step + 1) % DEMO_STEPS.length); setLetters(0); setManual(false); }
+    setPlaying(true);
+  };
+  return (
+    <section className="band tr3-create" id="t2-create" ref={root}>
+      <div className="shell tr3-create__layout">
+        <div className="tr3-create__head"><div><span className="label">See TRMS at work</span><h2>From request to ready.</h2>
+          <p>Follow one booking through five simple steps. Select a step to explore it.</p>
+          <div className="tr3-create__marker"><span>01</span><i /><Icon name="ph-arrow-right" /><i /><span>05</span><b>One connected record</b></div></div>
+          <button type="button" className="tr3-create__play" onClick={togglePlay} aria-label={playing ? 'Pause booking demo' : 'Play booking demo'} aria-pressed={!playing}>
+            <Icon name={playing ? 'ph-pause' : 'ph-play'} />{playing ? 'Pause demo' : 'Play demo'}
+          </button></div>
+        <div className={'tr3-create__demo' + (!playing || !visible || hidden ? ' is-paused' : '')}>
+          <div className="tr3-create__top"><span className="tr3-create__brand"><Icon name="ph-squares-four" /> TRMS</span><span>NEW BOOKING <b> / 001</b></span><span className="tr3-create__live"><i />Interactive walkthrough</span></div>
+          <nav className="tr3-create__steps" aria-label="Booking steps" ref={stepsRef}>{DEMO_STEPS.map((item, i) => (
+            <button type="button" key={item.title} className={i === step ? 'is-active' : i < step ? 'is-complete' : ''}
+              aria-current={i === step ? 'step' : undefined} onClick={() => choose(i)}>
+              <span className="tr3-create__step-icon"><Icon name={item.icon} /></span><span className="tr3-create__step-number">0{i + 1}</span><span>{item.title}</span>
+              {i === step && !manual && !reduced && <i className="tr3-create__step-progress" key={`${step}-${runId}`} style={{ animationDuration: `${item.entry.length * 52 + 3100}ms` }} />}
+            </button>
+          ))}</nav>
+          <div className="tr3-create__screen" key={step}>
+            <div className="tr3-create__screen-head"><span>0{step + 1} / 05</span><strong>{current.prompt}</strong><span className="tr3-create__screen-state"><Icon name={playing ? 'ph-circle-notch' : 'ph-pause'} /> {playing ? 'Demo in progress' : 'Preview paused'}</span></div>
+            <div className="tr3-create__field"><span>{current.label}</span><strong>{current.entry.slice(0, letters)}<i className={letters === current.entry.length ? 'is-done' : ''} aria-hidden="true" /></strong></div>
+            <div className="tr3-create__facts">{current.facts.map(([label, value], i) => <div key={label} style={{ animationDelay: `${i * 110}ms` }}><span>{label}</span><b>{value}</b></div>)}</div>
+            <div className="tr3-create__screen-foot"><span><Icon name="ph-check-circle" />{current.note}</span><button type="button" onClick={() => choose((step + 1) % DEMO_STEPS.length)}>
+              {step === 4 ? 'Start again' : 'Next step'} <Icon name="ph-arrow-right" /></button></div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
 /* ---------- 2 the life of a booking ---------- */
 const STATES: [string, string, string][] = [
   ['ph-calendar-check', 'Upcoming', 'Stations reserved'],
@@ -165,6 +259,62 @@ function Day() {
       </div>
     </div></section>
   );
+}
+
+const DAY_FLOWS = [
+  {
+    label: 'Check in',
+    intro: 'From the booking to a session that is ready to begin.',
+    steps: [
+      ['ph-calendar-check', 'Booking', 'The plan is already in place'],
+      ['ph-users-three', 'Attendance', 'Confirm who has arrived'],
+      ['ph-check-circle', 'Ready to start', 'People and resources accounted for'],
+    ],
+    outcome: 'The team knows what is ready before training starts.',
+  },
+  {
+    label: 'Run the session',
+    intro: 'From activity on the range to a traceable result.',
+    steps: [
+      ['ph-play-circle', 'Session begins', 'The training day moves forward'],
+      ['ph-chart-line-up', 'Results arrive', 'Outcomes are captured as they happen'],
+      ['ph-file-text', 'Record updates', 'The session history stays together'],
+    ],
+    outcome: 'Results stay connected to the session they came from.',
+  },
+] as const;
+
+function DayV3() {
+  const [active, setActive] = useState(0);
+  const flow = DAY_FLOWS[active];
+  return <section className="band tr3-flow" id="training-day"><div className="shell">
+    <div className="tr3-flow__heading"><div><span className="label">The training day</span><h2>One day. One connected flow.</h2></div>
+      <p>See how information moves through a session, from arrival to results.</p></div>
+    <div className="tr3-flow__tabs" role="tablist" aria-label="Training day process">
+      {DAY_FLOWS.map((item, index) => <button type="button" role="tab" aria-selected={active === index} className={active === index ? 'is-active' : ''} key={item.label} onClick={() => setActive(index)}><span>0{index + 1}</span>{item.label}<Icon name="ph-arrow-right" /></button>)}
+    </div>
+    <div className="tr3-flow__scene" key={active} role="tabpanel"><p className="tr3-flow__intro">{flow.intro}</p>
+      <ol className="tr3-flow__path">{flow.steps.map(([icon, title, detail], index) => <li key={title} style={{ animationDelay: `${index * 100}ms` }}><span className="tr3-flow__node"><Icon name={icon} /></span><span className="tr3-flow__number">0{index + 1}</span><strong>{title}</strong><small>{detail}</small></li>)}</ol>
+      <div className="tr3-flow__outcome"><Icon name="ph-check-circle" /><span>{flow.outcome}</span></div>
+    </div>
+    <p className="tr3-illustration-note"><Icon name="ph-info" />Process illustration only. It does not represent the final TRMS interface.</p>
+  </div></section>;
+}
+
+function LeaderboardV3() {
+  return <section className="band band--deep tr3-results"><div className="shell tr3-results__layout">
+    <div className="tr3-results__copy"><span className="label">Shared results</span><h2>From individual results to a shared picture.</h2>
+      <p>As results arrive, teams can see how a group is progressing and where attention is needed.</p>
+      <div className="tr3-results__key"><Icon name="ph-arrows-clockwise" /><span>Captured once. Useful across the training centre.</span></div>
+      <p className="tr3-illustration-note"><Icon name="ph-info" />Conceptual results flow, not a leaderboard screen design.</p>
+    </div>
+    <div className="tr3-results__diagram" role="img" aria-label="Illustration of session results flowing into a shared view of standings, categories, and progress">
+      <div className="tr3-results__source"><Icon name="ph-target" /><span>SESSION RESULTS</span><i aria-hidden="true" /></div>
+      <div className="tr3-results__line" aria-hidden="true"><i /></div>
+      <div className="tr3-results__hub"><span className="tr3-results__hub-ring"><Icon name="ph-chart-bar" /></span><b>A shared view</b><small>Available as results arrive</small></div>
+      <div className="tr3-results__outputs"><div><Icon name="ph-medal" /><b>Standings</b></div><div><Icon name="ph-squares-four" /><b>Categories</b></div><div><Icon name="ph-trend-up" /><b>Progress</b></div></div>
+    </div>
+  </div></section>;
 }
 
 /* ---------- 4 after the session ---------- */
@@ -291,16 +441,25 @@ function Who() {
 
 export function TrmsPageV2() {
   const { state } = useReview();
+  const v3 = useV1Back();
   /* v2 review sub-versions (?tr=a|b|c); '0' is this page as it was */
   const { tr } = useTrmsLayout();
-  if (tr === 'a') return <TrmsA />;
-  if (tr === 'b') return <TrmsB />;
-  if (tr === 'c') return <TrmsC />;
+  const legacy = v3 && new URLSearchParams(location.search).get('tr') === 'legacy';
+  if (!legacy) {
+    if (tr === 'g') return <TrmsMission />;
+    if (tr === 'f') return <TrmsStoryV4 />;
+    if (tr === 'a') return <TrmsA />;
+    if (tr === 'b') return <TrmsB />;
+    if (tr === 'c') return <TrmsC />;
+    if (tr === 'd') return <TrmsD />;
+    if (tr === 'e') return <TrmsE />;
+    if (v3) return <TrmsStoryV3 />;
+  }
   const go = () => document.getElementById('t2-create')?.scrollIntoView({ behavior: 'smooth' });
   return (
     <>
-      <section className="pv-hero">
-        <div className="pv-hero__bed pv-par"><img src={productImg('trms', 'hero', state.pset)} alt="" decoding="async" /></div><div className="pv-hero__veil"></div>
+      <section className={'pv-hero' + (v3 ? ' tr3-hero' : '')}>
+        <div className="pv-hero__bed pv-par"><img src={v3 ? mediaUrl('trms-v3-western/hero-facility.jpg') : productImg('trms', 'hero', state.pset)} alt="" decoding="async" /></div><div className="pv-hero__veil"></div>
         <div className="shell pv-hero__in">
           <div className="v6pbrand"><span className="v6pbrand__s">TRMS</span><span className="pv-status"><Icon name="ph-monitor-play" />Ready to demonstrate</span></div>
           <h1>Training Resource Management System</h1>
@@ -309,12 +468,27 @@ export function TrmsPageV2() {
             <button type="button" className="btn btn--g" onClick={go}>See how it works</button></div>
         </div>
       </section>
-      <Create />
+      {v3 ? <CreateDemoV3 /> : <Create />}
       <Life />
-      <Day />
-      <TrmsLeaderboard />
+      {v3 && <section className="tr3-checkin">
+        <img src={mediaUrl('trms-v3-western/check-in.jpg')} alt="" loading="lazy" decoding="async" />
+        <div className="tr3-checkin__shade" aria-hidden="true" />
+        <div className="shell tr3-checkin__content"><span className="label">The training day</span>
+          <h2>People and equipment, checked in together.</h2>
+          <p>Attendance and issued items are recorded against the booking before the session begins. The team sees what is ready and what still needs attention.</p>
+        </div>
+      </section>}
+      {v3 ? <DayV3 /> : <Day />}
+      {v3 ? <LeaderboardV3 /> : <TrmsLeaderboard />}
       <After />
       <Centre />
+      {v3 && <section className="tr3-simulator"><div className="shell tr3-simulator__layout">
+        <figure><img src={mediaUrl('trms-v3-western/simulator.jpg')} alt="Simulator training supervised by an instructor" loading="lazy" decoding="async" /></figure>
+        <div><span className="label">One connected record</span>
+          <h2>From the simulator to the result.</h2>
+          <p>Stations, trainees and live outcomes stay tied to the same booking, so the result can be reviewed without reconstructing the day from separate records.</p>
+        </div>
+      </div></section>}
       <Who />
       <Closer title="See TRMS running" label="Request a demonstration" line="We will walk you through a full training day in TRMS, from booking to results." />
     </>

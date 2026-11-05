@@ -1,7 +1,7 @@
 import { useRef, useState, type KeyboardEvent } from 'react';
 import { Band } from '../../ui/Band';
 import { CHAIN as CHAIN_V1, STEPS as STEPS_V1, CHAIN_V2 } from '../../../content/home';
-import { useV } from '../../../lib/version';
+import { useV, useVersion } from '../../../lib/version';
 import { pad2 } from '../../../lib/html';
 import { mediaUrl } from '../../../lib/media';
 import { Medal } from './shared';
@@ -9,6 +9,7 @@ import { Medal } from './shared';
 export function Chain() {
   /* v2: content rewritten from the range-day flow; v1 kept as it was */
   const v2 = useV(2);
+  const v3 = useVersion().v === 3;
   const CHAIN = (v2 ? CHAIN_V2 : CHAIN_V1) as typeof CHAIN_V1;
   const STEPS: string[] = v2 ? CHAIN_V2.map((c) => c.b) : (STEPS_V1 as string[]);
   const [cur, setCur] = useState(0);
@@ -23,6 +24,11 @@ export function Chain() {
     if (n !== null) { e.preventDefault(); go(n, true); }
   };
   const c = CHAIN[cur], n = pad2(cur);
+  const v3Images = [
+    'chain-access', 'chain-register', 'chain-brief', 'system-ewms', 'system-hums',
+    'system-rcs', 'system-vms', 'chain-review', 'chain-return', 'chain-sustain',
+  ];
+  const panelImage = v3 ? `home-v3-western/${v3Images[cur]}.jpg` : `chain-${n}.jpg`;
   const data = String(c.d || '').split(',').map((x) => x.trim()).filter(Boolean);
   return (
     <Band id="chain" bleed deep>
@@ -43,7 +49,7 @@ export function Chain() {
         </div>
         <div className="panel"><div className="shell">
           <div className={'panel__in v6cp v6cp--in' + (v2 ? ' v6cp--v2' : '')} id="panel" role="tabpanel" key={cur}>
-            <figure className="v6cp__img"><img src={mediaUrl(`chain-${n}.jpg`)} alt="" decoding="async" />
+            <figure className="v6cp__img"><img src={mediaUrl(panelImage)} alt="" decoding="async" />
               <span className="v6cp__n">{n} / {c.k}</span></figure>
             <div className="v6cp__body">
               {v2 && (c as { h?: string }).h && <span className="v6cp__q"><i className={'ph ' + ((c as { i?: string }).i || '')} aria-hidden="true"></i>{(c as { h?: string }).h}</span>}
@@ -51,7 +57,8 @@ export function Chain() {
               <p>{STEPS[cur] || c.b}</p>
               <div className="v6cp__meta"><div className="v6cp__data"><span className="v6cp__lbl">Data that moves</span>
                 <span className="v6cp__chips">{data.map((d) => <i key={d}>{d}</i>)}</span></div>
-              {String(c.s || '').trim() && <div className="v6cp__sys"><span className="v6cp__lbl">Systems on this step</span>
+              {/* v3: "Systems on this step" hidden at the client's request (4 Nov 2026) */}
+              {!v3 && String(c.s || '').trim() && <div className="v6cp__sys"><span className="v6cp__lbl">Systems on this step</span>
                 <span className="v6medals">{String(c.s || '').split('·').map((r, i) => <Medal raw={r} key={i} />)}</span></div>}</div>
             </div>
           </div>
