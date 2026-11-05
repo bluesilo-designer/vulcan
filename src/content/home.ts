@@ -325,7 +325,8 @@ export const TRUST = {
   "logos": [
     {
       "n": "MINDEF",
-      "f": "mindef-t.png"
+      "f": "mindef-t.png",
+      "m": "mindef-m.png"
     },
     {
       "n": "DSTA",
@@ -477,4 +478,34 @@ export const CHAIN_V2 = [
     b: 'Health and fault data from every system lands in one place, so maintenance is planned before a failure stops training.',
     d: 'Health and usage data, faults, availability', h: 'What needs attention before the next range day' },
 ];
+/* One-line descriptor shown on each step of the home chain (v2 and v3), 5 Nov 2026 */
+export const CHAIN_STAGE_LINES = [
+  'Personnel access and entry verification',
+  'Personnel registration and attendance',
+  'Training briefing and mission preparation',
+  'Weapon allocation and accountability',
+  'Equipment readiness and range preparation',
+  'Live training execution and range control',
+  'Real-time monitoring and activity tracking',
+  'Training performance and results assessment',
+  'Weapon return and equipment reconciliation',
+  'Asset tracking and equipment maintenance',
+];
+
+/* Features that support each step of the home chain (v2 and v3), 5 Nov 2026.
+   Replaces the "Data passed on" chips. Written from the approved system
+   descriptions, as capability, not specification. */
+export const CHAIN_FEATURES = [
+  ['Cleared list received the day before', 'Vehicle plate recognition at the gate', 'Visitor clearance and escort passes'],
+  ['Kiosk check-in against the booking', 'Tracking card issued at check-in', 'Attendance that updates as people arrive'],
+  ['Nominal roll built from who is present', 'Automatic lane assignment', 'Detail list adjusted before the session'],
+  ['Release only to the booked person', 'Every issue recorded at the counter', 'Live view of who holds which weapon'],
+  ['Built-in test of network and services', 'Range readiness checklist', 'Exercise loaded and dry-run before the first detail'],
+  ['One operator controls targets and effects', 'Pause, resume and reshoot during a session', 'Instructor feedback logged at the firing point', 'Emergency stop that works without the software'],
+  ['Every lane recorded at full quality', 'Time stamps on the same clock as range events', 'Event markers placed on the recording'],
+  ['Results replayed alongside the video', 'Event timeline and instructor notes', 'Reshoots booked where needed'],
+  ['Weapons scanned back in', 'Unused ammunition handed over', 'Missing items stay open until accounted for'],
+  ['Health and fault data from every system in one place', 'Failure prediction and condition-based maintenance', 'Spares forecasting'],
+];
+
 export const STEPS_V2 = CHAIN_V2.map((c) => c.b.split(/(?<=\.)\s/)[0]);

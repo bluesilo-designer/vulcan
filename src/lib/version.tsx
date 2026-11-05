@@ -39,13 +39,14 @@ export const useV = (n: SiteVersion) => useContext(Ctx).v >= n;
 export const useV1Back = () => useContext(Ctx).v === 3;
 
 /* Page layout sub-versions inside v2, for comparing designs of one page.
-   Open the page with ?co=a|b|c (Company) to switch; the choice is kept
+   Open the page with ?co=a|t|b|c (Company) to switch; the choice is kept
    for that browser tab. Without a choice the page shows COMPANY_DEFAULT
    (B, chosen 27 Oct 2026). '0' keeps the earlier v2 layout reachable.
    Review only: nothing links to these. */
 export const COMPANY_LAYOUTS = [
   { id: '0', k: 'Earlier', d: 'Version 2 before the A/B/C rewrite' },
   { id: 'a', k: 'A', d: 'Simple statement' },
+  { id: 't', k: 'A · Text', d: 'Simple statement, text only (the v2 original)' },
   { id: 'b', k: 'B', d: 'Proof led, sells harder (default)' },
   { id: 'c', k: 'C', d: 'Four chapters' },
 ] as const;

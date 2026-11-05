@@ -11,7 +11,7 @@ type Logo = { n: string; f: string; m?: string };
    wordmarks (NCS, ST Engineering) shrink and airy marks (DSTA) grow. Keyed by
    file; heights in px include each file's own whitespace. */
 const OPTICAL: Record<string, number> = {
-  'mindef-t.png': 35, 'dsta.svg': 43, 'certis.svg': 28, 'sj.svg': 30, 'sj-m.svg': 54, 'ncs.png': 21, 'ste.svg': 24,
+  'mindef-t.png': 36, 'mindef-m.png': 36, 'dsta.svg': 52, 'certis.svg': 24, 'sj.svg': 23, 'sj-m.svg': 42, 'ncs.png': 17, 'ste.svg': 25,
 };
 
 export function Trust() {

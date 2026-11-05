@@ -79,6 +79,39 @@ export function CompanyA() {
   );
 }
 
+/* ---------- A · Text: the v2 original of A, text only (added 5 Nov 2026) ----------
+   v3 changed A into panels, icon grids and a photograph behind the hero. This keeps the
+   clean statement-and-rows version as its own option. Same copy, no photograph, no cards. */
+export function CompanyText() {
+  const v3 = useVersion().v === 3;
+  return (
+    <>
+      <section className="co2a-hero"><div className="shell">
+        <span className="label">Company</span>
+        <h1>{CO_LINE}</h1>
+        <p className="co2a-lead">{CO_INTRO}</p>
+      </div></section>
+
+      <section className="band"><div className="shell co2a-split">
+        <h2 className="rv">Where our experience comes from</h2>
+        <div className="rv"><p className="co2a-big">{CO_STORY_2}</p><p className="co2a-small">{CO_STORY}</p></div>
+      </div></section>
+
+      <section className="band band--deep"><div className="shell co2a-split">
+        <h2 className="rv">What we do</h2>
+        <ul className="co2a-rows">{CO_CAPABILITIES.map((c) => <li className="rv" key={c[0]}><b>{c[0]}</b><span>{c[1]}</span></li>)}</ul>
+      </div></section>
+
+      <section className="band"><div className="shell">
+        <h2 className="co2a-h rv">Why Blue Silo</h2>
+        <ol className="co2a-why">{CO_REASONS.map((r, i) => <li className="rv" data-d={String(i % 2)} key={r[0]}><span>{Pad(i)}</span><b>{r[0]}</b><p>{r[1]}</p></li>)}</ol>
+      </div></section>
+
+      <CompanyClose v3={v3} />
+    </>
+  );
+}
+
 /* ---------- B: proof led ---------- */
 export function CompanyB() {
   const { state } = useReview();

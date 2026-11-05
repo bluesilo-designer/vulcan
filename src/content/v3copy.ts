@@ -39,9 +39,6 @@ export const V3_COPY: Record<string, string> = {
   'Compare every system': 'Compare all systems',
 
   /* ---------- Home: range day chain ---------- */
-  'One range day, from the gate to the final count': 'One range day, gate to final count',
-  'Each step hands its data to the next, so nothing is carried on paper. Select a step to see what happens and which system handles it.':
-    'Every step passes its data to the next. No paper in between. Pick a step to see what happens.',
   'Cleared before anyone arrives': 'Cleared before anyone arrives',
   'The cleared list of people and vehicles reaches access control the day before. At the gate, plates and credentials are matched and the barrier opens.':
     'Access control gets the cleared list the day before. At the gate, plates and passes match, and the barrier opens.',
@@ -91,9 +88,9 @@ export const V3_COPY: Record<string, string> = {
   'Emergency stop does not depend on our software running.': 'The emergency stop works even if our software does not.',
 
   /* ---------- Home: integration intro ---------- */
-  'Connects to what you already run': 'Every system on your site, working as one',
+  'Connects to what you already run': 'One connected environment for every system on your site',
   'We connect the whole training environment, from live targets and simulators to facility, operations and security systems.':
-    'Targets, simulators, facility, operations and security systems from different suppliers, integrated into one environment your teams can trust.',
+    'Targets, simulators, facilities, operations and security systems, whichever company built them, connected into one environment your teams can trust.',
   'Targets, hit detection and scoring linked to the training session, with results returned to the record.':
     'Targets and scoring tied to the session. Results go straight to the record.',
   'Simulator stations, scenarios and results linked to training sessions, so virtual and live training share one record.':

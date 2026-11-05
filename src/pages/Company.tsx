@@ -2,7 +2,7 @@ import { Band } from '../components/ui/Band';
 import { Table } from '../components/ui/Table';
 import { Media } from '../components/ui/Media';
 import { useCompanyLayout, useV, useVersion } from '../lib/version';
-import { CompanyA, CompanyB, CompanyC } from '../components/sections/company/CompanyLayouts';
+import { CompanyA, CompanyB, CompanyC, CompanyText } from '../components/sections/company/CompanyLayouts';
 import { CompanyClose } from '../components/sections/company/CompanyClose';
 import { Closer } from '../components/ui/Closer';
 import { mediaUrl } from '../lib/media';
@@ -35,6 +35,7 @@ export function Company() {
   /* v2 only: review sub-versions of the whole page (?co=a|b|c) */
   const { co } = useCompanyLayout();
   if (v2 && co === 'a') return <CompanyA />;
+  if (v2 && co === 't') return <CompanyText />;
   if (v2 && co === 'b') return <CompanyB />;
   if (v2 && co === 'c') return <CompanyC />;
   return (

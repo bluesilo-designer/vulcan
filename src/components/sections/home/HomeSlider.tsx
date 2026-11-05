@@ -110,7 +110,10 @@ function Slider({ variant }: { variant: SliderVariant }) {
           <div className="shell hs__in">
             {variant === 's3' && <span className="hs__big" aria-hidden="true">{pad2(i)}</span>}
             <span className="label hs__k"><Icon name={s.icon} />{s.k}</span>
-            <h1 className="hs__h">{s.h}</h1>
+            {/* a headline of two sentences breaks between them, never inside one */}
+            {(() => { const parts = s.h.split(/(?<=\.) /); return parts.length > 1
+              ? <h1 className="hs__h hs__h--m">{parts.map(p => <span key={p}>{p} </span>)}</h1>
+              : <h1 className="hs__h">{s.h}</h1>; })()}
             <p className="lead hs__line">{s.line}</p>
             <div className="btns">
               <Link className="btn btn--p" to={s.cta[1]} tabIndex={i === cur ? 0 : -1}>{s.cta[0]} <Icon name="ph-arrow-right" /></Link>
@@ -260,7 +263,7 @@ export function HomeSlider({ variant = 's', mergedSections }: { variant?: string
         </div>
       </div></section>
 
-      <section className="hs-whyband"><div className="shell">
+      {shown('homeSlider.why') && <section className="hs-whyband"><div className="shell">
         <h2 className="hs-why__h rv">{HS_WHY_H}</h2>
         <ul className="hs-why">
           {HS_WHY.map((w, i) => (
@@ -268,9 +271,9 @@ export function HomeSlider({ variant = 's', mergedSections }: { variant?: string
               <div><h3>{w[1]}</h3><p>{w[2]}</p></div></li>
           ))}
         </ul>
-      </div></section>
+      </div></section>}
 
-      <CtaBand title={HS_CTA.title} line={HS_CTA.line} img={v3 ? CTA_TRAINING_IMAGE : undefined} slim />
+      <CtaBand title={HS_CTA.title} line={HS_CTA.line} img={v3 ? CTA_TRAINING_IMAGE : undefined} />
     </>
   );
 }
