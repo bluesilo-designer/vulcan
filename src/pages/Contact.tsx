@@ -2,13 +2,11 @@ import { useState, type FormEvent } from 'react';
 import { Band } from '../components/ui/Band';
 import { Table } from '../components/ui/Table';
 import { ContactBlock } from '../components/sections/shared/ContactBlock';
-import { useV, useV1Back, useVersion } from '../lib/version';
-import { ContactV3 } from '../components/sections/shared/ContactV3';
+import { useV, useV1Back } from '../lib/version';
 
 const EMPTY = { org: '', nm: '', rl: '', ty: 'Procurement', ms: '' };
 
 export function Contact() {
-  const v3 = useVersion().v === 3;
   const [f, setF] = useState(EMPTY);
   const [sent, setSent] = useState(false);
   /* v2 (27 Oct 2026): no internal reasoning shown to the visitor, and no
@@ -18,7 +16,6 @@ export function Contact() {
   const on = (k: keyof typeof EMPTY) => (e: { target: { value: string } }) => setF({ ...f, [k]: e.target.value });
   /* Nothing is sent anywhere: the legacy form did not submit either. */
   const submit = (e: FormEvent) => { e.preventDefault(); setSent(true); };
-  if (v3) return <ContactV3 />;
   return (
     <>
       <ContactBlock header />

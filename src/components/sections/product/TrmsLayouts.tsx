@@ -4,8 +4,6 @@ import { Icon } from '../../ui/Icon';
 import { Closer } from '../../ui/Closer';
 import { Table } from '../../ui/Table';
 import { productImg } from '../../../lib/images';
-import { mediaUrl } from '../../../lib/media';
-import { useV1Back } from '../../../lib/version';
 import { useReview } from '../../../lib/review';
 import { TrmsScoreboard, TrmsLeaderboard } from './TrmsV2';
 import {
@@ -38,10 +36,9 @@ const STATUS: Record<string, string> = { 'Most complete': 'Ready to demonstrate'
 
 function Hero({ h1, lead, cta2, to }: { h1: string; lead: string; cta2: string; to: string }) {
   const { state } = useReview();
-  const v3 = useV1Back();
   return (
-    <section className={'pv-hero' + (v3 ? ' tr3-hero' : '')}>
-      <div className="pv-hero__bed pv-par"><img src={v3 ? mediaUrl('trms-v3-western/hero-facility.jpg') : productImg('trms', 'hero', state.pset)} alt="" decoding="async" /></div><div className="pv-hero__veil"></div>
+    <section className="pv-hero">
+      <div className="pv-hero__bed pv-par"><img src={productImg('trms', 'hero', state.pset)} alt="" decoding="async" /></div><div className="pv-hero__veil"></div>
       <div className="shell pv-hero__in">
         <div className="v6pbrand"><span className="v6pbrand__s">TRMS</span><span className="tr-sys">Training Resource Management System</span></div>
         <h1>{h1}</h1>
@@ -152,7 +149,6 @@ export function TrmsB() {
 /* ---------- C: four chapters ---------- */
 export function TrmsC() {
   const { state } = useReview();
-  const v3 = useV1Back();
   const chapters = [
     { t: 'Plan', body: <>
       <p className="co2c-big">Book a session in five steps: group, training, date, lanes and trainees.</p>
@@ -180,7 +176,7 @@ export function TrmsC() {
           <p className="co2c-lead">How TRMS takes a session from the first booking to the last item returned.</p>
           <div className="btns"><Link className="btn btn--p" to="/contact">Request a demonstration</Link></div>
           <ol className="co2c-toc">{chapters.map((c, i) => <li key={c.t}><a href={'#tr' + (i + 1)}><span>{Pad(i)}</span>{c.t}</a></li>)}</ol></div>
-        <figure><img src={v3 ? mediaUrl('trms-v3-western/hero-facility.jpg') : productImg('trms', 'hero', state.pset)} alt="" decoding="async" /></figure>
+        <figure><img src={productImg('trms', 'hero', state.pset)} alt="" decoding="async" /></figure>
       </div></section>
       {chapters.map((c, i) => (
         <section className={'band co2c-ch' + (i % 2 ? ' band--deep' : '')} id={'tr' + (i + 1)} key={c.t}><div className="shell co2c-grid">

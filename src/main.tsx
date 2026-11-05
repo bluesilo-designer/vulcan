@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
 import { ReviewProvider } from './lib/review';
-import { CapCardProvider, CompanyLayoutProvider, HomeLayoutProvider, SystemLayoutProvider, TrmsLayoutProvider, VersionProvider } from './lib/version';
+import { CompanyLayoutProvider, HomeLayoutProvider, TrmsLayoutProvider, VersionProvider } from './lib/version';
 import { App } from './App';
 import './styles/app.css';
 import './styles/v3.css';
@@ -13,9 +13,9 @@ import './styles/home-slider.css';
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
     <BrowserRouter basename={import.meta.env.BASE_URL.replace(/\/$/, '')}>
-      <VersionProvider><CompanyLayoutProvider><TrmsLayoutProvider><HomeLayoutProvider><CapCardProvider><SystemLayoutProvider><ReviewProvider>
+      <VersionProvider><CompanyLayoutProvider><TrmsLayoutProvider><HomeLayoutProvider><ReviewProvider>
         <App />
-      </ReviewProvider></SystemLayoutProvider></CapCardProvider></HomeLayoutProvider></TrmsLayoutProvider></CompanyLayoutProvider></VersionProvider>
+      </ReviewProvider></HomeLayoutProvider></TrmsLayoutProvider></CompanyLayoutProvider></VersionProvider>
     </BrowserRouter>
   </React.StrictMode>,
 );

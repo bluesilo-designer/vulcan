@@ -6,13 +6,6 @@
    everyday words, zero em-dashes. */
 
 export const V3_COPY: Record<string, string> = {
-  /* ---------- No "Singapore" in v3 copy (client, 4 Nov 2026) ---------- */
-  'Built in Singapore. Designed for the realities of defence operations.': 'Designed for the realities of defence operations.',
-  'Singapore based': 'Defence focused',
-  'Based in Singapore': 'On site when it matters',
-  'Headquartered in Singapore, delivering across Southeast Asia and APAC': 'Delivering across Southeast Asia and APAC',
-  'We design, develop and integrate defence systems. Based in Singapore, with military training as our deepest specialism.': 'We design, develop and integrate defence systems, with military training as our deepest specialism.',
-
   /* ---------- Home: hero and trust ---------- */
   'Defence systems that work as one': 'Defence systems that work as one',
   'We design, develop and integrate defence systems across four areas: training, system integration, monitoring and intelligence, and enterprise management.':
@@ -20,7 +13,7 @@ export const V3_COPY: Record<string, string> = {
   'Explore our systems': 'See our systems',
   'Trusted in mission-critical environments': 'Trusted where it matters',
   'Supporting defence, government and homeland security organisations across Singapore and APAC.':
-    'Working with defence, government and homeland security teams across APAC.',
+    'Working with defence, government and homeland security teams across Singapore and APAC.',
 
   /* ---------- Home: modernising (back from v1) ---------- */
   'Modernising defence operations': 'Defence runs on more systems than ever',
@@ -39,6 +32,9 @@ export const V3_COPY: Record<string, string> = {
   'Compare every system': 'Compare all systems',
 
   /* ---------- Home: range day chain ---------- */
+  'One range day, from the gate to the final count': 'One range day, gate to final count',
+  'Each step hands its data to the next, so nothing is carried on paper. Select a step to see what happens and which system handles it.':
+    'Every step passes its data to the next. No paper in between. Pick a step to see what happens.',
   'Cleared before anyone arrives': 'Cleared before anyone arrives',
   'The cleared list of people and vehicles reaches access control the day before. At the gate, plates and credentials are matched and the barrier opens.':
     'Access control gets the cleared list the day before. At the gate, plates and passes match, and the barrier opens.',
@@ -88,9 +84,9 @@ export const V3_COPY: Record<string, string> = {
   'Emergency stop does not depend on our software running.': 'The emergency stop works even if our software does not.',
 
   /* ---------- Home: integration intro ---------- */
-  'Connects to what you already run': 'One connected environment for every system on your site',
+  'Connects to what you already run': 'Works with what you already have',
   'We connect the whole training environment, from live targets and simulators to facility, operations and security systems.':
-    'Targets, simulators, facilities, operations and security systems, whichever company built them, connected into one environment your teams can trust.',
+    'Targets, simulators, building, operations and security systems. We connect them all.',
   'Targets, hit detection and scoring linked to the training session, with results returned to the record.':
     'Targets and scoring tied to the session. Results go straight to the record.',
   'Simulator stations, scenarios and results linked to training sessions, so virtual and live training share one record.':
@@ -167,12 +163,12 @@ export const V3_COPY: Record<string, string> = {
 
   /* ---------- Footer ---------- */
   'Blue Silo is a Singapore defence systems company. We design, develop and integrate defence systems in four areas: training systems, system integration, monitoring and intelligence, and enterprise management.':
-    'Blue Silo is a defence systems company. We design, build and connect systems for training, integration, monitoring and enterprise management.',
+    'Blue Silo is a Singapore defence systems company. We design, build and connect systems for training, integration, monitoring and enterprise management.',
 
   /* ---------- Company (layout B) ---------- */
   'Defence systems, built to work together': 'Defence systems, built to work together',
   'Blue Silo is a Singapore-based technology company specialising in military training systems, simulated firing range operations and the integration of complex defence systems.':
-    'We build training, range, monitoring and enterprise systems, and integrate them with what is already on your site, so everything works as one.',
+    'We are a Singapore team that builds military training systems, runs simulated firing ranges and connects complex defence systems.',
   'See our product': 'See our product',
   'Training resources, ranges and simulators, managed in one place.': 'Ranges, simulators and resources in one place.',
   'Software, hardware and third-party platforms, working as one.': 'Any supplier, one working system.',

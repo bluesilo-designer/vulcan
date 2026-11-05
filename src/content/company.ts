@@ -21,16 +21,6 @@ export const CO_STORY =
 export const CO_STORY_2 =
   'That experience shapes everything we build: less paperwork, fewer handovers on paper, and one accurate picture that every team can rely on.';
 
-/* v3: our origins, from the client's origin story, kept general: no founder (4 Nov 2026). Replaces
-   the "where our experience comes from" copy in Company layout A. */
-export const CO_ORIGIN = {
-  h: 'Born from experience. Built to solve real challenges.',
-  lead: "A founder's understanding of the mission became the foundation of Blue Silo.",
-  body: "Our founder's journey began in the military. Firsthand experience in service, training and operations revealed the realities personnel face on the ground.",
-  body2: 'Those challenges, limitations and inefficiencies showed where technology could make a practical difference. Blue Silo was built to turn operational needs into purpose-built defence systems designed around the people who use them.',
-  pull: 'We build technology with an understanding of the people who use it.',
-};
-
 /* Why us. [title, line] */
 export const CO_REASONS: [string, string][] = [
   ['Working software from day one', 'Our Training Resource Management System is already built. You start from software that works, configured to how you operate.'],
@@ -74,24 +64,3 @@ export const CO_LIFECYCLE = ['Requirements', 'Design', 'Development', 'Integrati
 
 export const CO_WHERE = 'Headquartered in Singapore, delivering across Southeast Asia and APAC';
 export const CO_CTA_LINE = 'Tell us what you need. We will show you our software working.';
-export const CO_WHERE_CREDIT = {
-  author: 'Bibbobibib',
-  source: 'https://commons.wikimedia.org/wiki/File:Marina_Bay_SG.jpg',
-  license: 'CC BY-SA 4.0',
-  licenseUrl: 'https://creativecommons.org/licenses/by-sa/4.0/',
-};
-
-/* Company v3 uses its own photo set; earlier layouts keep the original files. */
-const COMPANY_V3_IMAGES: Record<string, string> = {
-  hero: 'company-v3-western/hero.jpg',
-  floor: 'company-v3-western/training.jpg',
-  integration: 'company-v3-western/integration.jpg',
-  where: 'company-v3-western/where-real-singapore.jpg',
-  region: 'company-v3-western/where-real-singapore.jpg',
-  office: 'company-v3-western/hero.jpg',
-  control: 'home-v3-western/system-rcs.jpg',
-  vision: 'home-v3-western/system-vms.jpg',
-  security: 'home-v3-western/assurance-operations.jpg',
-  partners: 'home-v3-western/partners-table.jpg',
-};
-export const companyImage = (name: string, v3: boolean) => v3 ? COMPANY_V3_IMAGES[name] || `c/${name}.jpg` : `c/${name}.jpg`;
