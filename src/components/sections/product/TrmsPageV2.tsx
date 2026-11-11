@@ -1,17 +1,12 @@
-import { TrmsMission } from './TrmsMission';
 import { useEffect, useRef, useState, type ReactNode } from 'react';
 import { Link } from 'react-router-dom';
 import { Icon } from '../../ui/Icon';
 import { Closer } from '../../ui/Closer';
 import { productImg } from '../../../lib/images';
-import { useReview } from '../../../lib/review';
 import { TrmsScoreboard, TrmsLeaderboard } from './TrmsV2';
-import { useTrmsLayout, useV1Back } from '../../../lib/version';
+import { useV1Back } from '../../../lib/version';
 import { mediaUrl } from '../../../lib/media';
-import { TrmsA, TrmsB, TrmsC } from './TrmsLayouts';
-import { TrmsD, TrmsE } from './TrmsVariants';
 import { TrmsStoryV3 } from './TrmsStoryV3';
-import { TrmsStoryV4 } from './TrmsStoryV4';
 import '../../../styles/trms-v3.css';
 
 /* v2 TRMS page. The spine is one booking, followed from the moment it is
@@ -440,26 +435,14 @@ function Who() {
 }
 
 export function TrmsPageV2() {
-  const { state } = useReview();
   const v3 = useV1Back();
-  /* v2 review sub-versions (?tr=a|b|c); '0' is this page as it was */
-  const { tr } = useTrmsLayout();
-  const legacy = v3 && new URLSearchParams(location.search).get('tr') === 'legacy';
-  if (!legacy) {
-    if (tr === 'g') return <TrmsMission />;
-    if (tr === 'f') return <TrmsStoryV4 />;
-    if (tr === 'a') return <TrmsA />;
-    if (tr === 'b') return <TrmsB />;
-    if (tr === 'c') return <TrmsC />;
-    if (tr === 'd') return <TrmsD />;
-    if (tr === 'e') return <TrmsE />;
-    if (v3) return <TrmsStoryV3 />;
-  }
+  /* v3: the V3 current story, the only TRMS layout kept (11 Nov 2026). The page below is v2. */
+  if (v3) return <TrmsStoryV3 />;
   const go = () => document.getElementById('t2-create')?.scrollIntoView({ behavior: 'smooth' });
   return (
     <>
       <section className={'pv-hero' + (v3 ? ' tr3-hero' : '')}>
-        <div className="pv-hero__bed pv-par"><img src={v3 ? mediaUrl('trms-v3-western/hero-facility.jpg') : productImg('trms', 'hero', state.pset)} alt="" decoding="async" /></div><div className="pv-hero__veil"></div>
+        <div className="pv-hero__bed pv-par"><img src={v3 ? mediaUrl('trms-v3-western/hero-facility.jpg') : productImg('trms', 'hero')} alt="" decoding="async" /></div><div className="pv-hero__veil"></div>
         <div className="shell pv-hero__in">
           <div className="v6pbrand"><span className="v6pbrand__s">TRMS</span><span className="pv-status"><Icon name="ph-monitor-play" />Ready to demonstrate</span></div>
           <h1>Training Resource Management System</h1>

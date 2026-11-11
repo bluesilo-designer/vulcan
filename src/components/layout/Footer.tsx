@@ -18,8 +18,8 @@ export function Footer() {
   /* v3 (11 Nov 2026): official logo lockup, real legal pages, no Site map link */
   const logo = v3 ? <Link className="v6foot__logo" to="/" aria-label="Blue Silo home"><img src="/brand/blue-silo-lockup.svg" alt="" width="189" height="64" loading="lazy" decoding="async" /></Link> : null;
   const legal = v3 ? <>
-    <Link to="/privacy">Privacy</Link>
-    <Link to="/terms">Terms</Link>
+    {shown('page.privacy') && <Link to="/privacy">Privacy</Link>}
+    {shown('page.terms') && <Link to="/terms">Terms</Link>}
     <Link to="/security">Security</Link>
     {shown('footer.sitemap') && <Link to="/products">Site map</Link>}
   </> : null;

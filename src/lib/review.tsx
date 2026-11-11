@@ -1,21 +1,22 @@
 import { createContext, useContext, useEffect, useState, type ReactNode } from 'react';
 import { useVersion } from './version';
+import { SITE } from '../config/site';
 import { setMediaSwap } from './media';
 import { PHOTO_SWAPS } from '../content/media';
 
-/* Review-only state behind the Content panel: image look, product image
-   set and hero cut. The public site always shows DEFAULTS. The panel, the
-   saved choice and the ?look=&pset=&hero= overrides only exist after
+/* Review-only state behind the Content panel: image look and hero cut. The public site always shows DEFAULTS. The panel, the
+   saved choice and the ?look=&hero= overrides only exist after
    visiting /__demo, and last for that browser tab. */
-export type ReviewState = { look: string; pset: string; hero?: string; photo?: string };
+export type ReviewState = { look: string; hero?: string; photo?: string };
 const KEY = 'v6ctl';
 const DEMO_KEY = 'v6demo';
 /* photo (v2/v3 only): 'gd' Golden Dusk (29 Oct, draft), 'field' the 28 Oct
    set, 'prev' the earlier photography, which then follows the image set (look).
    Production stays on 'field' until the Golden Dusk images are approved. */
-export const DEFAULTS: ReviewState = { look: 'golden2', pset: 'steel', hero: 'hero-e', photo: 'field' };
+export const DEFAULTS: ReviewState = { look: 'golden2', hero: 'hero-e', photo: 'field' };
 
 function initialDemo(): boolean {
+  if (!SITE.reviewTools) return false; /* production: review state never applies */
   try { return sessionStorage.getItem(DEMO_KEY) === '1'; } catch { return false; }
 }
 
@@ -24,10 +25,9 @@ function initial(): ReviewState {
   try { s = JSON.parse(localStorage.getItem(KEY) || '{}') || {}; } catch { /* private mode */ }
   const q = new URLSearchParams(location.search);
   if (q.get('look')) s.look = q.get('look')!;
-  if (q.get('pset')) s.pset = q.get('pset')!;
   if (q.get('hero')) s.hero = q.get('hero')!;
   if (q.get('photo')) s.photo = q.get('photo')!;
-  return { look: s.look || DEFAULTS.look, pset: s.pset || DEFAULTS.pset, hero: s.hero || DEFAULTS.hero, photo: s.photo || DEFAULTS.photo };
+  return { look: s.look || DEFAULTS.look, hero: s.hero || DEFAULTS.hero, photo: s.photo || DEFAULTS.photo };
 }
 
 type Ctxt = { state: ReviewState; demo: boolean; enableDemo: () => void; set: (p: Partial<ReviewState>) => void; reset: () => void };

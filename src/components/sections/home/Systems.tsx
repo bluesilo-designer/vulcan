@@ -6,7 +6,7 @@ import { EXPLORER_IMAGES, TILES } from '../../../content/home';
 import { brandOf, productOf } from '../../../content/products';
 import { mediaUrl } from '../../../lib/media';
 import { chipLabel, chipTitle } from './shared';
-import { isVisible, shown } from '../../../config/site';
+import { isVisible, shown, isLive } from '../../../config/site';
 import { useV, useV1Back, useVersion } from '../../../lib/version';
 import { WORDS } from '../../../content/home';
 
@@ -196,16 +196,20 @@ export function Systems() {
       {V3_SYSTEMS.filter((item) => isVisible(item.id)).map((item) => {
         const b = brandOf(item.id)!;
         const p = productOf(item.id)!;
-        return <Link className="v3-system-card rv" to={`/products/${item.id}`} key={item.id}>
+        const live = isLive(item.id); /* closed product pages: same card, no link, Coming soon (11 Nov 2026) */
+        const inner = <>
           <span className="v3-system-card__image"><img src={mediaUrl(systemImage(item.id))} alt="" loading="lazy" decoding="async" /></span>
           <span className="v3-system-card__body">
             <span className="v3-system-card__top"><span className="v3-system-card__icon"><Icon name={p.icon} /></span><span>{item.moment}</span></span>
             <strong>{item.id === 'vms' ? 'ACCEL' : b.acr}</strong>
             <span className="v3-system-card__name">{b.sys}</span>
             <span className="v3-system-card__detail">{item.detail}</span>
-            <span className="v3-system-card__link">Explore system <Icon name="ph-arrow-right" /></span>
+            {live ? <span className="v3-system-card__link">Explore system <Icon name="ph-arrow-right" /></span>
+              : <span className="v3-system-card__link v3-system-card__link--soon">Coming soon</span>}
           </span>
-        </Link>;
+        </>;
+        return live ? <Link className="v3-system-card rv" to={`/products/${item.id}`} key={item.id}>{inner}</Link>
+          : <div className="v3-system-card v3-system-card--soon rv" aria-disabled="true" key={item.id}>{inner}</div>;
       })}
     </div>
     <Link className="v3-system-grid__all" to="/products">View all systems <Icon name="ph-arrow-right" /></Link>

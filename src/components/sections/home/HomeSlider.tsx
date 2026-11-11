@@ -4,7 +4,7 @@ import { Trust } from './Trust';
 import { CtaBand } from '../../ui/CtaBand';
 import { CTA_TRAINING_IMAGE, mediaUrl } from '../../../lib/media';
 import { Icon } from '../../ui/Icon';
-import { VISIBLE_PRODUCTS, shown } from '../../../config/site';
+import { VISIBLE_PRODUCTS, liveHref, shown } from '../../../config/site';
 import { brandOf, productOf } from '../../../content/products';
 import { EXPLORER_IMAGES, WORDS } from '../../../content/home';
 import { HOME_V3_IMAGES, HS_CAPS, HS_CTA, HS_FEATURE, HS_INTRO, HS_PRODUCT_LINES, HS_PROOF, HS_SLIDES, HS_WHO, HS_WHY, HS_WHY_H, homeV3Image } from '../../../content/homeSlider';
@@ -100,12 +100,13 @@ function Slider() {
           <div className="shell hs__in">
             <span className="label hs__k"><Icon name={s.icon} />{s.k}</span>
             {/* a headline of two sentences breaks between them, never inside one */}
-            {(() => { const parts = s.h.split(/(?<=\.) /); return parts.length > 1
-              ? <h1 className="hs__h hs__h--m">{parts.map(p => <span key={p}>{p} </span>)}</h1>
-              : <h1 className="hs__h">{s.h}</h1>; })()}
+            {/* one h1 per page: the first slide; the others are h2 in the same style (11 Nov 2026) */}
+            {(() => { const H = i === 0 ? 'h1' : 'h2'; const parts = s.h.split(/(?<=\.) /); return parts.length > 1
+              ? <H className="hs__h hs__h--m">{parts.map(p => <span key={p}>{p} </span>)}</H>
+              : <H className="hs__h">{s.h}</H>; })()}
             <p className="lead hs__line">{s.line}</p>
             <div className="btns">
-              <Link className="btn btn--p" to={s.cta[1]} tabIndex={i === cur ? 0 : -1}>{s.cta[0]} <Icon name="ph-arrow-right" /></Link>
+              <Link className="btn btn--p" to={liveHref(s.cta[1])} tabIndex={i === cur ? 0 : -1}>{s.cta[0]} <Icon name="ph-arrow-right" /></Link>
               <Link className="btn btn--g" to="/contact" tabIndex={i === cur ? 0 : -1}>Talk to us</Link>
             </div>
           </div>
@@ -140,7 +141,7 @@ export function HomeSlider({ mergedSections }: { mergedSections?: ReactNode }) {
           <Link className="hs-capabilities-v3__all" to="/products">Explore all capabilities <Icon name="ph-arrow-right" /></Link>
         </div>
         <div className="hs-capabilities-v3__grid">
-          {HS_CAPS.map((c, i) => <Link className="hs-capabilities-v3__tile rv" data-d={String(i)} to={c[4]} key={c[1]}>
+          {HS_CAPS.map((c, i) => <Link className="hs-capabilities-v3__tile rv" data-d={String(i)} to={liveHref(c[4])} key={c[1]}>
             <img src={mediaUrl(homeV3Image(HOME_V3_IMAGES.caps[i]))} alt="" loading="lazy" decoding="async" />
             <span className="hs-capabilities-v3__tile-copy"><Icon name={c[0]} /><strong>{c[1].slice(0, c[1].lastIndexOf(' '))}<br />{c[1].slice(c[1].lastIndexOf(' ') + 1)}</strong><Icon name="ph-arrow-up-right" className="hs-capabilities-v3__arrow" /></span>
           </Link>)}
@@ -152,7 +153,7 @@ export function HomeSlider({ mergedSections }: { mergedSections?: ReactNode }) {
         </div>
         <div className="hs-caps__grid">
           {HS_CAPS.map((c, i) => (
-              <Link className="hs-cap rv" data-d={String(i)} to={c[4]} key={c[1]}>
+              <Link className="hs-cap rv" data-d={String(i)} to={liveHref(c[4])} key={c[1]}>
                 <figure><img src={mediaUrl(c[3])} alt="" loading="lazy" decoding="async" /></figure>
                 <div className="hs-cap__b">
                   <div className="hs-cap__t"><span className="hs-ic"><Icon name={c[0]} /></span><h3>{c[1]}</h3></div>

@@ -1,8 +1,8 @@
 import { Band } from '../components/ui/Band';
 import { Table } from '../components/ui/Table';
 import { Media } from '../components/ui/Media';
-import { useCompanyLayout, useV, useVersion } from '../lib/version';
-import { CompanyA, CompanyB, CompanyC, CompanyText } from '../components/sections/company/CompanyLayouts';
+import { useV, useVersion } from '../lib/version';
+import { CompanyText } from '../components/sections/company/CompanyLayouts';
 import { CompanyClose } from '../components/sections/company/CompanyClose';
 import { Closer } from '../components/ui/Closer';
 import { mediaUrl } from '../lib/media';
@@ -32,12 +32,8 @@ export function Company() {
   const { state } = useReview();
   const v2 = useV(2);
   const v3 = useVersion().v === 3;
-  /* v2 only: review sub-versions of the whole page (?co=a|b|c) */
-  const { co } = useCompanyLayout();
-  if (v2 && co === 'a') return <CompanyA />;
-  if (v2 && co === 't') return <CompanyText />;
-  if (v2 && co === 'b') return <CompanyB />;
-  if (v2 && co === 'c') return <CompanyC />;
+  /* v2 and v3: A · Text, the only About layout kept (11 Nov 2026). The page below is v1. */
+  if (v2) return <CompanyText />;
   return (
     <>
       <section className="pv-hero pv-hero--short">

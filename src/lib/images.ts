@@ -1,4 +1,4 @@
-import { SLOTS, PRODUCT_IMAGE_ALIASES } from '../content/media';
+import { SLOTS } from '../content/media';
 import { mediaUrl } from './media';
 
 type Slot = { k: string; base: string };
@@ -8,9 +8,8 @@ export function slotSrc(slot: string, look: string) {
   if (!s) return '';
   return mediaUrl(look === 'original' ? s.base : `look/${slot}-${look}.jpg`);
 }
-/* Product page images: media/p/<id>-<slot>-<set>.jpg, with aliases for
-   the earlier sets that were shot for a different page structure. */
-export function productImg(id: string, slot: string, set: string) {
-  const a = (PRODUCT_IMAGE_ALIASES as Record<string, Record<string, string>>)[set];
-  return mediaUrl(`p/${id}-${(a && a[slot]) || slot}-${set}.jpg`);
+/* Product page images: media/p/<id>-<slot>-steel.jpg. Set 1 (steel) is the only
+   set kept (11 Nov 2026); sets 2-4 are in git tag backup/trms-layouts-2026-11-11. */
+export function productImg(id: string, slot: string) {
+  return mediaUrl(`p/${id}-${slot}-steel.jpg`);
 }

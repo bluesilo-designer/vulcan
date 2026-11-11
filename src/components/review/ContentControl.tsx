@@ -1,28 +1,24 @@
 import { useEffect, useRef, useState } from 'react';
-import { HERO_CUTS, LOOKS, LOOKS_SHOWN, PHOTO_SETS, PRODUCT_IMAGE_SETS } from '../../content/media';
+import { HERO_CUTS, LOOKS, LOOKS_SHOWN, PHOTO_SETS } from '../../content/media';
 import { isReady } from '../../lib/media';
 import { DEFAULTS, useReview } from '../../lib/review';
-import { VERSIONS, COMPANY_DEFAULT, COMPANY_LAYOUTS, TRMS_DEFAULT, TRMS_LAYOUTS, useCompanyLayout, useTrmsLayout, useVersion, usePartnersShown } from '../../lib/version';
+import { VERSIONS, useVersion, usePartnersShown } from '../../lib/version';
 
-type Group = 'global' | 'home' | 'company' | 'trms';
+type Group = 'global' | 'home';
 type Look = { id: string; k: string; d: string; sw: string[] };
 type Cut = { id: string; k: string; d: string };
-type PSet = { id: string; k: string; d: string };
 const GROUPS: { id: Group; label: string }[] = [
   { id: 'global', label: 'Global' }, { id: 'home', label: 'Home' },
-  { id: 'company', label: 'Company' }, { id: 'trms', label: 'TRMS' },
 ];
 const initialGroup = (): Group => {
   const path = location.pathname;
-  return path.startsWith('/products/trms') ? 'trms' : path === '/company' ? 'company' : path === '/' ? 'home' : 'global';
+  return path === '/' ? 'home' : 'global';
 };
 
 /* Review-only controls. Each tab contains settings for one affected page. */
 export function ContentControl() {
   const { state, set, reset } = useReview();
   const { v, setV } = useVersion();
-  const { co, setCo } = useCompanyLayout();
-  const { tr, setTr } = useTrmsLayout();
   const { partners, setPartners } = usePartnersShown();
   const [open, setOpen] = useState(false);
   const [group, setGroup] = useState<Group>(initialGroup);
@@ -37,10 +33,10 @@ export function ContentControl() {
   const copy = () => {
     const u = new URL(location.href);
     u.searchParams.set('look', state.look);
-    u.searchParams.set('pset', state.pset);
+    u.searchParams.delete('pset');
     if (state.photo && state.photo !== DEFAULTS.photo) u.searchParams.set('photo', state.photo); else u.searchParams.delete('photo');
-    if (co !== COMPANY_DEFAULT) u.searchParams.set('co', co); else u.searchParams.delete('co');
-    if (tr !== TRMS_DEFAULT) u.searchParams.set('tr', tr); else u.searchParams.delete('tr');
+    u.searchParams.delete('co');
+    u.searchParams.delete('tr');
     if (state.hero) u.searchParams.set('hero', state.hero); else u.searchParams.delete('hero');
     const t = u.toString();
     (navigator.clipboard ? navigator.clipboard.writeText(t) : Promise.reject())
@@ -69,13 +65,6 @@ export function ContentControl() {
           <p className="v6ctl__hint">Homepage sections and hero treatment.</p>
           {v === 3 && <fieldset><legend>Partners section</legend><div className="v6ctl__cuts"><button type="button" className={!partners ? 'is-on' : ''} onClick={() => setPartners(false)}>Hidden</button><button type="button" className={partners ? 'is-on' : ''} onClick={() => setPartners(true)}>Shown</button></div></fieldset>}
           <fieldset><legend>Hero film</legend><div className="v6ctl__cuts">{(HERO_CUTS as Cut[]).map((c) => <button key={c.id} type="button" className={curHero === c.id ? 'is-on' : ''} disabled={!isReady(c.id)} title={c.d} onClick={() => set({ hero: c.id })}>{c.k}</button>)}</div></fieldset>
-        </>}
-        {group === 'company' && <><p className="v6ctl__hint">About Blue Silo page.</p><fieldset><legend>Company layout</legend>{COMPANY_LAYOUTS.map((l) => <label className="v6ctl__opt" key={l.id}><input type="radio" name="v6company" checked={co === l.id} onChange={() => setCo(l.id)} /><span><b>{l.k}</b><em>{l.d}</em></span></label>)}</fieldset></>}
-        {group === 'trms' && <>
-          <p className="v6ctl__hint">Training Resource Management System page.</p>
-          <fieldset><legend>TRMS story</legend><div className="v6ctl__cuts"><button type="button" className={tr === 'g' ? 'is-on' : ''} onClick={() => setTr('g')}>Mission · New</button><button type="button" className={tr === TRMS_DEFAULT ? 'is-on' : ''} onClick={() => setTr(TRMS_DEFAULT)}>V3 current</button><button type="button" className={tr === 'f' ? 'is-on' : ''} onClick={() => setTr('f')}>New story</button></div></fieldset>
-          <fieldset><legend>Earlier concepts</legend>{TRMS_LAYOUTS.filter((l) => l.id !== '0' && l.id !== 'f' && l.id !== 'g').map((l) => <label className="v6ctl__opt" key={l.id}><input type="radio" name="v6trms" checked={tr === l.id} onChange={() => setTr(l.id)} /><span><b>{l.k}</b><em>{l.d}</em></span></label>)}</fieldset>
-          <fieldset><legend>Product page imagery</legend>{(PRODUCT_IMAGE_SETS as PSet[]).map((l) => <label className="v6ctl__opt" key={l.id}><input type="radio" name="v6pset" value={l.id} checked={state.pset === l.id} onChange={() => set({ pset: l.id })} /><span><b>{l.k}</b><em>{l.d}</em></span></label>)}</fieldset>
         </>}
       </div>
       <div className="v6ctl__foot"><button type="button" onClick={copy}>{copied ? 'Copied' : 'Copy link'}</button><button type="button" onClick={reset}>Reset</button></div>

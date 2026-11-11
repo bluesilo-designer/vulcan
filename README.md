@@ -38,9 +38,32 @@ src/
   styles/                  design system CSS
 ```
 
+## Deploy (Vercel)
+
+- Framework preset: Vite. Build command `npm run build`, output directory `dist`.
+- `vercel.json` adds security headers (nosniff, frame deny, referrer policy,
+  permissions policy, HSTS) and long-term caching for `/assets/*`.
+- Every public route is prerendered to its own `index.html` with title, description,
+  canonical, Open Graph, Twitter card, robots and JSON-LD. Unknown paths get `404.html`
+  (status 404), which loads the app and shows "Page not found".
+- Node 18+ (the prerender script uses `import.meta.dirname`, Node 20.11+ recommended).
+
 ## Before go-live
 
-- `SITE.indexable` is `false` (noindex everywhere, robots.txt disallows all). Flip it only
-  with sign-off.
-- `SITE.reviewTools` shows the Content panel. Set to `false`.
-- Confirm `SITE.url`, used for canonical and Open Graph URLs.
+Done:
+- Review tools are off (`SITE.reviewTools = false`): no Content panel, no `/__demo`,
+  `?v=` is ignored, every visitor gets the latest version.
+- Privacy and Terms pages are hidden (`page.privacy`, `page.terms` in `HIDDEN_SECTIONS`).
+- Only product pages listed in `LIVE_PRODUCTS` (`src/config/site.ts`) are open; the others
+  show "Coming soon" and their URLs redirect to `/products`.
+
+Still open, needs a decision:
+- **Production domain.** `SITE.url` is `https://bluesilo.studio`, which currently serves a
+  different site. Set it to the real domain before indexing; it drives canonical,
+  sitemap and Open Graph URLs.
+- **Indexing.** `SITE.indexable` is `false` (noindex everywhere, robots.txt disallows all).
+  Set it to `true` once the domain is right, rebuild, and check `/robots.txt` and
+  `/sitemap.xml`.
+- **Contact form** does not send anything yet (it prepares a brief the visitor can copy),
+  and the site shows no email address. Needs a destination address or a form service.
+- **Security page** still shows "Draft, pending legal review".

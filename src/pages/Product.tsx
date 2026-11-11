@@ -1,5 +1,5 @@
 import { Navigate, useParams } from 'react-router-dom';
-import { isVisible } from '../config/site';
+import { isLive, isVisible } from '../config/site';
 import { PRODUCT_DETAIL, brandOf } from '../content/products';
 import { CHAIN } from '../content/home';
 import { Band } from '../components/ui/Band';
@@ -23,7 +23,7 @@ type Detail = {
 export function Product() {
   const { id = '' } = useParams();
   const v2 = useV(2);
-  if (!isVisible(id)) return <Navigate to="/products" replace />;
+  if (!isVisible(id) || !isLive(id)) return <Navigate to="/products" replace />;
   if (id === 'trms') return <TrmsPage />;
   if (v2 && productRec(id) && brandOf(id)) return <ProductV2 id={id} />;
   const p = productRec(id), b = brandOf(id);

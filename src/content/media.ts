@@ -142,44 +142,6 @@ export const SLOTS = {
   }
 };
 
-export const PRODUCT_IMAGE_SETS = [
-  {
-    "id": "steel",
-    "k": "Set 1",
-    "d": "Graphite, steel and amber"
-  },
-  {
-    "id": "sage",
-    "k": "Set 2",
-    "d": "Sage, bone and oak"
-  },
-  {
-    "id": "day",
-    "k": "Set 3",
-    "d": "Daylight, earlier shoot"
-  },
-  {
-    "id": "dusk",
-    "k": "Set 4",
-    "d": "Dusk, earlier shoot"
-  }
-];
-
-export const PRODUCT_IMAGE_ALIASES = {
-  "day": {
-    "weapon": "ppl",
-    "crew": "cal",
-    "command": "flow",
-    "assets": "res"
-  },
-  "dusk": {
-    "weapon": "ppl",
-    "crew": "cal",
-    "command": "flow",
-    "assets": "res"
-  }
-};
-
 /* Field set (28 Oct 2026): natural-light documentary photographs of a
    training day, shown in v2 and v3 only. Old path -> new file; patterns
    cover every look and product image set of the same slot. Shot list and

@@ -9,14 +9,15 @@ export const SITE = {
   defaultTitle: 'Blue Silo. Defence and Security Technology',
   titleSuffix: 'Blue Silo',
   defaultDescription:
-    'Blue Silo designs, develops and integrates mission-critical systems for military training, range operations, asset accountability and operational readiness.',
+    'Blue Silo designs, develops and integrates defence systems for training, monitoring, enterprise management and the enhancement of existing capabilities.',
   ogImage: '/media/og-default.jpg',
   /* Draft for review and the tender is live: keep search engines out
      until someone with the authority to publish says otherwise. */
   indexable: false,
-  /* The floating Content panel and hero switcher. Review only, and only
-     shown after visiting /__demo. */
-  reviewTools: true,
+  /* The floating Content panel, /__demo and the ?v= version switch. Review only.
+     Off for production at the client's request (11 Nov 2026), until they ask to
+     open it again: every visitor gets the latest version and the default content. */
+  reviewTools: false,
 } as const;
 
 /* Products shown on the site for now. Hidden products keep their content
@@ -24,6 +25,17 @@ export const SITE = {
    and their URLs redirect to /products. Add an id back to show it again. */
 export const VISIBLE_PRODUCTS = ['trms', 'rcs', 'hums', 'vms', 'ewms'];
 export const isVisible = (id: string) => VISIBLE_PRODUCTS.includes(id);
+
+/* Products whose own page is open (client, 11 Nov 2026). The others stay listed
+   with a "Coming soon" label, like the menu, but their page redirects to /products
+   and is left out of the sitemap. Add an id to open its page again. */
+export const LIVE_PRODUCTS = ['trms'];
+export const isLive = (id: string) => LIVE_PRODUCTS.includes(id);
+/* A link to a closed product page falls back to the product overview. */
+export const liveHref = (to: string) => {
+  const m = to.match(/^\/products\/([a-z]+)/);
+  return m && !isLive(m[1]) ? '/products' : to;
+};
 
 /* Sections hidden at the client's request. The code and content stay;
    remove a key from this list to bring the section back. */
@@ -41,5 +53,7 @@ export const HIDDEN_SECTIONS = [
   'nav.integration',       // "Integration" item in the header menu, v3 only (11 Nov 2026)
   'homeSlider.proof',      // slider home figures band, not ticked in the merged reference (28 Oct 2026)
   'footer.linkedin',       // v3 footer LinkedIn icon linked to /contact; show again with a real URL (11 Nov 2026)
+  'page.privacy',          // Privacy page hidden until legal review (route shows Not found, link and sitemap removed) (11 Nov 2026)
+  'page.terms',            // Terms page hidden until legal review (11 Nov 2026)
 ];
 export const shown = (key: string) => !HIDDEN_SECTIONS.includes(key);

@@ -6,7 +6,6 @@ import { Closer } from '../../ui/Closer';
 import { Icon } from '../../ui/Icon';
 import { pad2 } from '../../../lib/html';
 import { productImg } from '../../../lib/images';
-import { useReview } from '../../../lib/review';
 import { productRec } from './util';
 import { WorksWith } from './WorksWith';
 import { TrmsMock } from './TrmsMock';
@@ -31,8 +30,7 @@ const STATE_ROWS: [string, string][] = [
 ];
 
 function PImg({ slot }: { slot: string }) {
-  const { state } = useReview();
-  return <img data-pimg={`trms-${slot}`} src={productImg('trms', slot, state.pset)} alt="" decoding="async" />;
+  return <img data-pimg={`trms-${slot}`} src={productImg('trms', slot)} alt="" decoding="async" />;
 }
 
 function Acc({ icon, title, children }: { icon: string; title: string; children: React.ReactNode }) {

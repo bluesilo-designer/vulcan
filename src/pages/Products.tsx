@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 import { PRODUCTS as ALL, brandOf, whereOf, decidesOf, roleOf } from '../content/products';
 import { useV, useV1Back, useVersion } from '../lib/version';
-import { isVisible } from '../config/site';
+import { isLive, isVisible } from '../config/site';
 import { WORDS } from '../content/home';
 
 const PRODUCTS = ALL.filter((p) => isVisible(p.id));
@@ -26,12 +26,15 @@ export function Products() {
       </div>
       <Band tight>
         <div className="reg rv">
-          {PRODUCTS.map((p) => (
-            <Link key={p.id} to={`/products/${p.id}`}>
+          {PRODUCTS.map((p) => {
+            const row = <>
               <span className="reg__a">{p.acr}</span><span className="reg__n">{p.name}</span>
               <span className="reg__r">{roleOf(p, v2)}</span><span className="reg__g">{v2 && brandOf(p.id)?.partner ? `${brandOf(p.id)!.brand}, partner product` : p.group}</span>
-            </Link>
-          ))}
+            </>;
+            /* closed product pages: same row, no link, Coming soon (11 Nov 2026) */
+            return isLive(p.id) ? <Link key={p.id} to={`/products/${p.id}`}>{row}</Link>
+              : <div className="reg__row reg__row--soon" key={p.id} aria-disabled="true">{row}<span className="reg__soon">Coming soon</span></div>;
+          })}
         </div>
       </Band>
       <Band deep title={v2 ? 'What each system does' : 'What each one actually decides'}

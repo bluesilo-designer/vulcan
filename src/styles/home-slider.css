@@ -433,3 +433,9 @@ footer.ft2 .ft2__base .ft2__legal nav{display:flex;flex-wrap:wrap;gap:var(--s5)}
 footer.ft2 .ft2__base .ft2__legal a{display:inline;margin:0;font-size:inherit;line-height:inherit;color:var(--ink-3)}
 footer.ft2 .ft2__base .ft2__legal a:hover{color:var(--ink)}
 @media (max-width:640px){footer.ft2 .ft2__base .ft2__legal{flex-direction:column;align-items:flex-start}}
+
+/* closed product cards on the v3 home (11 Nov 2026): no hover lift, Coming soon in place of the link */
+.v3-system-card--soon{cursor:default}
+.v3-system-card--soon:hover{border-color:var(--line-2);transform:none}
+.v3-system-card--soon:hover .v3-system-card__image img{transform:none}
+.v3-system-card__link--soon{justify-content:flex-start}

@@ -41,8 +41,12 @@ function head(r) {
     `<meta name="twitter:title" content="${esc(title)}">`,
     `<meta name="twitter:description" content="${esc(r.description)}">`,
     `<meta name="twitter:image" content="${esc(img)}">`,
+    `<meta property="og:image:width" content="1200">`,
+    `<meta property="og:image:height" content="630">`,
+    /* no slogan: the client removed the tagline from the logo (11 Nov 2026) */
     `<script type="application/ld+json">${JSON.stringify({ '@context': 'https://schema.org', '@type': 'Organization',
-      name: SITE.legalName, url: SITE.url, slogan: SITE.tagline, address: { '@type': 'PostalAddress', addressCountry: 'SG' } })}</script>`,
+      name: SITE.legalName, alternateName: SITE.name, url: SITE.url, logo: SITE.url + '/apple-touch-icon.png',
+      address: { '@type': 'PostalAddress', addressCountry: 'SG' } })}</script>`,
   ].join('\n');
 }
 const withHead = (r) => template.replace(/<!--seo-->[\s\S]*?<!--\/seo-->/, head(r));

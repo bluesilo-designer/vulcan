@@ -12,6 +12,7 @@ import { Contact } from './pages/Contact';
 import { NotFound } from './pages/NotFound';
 import { Faq } from './pages/Faq';
 import { Legal } from './pages/Legal';
+import { SITE, shown } from './config/site';
 
 /* Old hash links (#/products/trms) keep working: redirect to the real path. */
 function HashRedirect() {
@@ -40,10 +41,10 @@ export function App() {
         <Route path="company" element={<Company />} />
         <Route path="contact" element={<Contact />} />
         <Route path="faq" element={<Faq />} />
-        <Route path="privacy" element={<Legal doc="privacy" />} />
-        <Route path="terms" element={<Legal doc="terms" />} />
+        <Route path="privacy" element={shown('page.privacy') ? <Legal doc="privacy" /> : <NotFound />} />
+        <Route path="terms" element={shown('page.terms') ? <Legal doc="terms" /> : <NotFound />} />
         <Route path="security" element={<Legal doc="security" />} />
-        <Route path="__demo" element={<DemoEntry />} />
+        {SITE.reviewTools && <Route path="__demo" element={<DemoEntry />} />}
         <Route path="*" element={<NotFound />} />
       </Route>
     </Routes>
