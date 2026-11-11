@@ -1,4 +1,4 @@
-/* Home, slider layout (v2, ?hm=s). Written 28 Oct 2026 from the client's
+/* Home (v2 and v3, the slider home). Written 28 Oct 2026 from the client's
    positioning: Blue Silo develops and integrates defence systems in four
    areas. No new claims: every line restates what the product pages and the
    technical proposal already say, filtered through CLAUDE.md section 5. */

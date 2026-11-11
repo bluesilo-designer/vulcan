@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import { PRODUCTS as ALL, brandOf, whereOf, decidesOf, roleOf } from '../content/products';
-import { useV, useV1Back } from '../lib/version';
+import { useV, useV1Back, useVersion } from '../lib/version';
 import { isVisible } from '../config/site';
 import { WORDS } from '../content/home';
 
@@ -15,12 +15,13 @@ import { Closer } from '../components/ui/Closer';
 /* legacy pProducts, with the v6 h1 override. */
 export function Products() {
   const v2 = useV(2);
+  const v3 = useVersion().v === 3; /* v3: titles end with a full stop (11 Nov 2026) */
   const back = useV1Back();
   return (
     <>
       <div className="shell page-head rv">
         <span className="label">Products</span>
-        <h1>{Word(OURS)} systems{HAS_ACCEL ? ', plus ACCEL' : ''}</h1>
+        <h1>{Word(OURS)} systems{HAS_ACCEL ? ', plus ACCEL' : ''}{v3 ? '.' : ''}</h1>
         <p className="lead">{v2 ? 'Use one system on its own or connect them all. Each page shows what the system does, who uses it and where it runs.' : 'Take one, or take all of them. Every product page states what it decides, where it is deployed, and what has to exist for it to mean anything.'}</p>
       </div>
       <Band tight>

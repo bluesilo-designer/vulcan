@@ -2,7 +2,7 @@
    <head> (title, description, canonical, Open Graph, Twitter, robots),
    so crawlers and link previews read real meta without running JS.
    Also writes 404.html (SPA fallback for static hosts), robots.txt and,
-   when the site is indexable, sitemap.xml. */
+   sitemap.xml (always; robots.txt links it only when the site is indexable). */
 import { build } from 'esbuild';
 import fs from 'node:fs';
 import path from 'node:path';
@@ -56,8 +56,10 @@ fs.writeFileSync(path.join(dist, '404.html'), withHead({ path: '/404', title: 'P
 fs.writeFileSync(path.join(dist, 'robots.txt'), SITE.indexable
   ? `User-agent: *\nAllow: /\nSitemap: ${SITE.url}${base}sitemap.xml\n`
   : 'User-agent: *\nDisallow: /\n');
-if (SITE.indexable) {
+{
+  /* Always written (11 Nov 2026): the sitemap exists even while the site is noindex.
+     robots.txt only points to it once the site is indexable. */
   fs.writeFileSync(path.join(dist, 'sitemap.xml'), `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n` +
     ROUTE_META.map((r) => `  <url><loc>${SITE.url}${r.path}</loc></url>`).join('\n') + '\n</urlset>\n');
 }
-console.log(`prerendered ${ROUTE_META.length} routes${SITE.indexable ? ' + sitemap' : ' (noindex)'}`);
+console.log(`prerendered ${ROUTE_META.length} routes + sitemap${SITE.indexable ? '' : ' (noindex)'}`);

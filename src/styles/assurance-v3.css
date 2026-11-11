@@ -41,3 +41,43 @@
 .as3-practice li:last-child{border-color:#2a3847}
 @media (max-width:900px){.as3-controls__grid{grid-template-columns:repeat(2,minmax(0,1fr))}.as3-control:nth-last-child(3){border-bottom:0}.as3-control:nth-last-child(-n+2){border-bottom:1px solid #304050}.as3-continuity__grid{grid-template-columns:repeat(2,minmax(0,1fr))}.as3-continuity__grid article:nth-child(2){border-right:0;margin-right:0}.as3-practice__layout{grid-template-columns:1fr}}
 @media (max-width:640px){.as3-hero{min-height:720px}.as3-hero__image{object-position:68% center}.as3-hero__shade{background:linear-gradient(0deg,#080b0f 0%,rgba(4,11,20,.64) 42%,rgba(4,11,20,.36) 100%),linear-gradient(90deg,rgba(4,11,20,.62),transparent)}.as3-hero__content{padding-bottom:70px}.as3-hero h1{font-size:clamp(43px,13vw,72px)}.as3-hero__index{flex-wrap:wrap;gap:10px 22px;font-size:10px}.as3-heading{grid-template-columns:1fr;gap:18px}.as3-controls__grid{grid-template-columns:1fr}.as3-control{min-height:220px}.as3-control:nth-last-child(2),.as3-control:nth-last-child(3){border-bottom:0}.as3-control:last-child{border-bottom:1px solid #304050}.as3-control>.ph{margin:25px 0 15px}.as3-safety{min-height:0}.as3-safety>img{object-position:66% center}.as3-safety__shade{background:linear-gradient(90deg,rgba(4,11,20,.9),rgba(4,11,20,.62)),linear-gradient(0deg,#080b0f,transparent 30%,transparent 75%,#080b0f)}.as3-continuity__grid{grid-template-columns:1fr}.as3-continuity__grid article,.as3-continuity__grid article:nth-child(2){min-height:0;border-right:0;border-bottom:1px solid #304050;margin-right:0;padding:22px 0}.as3-continuity__grid h3{margin-top:18px}}
+/* v3 security framework: eight stages, read in order, then the loop */
+.as3-frame{padding-block:clamp(88px,10vw,150px);border-top:1px solid var(--line)}
+.as3-frame .label{color:var(--brand)}
+.as3-frame__grid{list-style:none;margin:clamp(40px,5vw,72px) 0 0;padding:0;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:0;border-top:1px solid var(--line-2)}
+.as3-frame__grid li{position:relative;padding:28px 24px 32px 0;border-bottom:1px solid var(--line)}
+.as3-frame__grid li+li{padding-left:24px;border-left:1px solid var(--line)}
+.as3-frame__grid li:nth-child(4n+1){padding-left:0;border-left:0}
+.as3-frame__n{display:block;font:13px var(--mono);letter-spacing:.14em;color:var(--brand)}
+.as3-frame__grid .ph{display:block;font-size:26px;color:var(--brand);margin:18px 0 14px}
+.as3-frame__grid h3{font:400 clamp(21px,1.6vw,27px)/1.2 Archivo,sans-serif;letter-spacing:-.02em;margin:0 0 10px}
+.as3-frame__grid p{font-size:15px;line-height:1.6;color:var(--ink-2);margin:0}
+.as3-frame__status{display:inline-block;margin-top:14px;font:normal 11px var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3);border:1px solid var(--line-3);padding:3px 8px}
+.as3-frame__loop{display:flex;gap:18px;align-items:flex-start;margin-top:40px;padding:24px 28px;border:1px solid var(--line-2);background:var(--deep)}
+.as3-frame__loop .ph{font-size:28px;color:var(--brand);flex:none}
+.as3-frame__loop h3{font:400 clamp(19px,1.4vw,23px)/1.2 Archivo,sans-serif;margin:0 0 6px}
+.as3-frame__loop p{margin:0;color:var(--ink-2);font-size:15px;line-height:1.6}
+@media (max-width:980px){.as3-frame__grid{grid-template-columns:repeat(2,minmax(0,1fr))}.as3-frame__grid li:nth-child(4n+1){padding-left:24px;border-left:1px solid var(--line)}.as3-frame__grid li:nth-child(2n+1){padding-left:0;border-left:0}}
+@media (max-width:560px){.as3-frame__grid{grid-template-columns:1fr}.as3-frame__grid li{padding-left:0!important;border-left:0!important}}
+
+/* Density pass (client, 10 Nov 2026: "too much space"). Same layout and
+   order; only rhythm is tightened: section padding, heading scale, gaps
+   between heading and content, and fixed minimum heights. */
+.as3-controls,.as3-continuity,.as3-practice,.as3-frame{padding-block:clamp(56px,6vw,96px)}
+.as3-heading{margin-bottom:clamp(28px,3vw,44px);gap:var(--s6)}
+.as3-heading h2,.as3-practice h2{font-size:clamp(32px,3.3vw,50px);margin-top:12px}
+.as3-heading>p,.as3-practice__layout>div>p{font-size:clamp(16px,1.15vw,18px)}
+.as3-control{min-height:0;padding:22px 0 24px}
+.as3-control>.ph{margin:18px 0 12px;font-size:26px}
+.as3-control h3,.as3-continuity h3,.as3-safety li h3,.as3-practice li h3,.as3-frame__grid h3{font-size:clamp(19px,1.35vw,23px);margin-bottom:8px}
+.as3-frame__grid{margin-top:0}
+.as3-frame__grid li{padding-top:22px;padding-bottom:24px}
+.as3-frame__grid .ph{margin:14px 0 10px;font-size:24px}
+.as3-frame__loop{margin-top:28px;padding:18px 22px}
+.as3-safety{min-height:0;padding-block:clamp(64px,7vw,110px)}
+.as3-safety__content>h2{font-size:clamp(34px,4vw,58px);margin:12px 0 14px}
+.as3-safety ol{margin-top:clamp(28px,3vw,44px)}
+.as3-safety li,.as3-practice li{padding:16px 0}
+.as3-continuity__grid article{min-height:0;padding-top:22px;padding-bottom:22px}
+.as3-continuity__grid h3{margin-top:22px}
+.as3-practice__layout{gap:clamp(32px,5vw,80px)}

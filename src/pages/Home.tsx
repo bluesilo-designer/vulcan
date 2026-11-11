@@ -13,14 +13,13 @@ import { Questions } from '../components/sections/home/Questions';
 import { PartnersSection } from '../components/sections/shared/PartnersSection';
 import { AssureFeature } from '../components/sections/shared/AssureFeature';
 import { ContactBlock } from '../components/sections/shared/ContactBlock';
-import { useHomeLayout, usePartnersShown, useV, useV1Back } from '../lib/version';
+import { usePartnersShown, useV, useV1Back } from '../lib/version';
 import { HomeSlider } from '../components/sections/home/HomeSlider';
 
 export function Home() {
   /* v2 drops Modernising, Measures and CompanyFacts, and moves the questions to /faq */
   const v2 = useV(2);
   const back = useV1Back(); /* v3: slider plus selected v1 sections */
-  const { hm } = useHomeLayout();
   const { partners } = usePartnersShown(); /* v3: Partners hidden unless shown from the review panel */
   /* Keep the v1/v2 home sections together. v3 adds selected sections after
      the slider hero; company proof and FAQ remain off this homepage. */
@@ -38,7 +37,8 @@ export function Home() {
     {!v2 && <Questions />}
     {!back && <ContactBlock />}
   </>;
-  if (v2 && hm !== '0') return <HomeSlider variant={hm} mergedSections={back ? mergedSections : undefined} />;
+  /* v2 and v3: the slider home, fixed by the client on 11 Nov 2026 (the Current layout and Slider B to F were removed) */
+  if (v2) return <HomeSlider mergedSections={back ? mergedSections : undefined} />;
   return (
     <>
       <Hero />

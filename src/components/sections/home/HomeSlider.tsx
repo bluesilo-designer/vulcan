@@ -14,19 +14,11 @@ import { useVersion } from '../../../lib/version';
 const DWELL = 7000; /* ms per slide */
 const Word = (n: number) => { const w = (WORDS as string[])[n] || String(n); return w.charAt(0).toUpperCase() + w.slice(1); };
 
-export type SliderVariant = 's' | 's2' | 's3' | 's4' | 's5' | 's6';
-
-/* Hero carousel. Auto-advances, pauses on hover, focus, a hidden tab, or the
-   pause button, and never moves on its own under prefers-reduced-motion.
-   One state machine, four ways to show it (29 Oct 2026):
-   s   tabs under the hero, naming every capability
-   s2  loading bars only, no content strip
-   s3  split: text and index on a solid panel, the photo beside it, so
-       the photo never sits under the text
-   s4  full-bleed photo in a viewfinder frame, vertical rail on the right
-   s5  filmstrip: a thumbnail of every slide, bottom right
-   s6  next up: a progress ring on the play button, a preview of the next slide */
-function Slider({ variant }: { variant: SliderVariant }) {
+/* Hero carousel with capability tabs under it (Slider A). Auto-advances, pauses
+   on hover, focus, a hidden tab, or the pause button, and never moves on its own
+   under prefers-reduced-motion. Slider B to F were review options until 11 Nov
+   2026, when the client fixed A; they were removed, see git history (17afb77, aff9afa). */
+function Slider() {
   const v3 = useVersion().v === 3;
   /* v3 opens with "Who we are", then the four service slides */
   const SLIDES = v3 ? [HS_WHO, ...HS_SLIDES] : HS_SLIDES;
@@ -71,7 +63,7 @@ function Slider({ variant }: { variant: SliderVariant }) {
     if (!d) return;
     e.preventDefault(); const i = ((cur + d) % n + n) % n; go(i); tabs.current[i]?.focus();
   };
-  /* one tab per slide; the markup inside differs by variant */
+  /* one tab per slide */
   const tab = (i: number, cls: string, body: ReactNode) => (
     <button key={SLIDES[i].k} ref={(el) => { tabs.current[i] = el; }} type="button" role="tab" className={cls + (i < cur ? ' is-done' : '')}
       aria-selected={i === cur} aria-controls={`hs-slide-${i}`} aria-label={SLIDES[i].k} tabIndex={i === cur ? 0 : -1} onClick={() => go(i)}>
@@ -92,13 +84,11 @@ function Slider({ variant }: { variant: SliderVariant }) {
       {SLIDES.map((_, i) => tab(i, cls, inner(i)))}
     </div>
   );
-  const count = <span className="hs__count" aria-hidden="true"><b>{pad2(cur)}</b> / {pad2(n - 1)}</span>;
 
   return (
-    <section className={'hs hs--' + variant + (running ? ' is-running' : '')} aria-roledescription="carousel" aria-label="Blue Silo capabilities"
+    <section className={'hs hs--s' + (running ? ' is-running' : '')} aria-roledescription="carousel" aria-label="Blue Silo capabilities"
       onFocus={(e) => { if ((e.target as HTMLElement).matches(':focus-visible')) setHold(true); }}
       onBlur={(e) => { if (!e.currentTarget.contains(e.relatedTarget as Node)) setHold(false); }}>
-      {variant === 's4' && <div className="hs__frame" aria-hidden="true"><i></i><i></i><i></i><i></i></div>}
       {SLIDES.map((s, i) => (
         <div className={'hs__slide' + (i === cur ? ' is-on' : '')} key={s.k} role="group" aria-roledescription="slide"
           aria-label={`${i + 1} of ${n}: ${s.k}`} aria-hidden={i !== cur} id={`hs-slide-${i}`}>
@@ -108,7 +98,6 @@ function Slider({ variant }: { variant: SliderVariant }) {
           </picture> : <img src={slideImage(i)} alt="" decoding="async" loading="eager" />}</div>
           <div className="hs__veil"></div>
           <div className="shell hs__in">
-            {variant === 's3' && <span className="hs__big" aria-hidden="true">{pad2(i)}</span>}
             <span className="label hs__k"><Icon name={s.icon} />{s.k}</span>
             {/* a headline of two sentences breaks between them, never inside one */}
             {(() => { const parts = s.h.split(/(?<=\.) /); return parts.length > 1
@@ -123,75 +112,30 @@ function Slider({ variant }: { variant: SliderVariant }) {
         </div>
       ))}
 
-      {variant === 's' && <div className="hs__bar"><div className="shell hs__bar-in">
+      <div className="hs__bar"><div className="shell hs__bar-in">
         {list('hs__tab', (i) => <><span className="hs__tab-n">{pad2(i)}</span><span className="hs__tab-k">{SLIDES[i].k}</span></>)}
         {ctl}
-      </div></div>}
-
-      {variant === 's2' && <div className="hs__segbar"><div className="shell hs__segbar-in">
-        {count}
-        {list('hs__seg', () => null, 'hs__segs')}
-        {ctl}
-      </div></div>}
-
-      {variant === 's3' && <div className="hs__side"><div className="hs__side-in">
-        {list('hs__ix', (i) => <><span className="hs__ix-n">{pad2(i)}</span><span className="hs__ix-k">{SLIDES[i].k}</span></>, 'hs__index')}
-        {ctl}
-      </div></div>}
-
-      {variant === 's4' && <>
-        <div className="hs__read" aria-hidden="true"><span>{pad2(cur)}</span><span>{SLIDES[cur].k}</span></div>
-        <div className="hs__rail">
-          {list('hs__tick', (i) => <span className="hs__tick-n">{pad2(i)}</span>, 'hs__ticks')}
-          {ctl}
-        </div>
-      </>}
-
-      {variant === 's5' && <div className="hs__strip"><div className="shell hs__strip-in">
-        {list('hs__film', (i) => <>
-          <span className="hs__film-img"><img src={slideImage(i)} alt="" decoding="async" /></span>
-          <span className="hs__film-t"><span className="hs__film-n">{pad2(i)}</span><span className="hs__film-k">{SLIDES[i].k}</span></span>
-        </>, 'hs__films')}
-        {ctl}
-      </div></div>}
-
-      {variant === 's6' && <div className="hs__next"><div className="shell hs__next-in">
-        <div className="hs__ring-wrap">
-          <button type="button" className="hs__ring" aria-label={paused ? 'Play slides' : 'Pause slides'} aria-pressed={paused}
-            onClick={() => setPaused((p) => !p)} disabled={reduce.current}>
-            <svg viewBox="0 0 48 48" aria-hidden="true"><circle className="hs__ring-bg" cx="24" cy="24" r="22" />
-              <circle className="hs__ring-fg" cx="24" cy="24" r="22" style={{ animationDuration: `${DWELL}ms` }} key={`r-${cur}`} /></svg>
-            <Icon name={paused || reduce.current ? 'ph-play' : 'ph-pause'} />
-          </button>
-          {count}
-          <button type="button" className="hs__btn" aria-label="Previous slide" onClick={() => go(cur - 1)}><Icon name="ph-caret-left" /></button>
-        </div>
-        <button type="button" className="hs__peek" onClick={() => go(cur + 1)} aria-label={`Next: ${SLIDES[(cur + 1) % n].k}`}>
-          <span className="hs__peek-img"><img src={slideImage((cur + 1) % n)} alt="" decoding="async" /></span>
-          <span className="hs__peek-t"><span className="hs__peek-l">Next</span><span className="hs__peek-k">{SLIDES[(cur + 1) % n].k}</span></span>
-          <Icon name="ph-arrow-right" />
-        </button>
-      </div></div>}
+      </div></div>
     </section>
   );
 }
 
-/* v2 home, slider layout (?hm=s). Merged from two client references (28 Oct
+/* v2 and v3 home. Merged from two client references (28 Oct
    2026), keeping only the ticked sections: hero, trust, featured work, CTA and
    footer from the first; capabilities and why us from the second. Products and
    proof were not ticked and are hidden through HIDDEN_SECTIONS. */
-export function HomeSlider({ variant = 's', mergedSections }: { variant?: string; mergedSections?: ReactNode }) {
+export function HomeSlider({ mergedSections }: { mergedSections?: ReactNode }) {
   const v3 = useVersion().v === 3;
   const prods = VISIBLE_PRODUCTS.map((id) => ({ id, p: productOf(id), b: brandOf(id) })).filter((x) => x.p && x.b);
   return (
     <>
-      <Slider variant={(['s', 's2', 's3', 's4', 's5', 's6'].includes(variant) ? variant : 's') as SliderVariant} />
+      <Slider />
       <Trust />
 
       {v3 ? <section className="hs-capabilities-v3" id="capabilities"><div className="shell hs-capabilities-v3__layout">
         <div className="hs-capabilities-v3__intro rv">
           <span className="label">What we do</span>
-          <h2>Integrated solutions for every mission</h2>
+          <h2>Integrated solutions for every mission.</h2>
           <p>From training and range operations to monitoring and enterprise management, our systems connect the work across a defence programme.</p>
           <Link className="hs-capabilities-v3__all" to="/products">Explore all capabilities <Icon name="ph-arrow-right" /></Link>
         </div>

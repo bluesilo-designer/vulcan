@@ -1,0 +1,13 @@
+/* Privacy, Terms and Security pages (11 Nov 2026) */
+.lg{display:grid;gap:var(--s6)}
+@media (min-width:900px){.lg{grid-template-columns:minmax(0,3fr) minmax(0,8fr);gap:var(--s8)}.lg__meta{position:sticky;top:calc(var(--nav-h) + var(--s6));align-self:start}}
+.lg__meta{display:grid;gap:var(--s2);padding-top:var(--s3);border-top:1px solid var(--line-2)}
+.lg__meta span{font:500 11px/1 var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3)}
+.lg__meta b{font-weight:400;color:var(--ink)}
+.lg__meta em{margin-top:var(--s3);font-style:normal;font-size:var(--t-sm);color:var(--ink-2)}
+.lg__body{max-width:68ch}
+.lg__body section{padding-block:var(--s5);border-top:1px solid var(--line)}
+.lg__body section:first-child{padding-top:0;border-top:0}
+.lg__body h2{font-weight:400;font-size:clamp(20px,2vw,26px);margin:0 0 var(--s3)}
+.lg__body p{margin:0 0 var(--s4);color:var(--ink-2);line-height:1.7}
+.lg__body a{color:var(--brand)}

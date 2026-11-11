@@ -100,6 +100,20 @@ export function Assurance() {
   );
 }
 
+/* v3: security framework (client, 10 Nov 2026), from the internal
+   "Cybersecurity Checklist". Each stage lists only items marked Covered
+   there; stages still being prepared carry a visible status, never a claim. */
+const FRAMEWORK: [string, string, string, string?][] = [
+  ['ph-magnifying-glass', 'Identify', 'Sensitive data and every data flow are mapped, from activation to audit records.'],
+  ['ph-funnel', 'Minimise', 'Servers and containers are hardened, unused services and endpoints removed, and dependencies scanned before release.'],
+  ['ph-git-fork', 'Isolate', 'Networks sit in approved zones, database access is restricted, and the system runs fully offline.'],
+  ['ph-fingerprint', 'Authenticate', 'Role-based access, authenticated services and least-privilege accounts. Unauthorised access is tested.'],
+  ['ph-shield-check', 'Protect', 'Signed licences, controlled signing keys, encrypted traffic and data, protected secrets and anti-tamper checks.'],
+  ['ph-pulse', 'Monitor', 'Hosts, services and licence checks are monitored, with dashboards and structured security events.'],
+  ['ph-siren', 'Respond', 'Incident procedure, severity levels and response playbooks.', 'In preparation'],
+  ['ph-arrow-counter-clockwise', 'Recover', 'Backups cover licence, entitlement, configuration and audit data. Restore tests are planned.', 'Partly in place'],
+];
+
 function AssuranceV3() {
   const continuity = [
     ['01', 'Running the session', 'A session already under way keeps running from information held locally.'],
@@ -128,6 +142,16 @@ function AssuranceV3() {
         <article className="as3-control" key={c[1]}><span className="as3-control__number">{pad2(i)}</span>
           <i className={'ph ' + c[0]} aria-hidden="true" /><h3>{c[1]}</h3><p>{c[2]}</p></article>
       )}</div>
+    </div></section>
+
+    <section className="as3-frame"><div className="shell">
+      <header className="as3-heading"><div><span className="label">Security framework</span><h2>One security cycle for every system.</h2></div>
+        <p>Eight stages, applied to every device, connection, identity and data flow.</p></header>
+      <ol className="as3-frame__grid">{FRAMEWORK.map((f, i) => <li key={f[1]}>
+        <span className="as3-frame__n">{pad2(i)}</span><i className={'ph ' + f[0]} aria-hidden="true" />
+        <h3>{f[1]}</h3><p>{f[2]}</p>{f[3] && <em className="as3-frame__status">{f[3]}</em>}</li>)}</ol>
+      <div className="as3-frame__loop"><i className="ph ph-arrows-clockwise" aria-hidden="true" />
+        <div><h3>Continuous verification</h3><p>Earlier checks are never assumed to still hold. Every release is checked again.</p></div></div>
     </div></section>
 
     <section className="as3-safety">

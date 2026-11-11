@@ -45,3 +45,12 @@
 @media(max-width:900px){.ct3-approach__head,.ct3-enquiry__grid{grid-template-columns:1fr}.ct3-approach__head{gap:17px}.ct3-enquiry__grid{gap:50px}.ct3-enquiry__guide{margin-top:30px}.ct3-routes{grid-template-columns:1fr 1fr}.ct3-route{min-height:215px}}
 @media(max-width:650px){.ct3-hero{min-height:690px;align-items:flex-end}.ct3-hero>img{object-position:68% center}.ct3-hero__veil{background:linear-gradient(0deg,#090f17,rgba(5,11,19,.83) 60%,rgba(5,11,19,.35))}.ct3-hero__inner{padding-block:160px 125px}.ct3-hero h1{font-size:clamp(54px,12vw,76px)}.ct3-hero__foot{gap:16px;flex-wrap:wrap;font-size:8px}.ct3-routes{grid-template-columns:1fr}.ct3-route{min-height:0;padding:21px 24px 24px;gap:8px}.ct3-route__top{margin-bottom:20px}.ct3-route>.ph{right:24px;bottom:24px}.ct3-form{padding:23px}.ct3-form__pair{grid-template-columns:1fr}}
 @media(prefers-reduced-motion:reduce){.ct3-route{transition:none}}
+
+/* 11 Nov 2026: the enquiry dropdown. Native arrow sat on the border and the
+   box was shorter than the inputs, so it is drawn here: one chevron with
+   room on the right, same height and left padding as the other fields. */
+.ct3-form select{appearance:none;-webkit-appearance:none;cursor:pointer;height:49px;padding:0 46px 0 15px;line-height:47px;text-overflow:ellipsis;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1.5l5 5 5-5' fill='none' stroke='%237aaed1' stroke-width='1.5'/%3E%3C/svg%3E");
+  background-repeat:no-repeat;background-position:right 18px center;background-size:12px 8px}
+.ct3-form select:focus{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1.5l5 5 5-5' fill='none' stroke='%235EA5FF' stroke-width='1.5'/%3E%3C/svg%3E")}
+.ct3-form select option{background:#0b1722;color:#eaf1f5}

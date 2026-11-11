@@ -6,6 +6,13 @@
    everyday words, zero em-dashes. */
 
 export const V3_COPY: Record<string, string> = {
+  /* ---------- Section titles end with a full stop in v3 (client, 11 Nov 2026) ---------- */
+  'Talk to our team about your next programme': 'Talk to our team about your next programme.',
+  'Frequently asked questions': 'Frequently asked questions.',
+  'Acronyms that look alike': 'Acronyms that look alike.',
+  'See what is happening, as it happens': 'See what is happening, as it happens.',
+  'Know where every asset is, and who holds it': 'Know where every asset is, and who holds it.',
+
   /* ---------- No "Singapore" in v3 copy (client, 4 Nov 2026) ---------- */
   'Built in Singapore. Designed for the realities of defence operations.': 'Designed for the realities of defence operations.',
   'Singapore based': 'Defence focused',
@@ -48,34 +55,34 @@ export const V3_COPY: Record<string, string> = {
   'Compare every system': 'Compare all systems',
 
   /* ---------- Home: range day chain ---------- */
-  'Cleared before anyone arrives': 'Cleared before anyone arrives',
+  'Cleared before anyone arrives': 'Cleared before anyone arrives.',
   'The cleared list of people and vehicles reaches access control the day before. At the gate, plates and credentials are matched and the barrier opens.':
     'Access control gets the cleared list the day before. At the gate, plates and passes match, and the barrier opens.',
   'Check in, and the roll builds itself': 'Check in. The roll builds itself.',
   'Each person checks in at a kiosk against their booking and collects a tracking card. Attendance updates as they arrive.':
     'Each person checks in at a kiosk and collects a tracking card. Attendance updates live.',
-  'Briefing against who actually came': 'Brief the people who actually came',
+  'Briefing against who actually came': 'Brief the people who actually came.',
   'The operator confirms who is actually present and adjusts lanes and the detail list before the session starts.':
     'The operator confirms who is here, then adjusts lanes and the detail list before the start.',
-  'Weapons issued to the right hands': 'The right weapon, to the right person',
+  'Weapons issued to the right hands': 'The right weapon, to the right person.',
   'Weapons are released only to the person and booking they belong to. Every issue is recorded at the counter.':
     'A weapon is released only to the person it is booked for. Every issue is recorded.',
-  'Range ready before the first detail': 'Ready before the first detail',
+  'Range ready before the first detail': 'Ready before the first detail.',
   'A built-in test checks network and services, then the operator runs the range checklist and loads the exercise.':
     'A self-test checks the network and services. The operator runs the checklist and loads the exercise.',
   'One operator, one range state': 'One operator. One clear range state.',
   'One operator runs targetry and effects to plan. Instructors log feedback at the firing point. The emergency stop works without the software.':
     'One operator runs targets and effects. Instructors log feedback on the spot. The emergency stop works even without the software.',
-  'Every lane recorded, in step': 'Every lane recorded, in sync',
+  'Every lane recorded, in step': 'Every lane recorded, in sync.',
   'Every lane is recorded at full quality, time-stamped on the same clock as range events.':
     'Every lane is recorded in full quality, on the same clock as range events.',
-  'The debrief starts from fact': 'Debriefs built on facts',
+  'The debrief starts from fact': 'Debriefs built on facts.',
   'Results, instructor notes and the event timeline replay alongside the video. Reshoots are booked where needed.':
     'Results, notes and the timeline replay with the video. Reshoots are booked on the spot.',
   'Weapons back, accounts closed': 'Weapons back. Day closed.',
   'Weapons are scanned back in and unused ammunition handed over. Anything missing stays open until it is accounted for.':
     'Weapons are scanned back in and unused ammunition returned. Anything missing stays flagged until found.',
-  'The health of every system, every day': 'Every system, checked every day',
+  'The health of every system, every day': 'Every system, checked every day.',
   'Health and fault data from every system lands in one place, so maintenance is planned before a failure stops training.':
     'Health and fault data lands in one place. Fix things before they stop training.',
   'Who is expected today': 'Who is coming today',
@@ -97,7 +104,7 @@ export const V3_COPY: Record<string, string> = {
   'Emergency stop does not depend on our software running.': 'The emergency stop works even if our software does not.',
 
   /* ---------- Home: integration intro ---------- */
-  'Connects to what you already run': 'One connected environment for every system on your site',
+  'Connects to what you already run': 'One connected environment for every system on your site.',
   'We connect the whole training environment, from live targets and simulators to facility, operations and security systems.':
     'Targets, simulators, facilities, operations and security systems, whichever company built them, connected into one environment your teams can trust.',
   'Targets, hit detection and scoring linked to the training session, with results returned to the record.':
@@ -117,7 +124,7 @@ export const V3_COPY: Record<string, string> = {
     'We test every connection before it reaches your site. It works on day one.',
 
   /* ---------- Home: partners (back from v1, v2 copy) ---------- */
-  'How we work with partners and integrators': 'Built to work with partners',
+  'How we work with partners and integrators': 'Built to work with partners.',
   'We work alongside prime contractors, technology partners, system integrators and your own team. Together we agree who does what and how the systems connect, then deliver as one team.':
     'Primes, partners, integrators and your own team. We agree who does what, then deliver as one.',
   'Before work starts, everyone knows what Blue Silo, each partner and your own team are responsible for.':
@@ -154,7 +161,7 @@ export const V3_COPY: Record<string, string> = {
   'A long-term partner for defence and security organisations': 'A long-term partner for defence and security',
 
   /* ---------- Home: questions ---------- */
-  'The questions we hear most': 'Questions we get a lot',
+  'The questions we hear most': 'Questions we get a lot.',
   'Short answers for defence organisations, programme teams and evaluators.': 'Quick answers for defence and programme teams.',
   'Yes. Every system can be deployed on its own, with its own software and interfaces. When you are ready, it connects to other Blue Silo systems or to the systems you already run.':
     'Yes. Every system works on its own. Connect it to others whenever you are ready.',
@@ -194,7 +201,7 @@ export const V3_COPY: Record<string, string> = {
   'Check in, issue equipment and run the session, with live results for instructors and trainees.': 'Check in, issue, run. Live results for everyone.',
   'Every item returned or flagged, and every result recorded, at the end of the session.': 'Every item back or flagged. Every result saved.',
   'Utilisation, availability and equipment health, reported across the whole centre.': 'Use, availability and health across the centre.',
-  'Connected to the systems you already run': 'Works with what you already run',
+  'Connected to the systems you already run': 'Works with what you already run.',
   "No defence facility runs on one supplier's systems. Our software already works with these types of training system, and we agree every new connection in writing before we build it.":
     'No facility runs on one supplier. Our software already works with these systems, and every new link is agreed in writing first.',
   'Decision-making practice for commanders and staff': 'Decision practice for commanders',
@@ -206,14 +213,14 @@ export const V3_COPY: Record<string, string> = {
   /* ---------- Products ---------- */
   'Use one system on its own or connect them all. Each page shows what the system does, who uses it and where it runs.':
     'Use one, or connect them all. Each page shows what it does, who uses it and where.',
-  'What each system does': 'What each system does',
+  'What each system does': 'What each system does.',
   'Who uses each system, and the question it answers for them.': 'Who uses it, and the question it answers.',
   'What is booked, who is coming, and whether the centre has the stations and equipment to run it.': 'What is booked, who is coming, and if the centre can run it.',
   'Whether the range is ready, when a session can start, and when it must stop.': 'Is the range ready? When can we start? When must we stop?',
   'What actually happened on a lane, found on the session timeline rather than from memory.': 'What really happened on a lane. From the timeline, not memory.',
   'Whether this weapon can go to this person now, and whether every weapon is back at the end of the day.': 'Can this person take this weapon now? Is every weapon back?',
   'What is wearing out, how fast, and whether it will last until the next session.': 'What is wearing out, and will it last until next session?',
-  'Where each system is used': 'Where each system is used',
+  'Where each system is used': 'Where each system is used.',
   'Four systems share a naming pattern and two handle video. Confusing them in a specification is expensive later.':
     'Some names look alike, and two systems handle video. Mixing them up costs money later.',
 
@@ -297,28 +304,28 @@ export const V3_COPY: Record<string, string> = {
   'We will show you SENTRAX at work on a range scenario.': 'See SENTRAX run a range scenario.',
 
   /* ---------- Integration ---------- */
-  'Works with the systems you already run': 'Works with what you already run',
+  'Works with the systems you already run': 'Works with what you already run.',
   'We test every connection in our own lab before it reaches your site, and agree each one in writing with the other supplier.':
     'Every connection is tested in our lab first, and agreed in writing with the other supplier.',
-  'Built to work with what is already on site': 'Built for what is already on site',
+  'Built to work with what is already on site': 'Built for what is already on site.',
   'From live targets and simulators to building systems, the operations centre, security and training records.':
     'Targets, simulators, buildings, operations, security and training records.',
-  'Every connection is documented and owned': 'Every connection has an owner',
+  'Every connection is documented and owned': 'Every connection has an owner.',
   'For each system we connect to, both sides agree in writing how the connection works and who is responsible for it. This keeps integration predictable and avoids surprises late in the programme.':
     'Both sides agree in writing how each link works and who owns it. No late surprises.',
   'We share the full list of connections with programme teams on request.': 'Programme teams can request the full list.',
-  'Already working with other suppliers’ equipment': 'Already running other suppliers’ kit',
+  'Already working with other suppliers’ equipment': 'Already running other suppliers’ kit.',
   'On most ranges, targets, effects, displays and public address come from other suppliers. Our range control software already drives them, through connections that are specified, tested and kept under version control.':
     'On most ranges, targets, effects, screens and PA come from other suppliers. Our range control software already drives them, through tested, versioned connections.',
-  'Three things every connected range needs': 'Three things every connected range needs',
+  'Three things every connected range needs': 'Three things every connected range needs.',
   'They are easy to overlook, and hard to add later.': 'Easy to miss. Hard to add later.',
   'Everyone signs in once against your directory, with access set by role. When someone leaves, their access ends everywhere at once.':
     'One login for everything. When someone leaves, access ends everywhere.',
   'Video, tracking, alerts and health data carry the same time, so a debrief or an investigation can line them up exactly.':
     'Video, tracking, alerts and health data share one clock. Everything lines up.',
   'Records of weapon and ammunition handling are sent to your own logging system, not kept only in ours.':
-    'Weapon and ammunition records go to your own logs, not just ours.',
-  'Tested before it reaches your site': 'Tested before it reaches you',
+    'Every system\'s records go to your own logs, not just ours.',
+  'Tested before it reaches your site': 'Tested before it reaches you.',
   'Every connection is proven in our own test environment before installation, so commissioning on site is faster and lower risk.':
     'We prove every connection in our lab first. Setup on site is faster and safer.',
   'Each connection is first tested against a simulated version of the other system, so work starts before the real equipment arrives.':

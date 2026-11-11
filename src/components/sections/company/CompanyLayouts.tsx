@@ -108,7 +108,7 @@ export function CompanyText() {
       </div></section>
 
       <section className="band"><div className="shell">
-        <div className="rv co2a-head"><span className="label">How we work</span><h2 className="co2a-h">Why Blue Silo</h2></div>
+        <div className="rv co2a-head"><span className="label">How we work</span><h2 className="co2a-h">Why Blue Silo{v3 ? '.' : ''}</h2></div>
         <ol className="co2a-why">{CO_REASONS.map((r, i) => <li className="rv" data-d={String(i % 2)} key={r[0]}><span>{Pad(i)}</span><b>{r[0]}</b><p>{r[1]}</p></li>)}</ol>
       </div></section>
 

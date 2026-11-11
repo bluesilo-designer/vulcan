@@ -7,7 +7,7 @@ import { brandOf, productOf } from '../../../content/products';
 import { mediaUrl } from '../../../lib/media';
 import { chipLabel, chipTitle } from './shared';
 import { isVisible, shown } from '../../../config/site';
-import { useSystemLayout, useV, useV1Back, useVersion } from '../../../lib/version';
+import { useV, useV1Back, useVersion } from '../../../lib/version';
 import { WORDS } from '../../../content/home';
 
 type Tile = [string, string, string];
@@ -106,7 +106,6 @@ const ORDER = ['trms', 'rcs', 'ewms', 'eams', 'pwats', 'hums', 'vms', 'as'].filt
 
 function Explorer() {
   const v3 = useVersion().v === 3;
-  const { sys } = useSystemLayout();
   const [sel, setSel] = useState(tiles[0][1]);
   const refs = useRef<Record<string, HTMLButtonElement | null>>({});
   const panelRef = useRef<HTMLDivElement>(null);
@@ -155,7 +154,7 @@ function Explorer() {
     </button>;
   };
   return (
-    <div className={'v6x rv' + (v3 ? ` v6x--v3 v6x--sys-${sys}` : '')}>
+    <div className={'v6x rv' + (v3 ? ' v6x--v3 v6x--sys-a' : '')}>
       {v3 ? <nav className="v6x3" aria-label="Explore Blue Silo systems">
         <div className="v6x3__heading"><span className="label">Select a system</span><p>Each works on its own and can connect with the others.</p></div>
         <div role="tablist" aria-label="Systems" onKeyDown={onKey}>

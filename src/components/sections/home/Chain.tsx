@@ -56,8 +56,9 @@ export function Chain() {
               <span className="v6cp__n">{n} / {c.k}</span></figure>
             <div className="v6cp__body">
               {v2 && (c as { h?: string }).h && <span className="v6cp__q"><i className={'ph ' + ((c as { i?: string }).i || '')} aria-hidden="true"></i>{(c as { h?: string }).h}</span>}
-              {/* v2: every step's panel carries the one shared line (client, 5 Nov 2026); c.t stays for v1 */}
-              <h3>{v2 ? 'Every step passes its data to the next. No paper in between.' : c.t}</h3>
+              {/* v2: every step's panel carries the one shared line (client, 5 Nov 2026); c.t stays for v1.
+                  v3: each step shows its own title again, the shared line read as a repeat (11 Nov 2026) */}
+              <h3>{v2 && !v3 ? 'Every step passes its data to the next. No paper in between.' : c.t}</h3>
               <p>{STEPS[cur] || c.b}</p>
               {v2 && CHAIN_FEATURES[cur] && <div className="v6cp__feat"><span className="v6cp__lbl">Supporting features</span>
                 <ul>{CHAIN_FEATURES[cur].map((f) => <li key={f}>{f}</li>)}</ul></div>}

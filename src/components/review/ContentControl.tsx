@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { HERO_CUTS, LOOKS, LOOKS_SHOWN, PHOTO_SETS, PRODUCT_IMAGE_SETS } from '../../content/media';
 import { isReady } from '../../lib/media';
 import { DEFAULTS, useReview } from '../../lib/review';
-import { VERSIONS, CAP_CARD_DEFAULT, CAP_CARD_STYLES, COMPANY_DEFAULT, COMPANY_LAYOUTS, HOME_DEFAULT, HOME_LAYOUTS, SYSTEM_DEFAULT, SYSTEM_LAYOUTS, TRMS_DEFAULT, TRMS_LAYOUTS, useCapCardStyle, useCompanyLayout, useHomeLayout, useSystemLayout, useTrmsLayout, useVersion, usePartnersShown } from '../../lib/version';
+import { VERSIONS, COMPANY_DEFAULT, COMPANY_LAYOUTS, TRMS_DEFAULT, TRMS_LAYOUTS, useCompanyLayout, useTrmsLayout, useVersion, usePartnersShown } from '../../lib/version';
 
 type Group = 'global' | 'home' | 'company' | 'trms';
 type Look = { id: string; k: string; d: string; sw: string[] };
@@ -23,10 +23,7 @@ export function ContentControl() {
   const { v, setV } = useVersion();
   const { co, setCo } = useCompanyLayout();
   const { tr, setTr } = useTrmsLayout();
-  const { hm, setHm } = useHomeLayout();
-  const { cap, setCap } = useCapCardStyle();
   const { partners, setPartners } = usePartnersShown();
-  const { sys, setSys } = useSystemLayout();
   const [open, setOpen] = useState(false);
   const [group, setGroup] = useState<Group>(initialGroup);
   const [copied, setCopied] = useState(false);
@@ -43,9 +40,6 @@ export function ContentControl() {
     u.searchParams.set('pset', state.pset);
     if (state.photo && state.photo !== DEFAULTS.photo) u.searchParams.set('photo', state.photo); else u.searchParams.delete('photo');
     if (co !== COMPANY_DEFAULT) u.searchParams.set('co', co); else u.searchParams.delete('co');
-    if (hm !== HOME_DEFAULT) u.searchParams.set('hm', hm); else u.searchParams.delete('hm');
-    if (cap !== CAP_CARD_DEFAULT) u.searchParams.set('cap', cap); else u.searchParams.delete('cap');
-    if (sys !== SYSTEM_DEFAULT) u.searchParams.set('sys', sys); else u.searchParams.delete('sys');
     if (tr !== TRMS_DEFAULT) u.searchParams.set('tr', tr); else u.searchParams.delete('tr');
     if (state.hero) u.searchParams.set('hero', state.hero); else u.searchParams.delete('hero');
     const t = u.toString();
@@ -72,12 +66,8 @@ export function ContentControl() {
           </fieldset>
         </>}
         {group === 'home' && <>
-          <p className="v6ctl__hint">Homepage layout and hero treatment.</p>
-          {v >= 2 && <fieldset><legend>Home layout</legend><div className="v6ctl__cuts"><button type="button" className={hm === '0' ? 'is-on' : ''} onClick={() => setHm('0')}>Current</button><button type="button" className={hm !== '0' ? 'is-on' : ''} onClick={() => setHm(hm === '0' ? HOME_DEFAULT : hm)}>Slider</button></div></fieldset>}
-          {v >= 2 && <fieldset><legend>Slider style</legend>{HOME_LAYOUTS.filter((l) => l.id !== '0').map((l) => <label className="v6ctl__opt" key={l.id}><input type="radio" name="v6slider" checked={hm === l.id} onChange={() => setHm(l.id)} /><span><b>{l.k}</b><em>{l.d}</em></span></label>)}</fieldset>}
-          {v === 3 && hm !== '0' && <fieldset><legend>What we do cards</legend>{CAP_CARD_STYLES.map((s) => <label className="v6ctl__opt" key={s.id}><input type="radio" name="v6capcard" checked={cap === s.id} onChange={() => setCap(s.id)} /><span><b>{s.k}</b><em>{s.d}</em></span></label>)}</fieldset>}
+          <p className="v6ctl__hint">Homepage sections and hero treatment.</p>
           {v === 3 && <fieldset><legend>Partners section</legend><div className="v6ctl__cuts"><button type="button" className={!partners ? 'is-on' : ''} onClick={() => setPartners(false)}>Hidden</button><button type="button" className={partners ? 'is-on' : ''} onClick={() => setPartners(true)}>Shown</button></div></fieldset>}
-          {v === 3 && <fieldset><legend>Systems layout</legend>{SYSTEM_LAYOUTS.map((s) => <label className="v6ctl__opt" key={s.id}><input type="radio" name="v6systems" checked={sys === s.id} onChange={() => setSys(s.id)} /><span><b>{s.k}</b><em>{s.d}</em></span></label>)}</fieldset>}
           <fieldset><legend>Hero film</legend><div className="v6ctl__cuts">{(HERO_CUTS as Cut[]).map((c) => <button key={c.id} type="button" className={curHero === c.id ? 'is-on' : ''} disabled={!isReady(c.id)} title={c.d} onClick={() => set({ hero: c.id })}>{c.k}</button>)}</div></fieldset>
         </>}
         {group === 'company' && <><p className="v6ctl__hint">About Blue Silo page.</p><fieldset><legend>Company layout</legend>{COMPANY_LAYOUTS.map((l) => <label className="v6ctl__opt" key={l.id}><input type="radio" name="v6company" checked={co === l.id} onChange={() => setCo(l.id)} /><span><b>{l.k}</b><em>{l.d}</em></span></label>)}</fieldset></>}

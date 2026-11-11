@@ -37,6 +37,9 @@ export const HIDDEN_SECTIONS = [
   'homeChain.dataPassed',  // "Data passed on" chips in the chain panel, replaced by supporting features (5 Nov 2026)
   'homeSlider.feature',    // "Featured work" band with the training system, slider home (5 Nov 2026)
   'homeSlider.why',        // "More than technology. A long-term partner." band, slider home (5 Nov 2026)
+  'footer.sitemap',        // "Site map" link in the footer, v3 (11 Nov 2026). sitemap.xml is still built.
+  'nav.integration',       // "Integration" item in the header menu, v3 only (11 Nov 2026)
   'homeSlider.proof',      // slider home figures band, not ticked in the merged reference (28 Oct 2026)
+  'footer.linkedin',       // v3 footer LinkedIn icon linked to /contact; show again with a real URL (11 Nov 2026)
 ];
 export const shown = (key: string) => !HIDDEN_SECTIONS.includes(key);

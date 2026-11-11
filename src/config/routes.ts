@@ -36,6 +36,12 @@ export const ROUTE_META: RouteMeta[] = [
     description: 'Blue Silo is a Singapore-headquartered defence technology company delivering mission-critical systems across Southeast Asia and APAC.' },
   { path: '/faq', title: 'FAQ',
     description: 'Answers to what defence organisations, programme teams and evaluators ask Blue Silo first.' },
+  { path: '/privacy', title: 'Privacy',
+    description: 'What Blue Silo collects when you use this site or contact us, why, and the choices you have.' },
+  { path: '/terms', title: 'Terms of use',
+    description: 'The terms that apply when you use the Blue Silo website.' },
+  { path: '/security', title: 'Security',
+    description: 'How to report a security problem with the Blue Silo website, and where to read how our systems are secured.' },
   { path: '/contact', title: 'Contact',
     description: 'Talk to the people who build it: procurement, technical integration, or anything else.' },
 ];
